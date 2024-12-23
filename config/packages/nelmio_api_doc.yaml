@@ -1,0 +1,45 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Streaming service core API
+      description: Streaming service core API!
+      version: 1.0.0
+    components:
+      securitySchemes:
+        Basic:
+          type: apiKey
+          description: 'Value: Basic {key}'
+          name: Authorization
+          in: header
+        Bearer:
+          type: apiKey
+          description: 'Value: Bearer {jwt}'
+          name: Authorization
+          in: header
+        AuthIdentifier:
+          type: apiKey
+          description: 'Value: {auth_identifier}'
+          name: X-Auth-Identifier
+          in: header
+        AuthKey:
+          type: apiKey
+          description: 'Value: {auth_key}'
+          name: X-Auth-Key
+          in: header
+    security:
+      - Basic: [ ]
+        Bearer: [ ]
+      - Basic: [ ]
+        AuthIdentifier: [ ]
+        AuthKey: [ ]
+  areas:
+    default:
+      path_patterns: [ ^/api ]
+      host_patterns: [ ^api\. ]
+    v1_internal:
+      path_patterns: [ ^/api/v1/internal ]
+      documentation:
+        info:
+          title: Streaming service core internal API
+          description: Streaming service core internal API used for admin purposes
+          version: 1.0.0

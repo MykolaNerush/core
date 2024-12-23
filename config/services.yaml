@@ -1,0 +1,48 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  App\DataFixtures\UserFixtures:
+    tags:
+      - { name: 'doctrine.fixture', priority: 10 } # UserFixtures має вищий пріоритет
+
+  App\DataFixtures\AccountFixtures:
+    tags:
+      - { name: 'doctrine.fixture', priority: 5 }  # AccountFixtures має менший пріоритет
+
+  # Default resource configuration for the App namespace
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+
+  App\UI\Http\Rest\Internal\Middleware\RequestToDtoMiddleware:
+    tags:
+      - { name: 'kernel.event_listener', event: 'kernel.controller', priority: 100 }
+    arguments:
+      - '@validator'
+
+
+  App\UI\Http\Rest\Internal\Controller\:
+    resource: '../src/UI/Http/Rest/Internal/Controller/'
+    tags: [ 'controller.service_arguments' ]
+
+  # User repository service definition
+#  App\Infrastructure\Core\User\Repository\UserRepository:
+#    arguments:
+#      $em: '@doctrine.orm.entity_manager'
+#
+#  # Account repository service definition
+#  App\Infrastructure\Core\Account\Repository\AccountRepository:
+#    arguments:
+#      $em: '@doctrine.orm.entity_manager'
