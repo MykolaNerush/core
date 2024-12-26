@@ -47,9 +47,15 @@ class User implements SerializableReadModel
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
     private $accounts;
 
-    public function __construct(string $name, string $email, string $password, Status $status)
+    public function __construct(
+        UuidInterface $uuid,
+        string        $name,
+        string        $email,
+        string        $password,
+        Status        $status = Status::NEW,
+    )
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -119,6 +125,7 @@ class User implements SerializableReadModel
 //        $instance->account = \App\Domain\Core\Account\Account::deserialize($data['account']);
         return $instance;
     }
+
     /**
      * @return array<string, string|mixed>
      */

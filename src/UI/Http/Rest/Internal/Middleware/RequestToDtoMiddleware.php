@@ -38,27 +38,33 @@ readonly class RequestToDtoMiddleware
     {
         $queryParams = $request->query->all();
 
-        // Prepare an array of values for the DTO
+        $contentType = $request->headers->get('Content-Type');
+        $bodyParams = [];
+        if (str_contains($contentType ?? '', 'application/json')) {
+            $bodyParams = json_decode($request->getContent(), true) ?? [];
+        } elseif ($request->request->count() > 0) {
+            $bodyParams = $request->request->all();
+        }
+
+        // query and body params
+        $allParams = array_merge($queryParams, $bodyParams);
+
         $dtoValues = [];
 
-        foreach ($queryParams as $key => $value) {
-            // Check if it is a nested array (e.g. filter[email] or filter[uuid])
+        foreach ($allParams as $key => $value) {
+            // Check for nested arrays (e.g., filter[email] or filter[uuid])
             if (is_array($value)) {
-                // If the value is an array, check each element.
                 foreach ($value as $subKey => $subValue) {
                     $dtoValues[$subKey] = $subValue;
                 }
             } else {
-                // If the value is simple, add it to the array for the DTO
                 $dtoValues[$key] = $value;
             }
         }
 
-        // We use reflection to map query parameters to DTOs
         $dto = new $dtoClass();
 
         foreach ($dtoValues as $key => $value) {
-            // If the DTO class has a corresponding property, set its value
             if (property_exists($dto, $key)) {
                 $dto->$key = $value;
             }

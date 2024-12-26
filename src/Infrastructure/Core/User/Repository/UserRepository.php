@@ -14,7 +14,6 @@ use Ramsey\Uuid\UuidInterface;
 
 final class UserRepository extends MysqlRepository implements UserRepositoryInterface
 {
-
     public function __construct(private readonly EntityManagerInterface $em)
     {
         $this->class = User::class;

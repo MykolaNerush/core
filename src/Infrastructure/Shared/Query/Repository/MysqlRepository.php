@@ -296,4 +296,22 @@ abstract class MysqlRepository
             $queryBuilder->orderBy($this->alias . '.' . $sort, $order);
         }
     }
+
+    public function findOneBy(array $filters): mixed
+    {
+        $queryBuilder = $this->getQueryBuilder(true);
+
+        foreach ($filters as $field => $value) {
+            $paramName = str_replace('.', '_', $field);
+            if (is_array($value)) {
+                $queryBuilder->andWhere($this->alias . '.' . $field . ' IN (:' . $paramName . ')');
+            } else {
+                $queryBuilder->andWhere($this->alias . '.' . $field . ' = :' . $paramName);
+            }
+            $queryBuilder->setParameter($paramName, $value);
+        }
+        return $queryBuilder
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

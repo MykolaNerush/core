@@ -35,3 +35,8 @@ services:
   App\UI\Http\Rest\Internal\Controller\:
     resource: '../src/UI/Http/Rest/Internal/Controller/'
     tags: [ 'controller.service_arguments' ]
+
+  App\Application\Shared\Validator\UniqueEmailValidator:
+    arguments:
+      $userRepository: '@App\Infrastructure\Core\User\Repository\UserRepository'
+    tags: [ 'validator.constraint_validator' ]

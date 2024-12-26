@@ -33,9 +33,11 @@ class GetUsersRequest
     #[Assert\Choice(choices: ['name', 'status', 'createdAt', 'updatedAt'], message: 'Invalid sort')]
     public $sort = BasePageQuery::SORT;
 
-    #[Assert\Uuid]
+    #[Assert\Uuid(
+        message: 'The UUID format is invalid.',
+        strict: true)]
     public ?string $uuid = null;
 
-    #[Assert\Email]
+    #[Assert\Email(message: 'The email format is invalid.')]
     public ?string $email = null;
 }

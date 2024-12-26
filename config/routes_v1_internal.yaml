@@ -13,16 +13,18 @@ users_single:
   path: /users/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\GetUserByIdController::__invoke
   methods: GET
-#TODO IMPLEMENT
+
 users_create:
   path: /users
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController::__invoke
   methods: POST
+
 #TODO IMPLEMENT
 users_update:
   path: /users/{id}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\UpdateUserByIdController::__invoke
   methods: PUT
+
 #TODO IMPLEMENT
 users_delete:
   path: /users/{id}
