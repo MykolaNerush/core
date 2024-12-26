@@ -34,9 +34,15 @@ abstract class MysqlRepository
         $this->alias = lcfirst((new \ReflectionClass($this->class))->getShortName());
     }
 
-    public function remove(mixed $model): void
+    public function remove(SerializableReadModel $model, $force = false): void
     {
-        $this->entityManager->remove($model);
+        if ($force) {
+            $this->entityManager->remove($model);
+        } else {
+            $model->setDeletedAt();
+            $this->update($model);
+        }
+
         $this->flush();
     }
 

@@ -24,7 +24,7 @@ readonly class CreateUserHandler
             $command->name,
             $command->email,
             $command->password,
-            Status::NEW
+            Status::NEW,
         );
         $this->userRepository->create($user);
     }

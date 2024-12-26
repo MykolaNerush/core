@@ -109,9 +109,19 @@ class User implements SerializableReadModel
         return $this->updatedAt;
     }
 
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
     public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new DateTimeImmutable();
     }
 
     public function getStatus(): Status
@@ -203,6 +213,7 @@ class User implements SerializableReadModel
         if ($status) {
             $this->status = $status;
         }
+        $this->setUpdatedAt();
         return $this;
     }
 }

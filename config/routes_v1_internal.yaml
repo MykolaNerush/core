@@ -24,8 +24,7 @@ users_update:
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\UpdateUserByIdController::__invoke
   methods: POST
 
-#TODO IMPLEMENT
 users_delete:
-  path: /users/{id}
+  path: /users/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\DeleteUserByIdController::__invoke
   methods: DELETE

@@ -19,7 +19,7 @@ final class UpdateUserByIdController
 {
     public string $dtoClass = UpdateUserRequest::class;
 
-    #[OA\Put(
+    #[OA\Post(
         summary: "Update user by ID",
         security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
