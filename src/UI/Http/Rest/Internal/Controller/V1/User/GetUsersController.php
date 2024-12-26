@@ -10,6 +10,7 @@ use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
@@ -22,11 +23,11 @@ final class GetUsersController extends QueryController
         summary: 'Get users',
         security: [['Bearer' => []]],
         responses: [
-            new OA\Response(response: 200, description: 'Ok'),
-            new OA\Response(response: 400, description: 'Bad request'),
-            new OA\Response(response: 401, description: 'Unauthorized'),
-            new OA\Response(response: 404, description: 'Empty collection'),
-            new OA\Response(response: 500, description: 'Internal server error')
+            new OA\Response(response: Response::HTTP_OK, description: "User updated successfully"),
+            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: "Bad Request"),
+            new OA\Response(response: Response::HTTP_UNAUTHORIZED, description: "Unauthorized"),
+            new OA\Response(response: Response::HTTP_NOT_FOUND, description: "Conflict"),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error"),
         ]
     )]
     #[OA\Parameter(

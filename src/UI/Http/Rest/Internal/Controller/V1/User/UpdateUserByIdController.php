@@ -41,11 +41,11 @@ final class UpdateUserByIdController
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: "User updated successfully"),
-            new OA\Response(response: 400, description: "Bad Request"),
-            new OA\Response(response: 401, description: "Unauthorized"),
-            new OA\Response(response: 409, description: "Conflict"),
-            new OA\Response(response: 500, description: "Internal server Error")
+            new OA\Response(response: Response::HTTP_OK, description: "User updated successfully"),
+            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: "Bad Request"),
+            new OA\Response(response: Response::HTTP_UNAUTHORIZED, description: "Unauthorized"),
+            new OA\Response(response: Response::HTTP_CONFLICT, description: "Conflict"),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error")
         ]
     )]
     public function __invoke($uuid, Request $request, MessageBusInterface $messageBus): JsonResponse

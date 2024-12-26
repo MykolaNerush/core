@@ -31,9 +31,9 @@ final class DeleteUserByIdController
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: "User deleted successfully"),
-            new OA\Response(response: 400, description: "Bad Request"),
-            new OA\Response(response: 500, description: "Internal server Error")
+            new OA\Response(response: Response::HTTP_OK, description: "User deleted successfully"),
+            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: "Bad Request"),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error")
         ]
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse

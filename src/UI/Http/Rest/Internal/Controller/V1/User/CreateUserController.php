@@ -24,10 +24,10 @@ final class CreateUserController extends CommandController
         summary: 'Create user',
         security: [['Bearer' => []]],
         responses: [
-            new OA\Response(response: 201, description: 'User created successfully'),
-            new OA\Response(response: 400, description: 'Bad request'),
-            new OA\Response(response: 409, description: 'Conflict'),
-            new OA\Response(response: 500, description: 'Internal server error')
+            new OA\Response(response: Response::HTTP_CREATED, description: 'User created successfully'),
+            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: 'Bad request'),
+            new OA\Response(response: Response::HTTP_CONFLICT, description: 'Conflict'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal server error')
         ]
     )]
     #[OA\Parameter(
