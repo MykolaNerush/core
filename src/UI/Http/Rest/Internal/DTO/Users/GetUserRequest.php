@@ -9,5 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class GetUserRequest
 {
     #[Assert\Uuid]
+    #[Assert\NotBlank(message: 'The uuid field is required.')]
     public string $uuid;
 }

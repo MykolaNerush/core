@@ -22,6 +22,7 @@ final class CreateUserController extends CommandController
 
     #[OA\Post(
         summary: 'Create user',
+        security: [['Bearer' => []]],
         responses: [
             new OA\Response(response: 201, description: 'User created successfully'),
             new OA\Response(response: 400, description: 'Bad request'),

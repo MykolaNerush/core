@@ -314,4 +314,11 @@ abstract class MysqlRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function update(SerializableReadModel $model): void
+    {
+        $this->entityManager->persist($model);
+        $this->entityManager->flush();
+    }
+
 }

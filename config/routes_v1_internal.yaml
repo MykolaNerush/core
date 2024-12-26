@@ -19,11 +19,10 @@ users_create:
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController::__invoke
   methods: POST
 
-#TODO IMPLEMENT
 users_update:
-  path: /users/{id}
+  path: /users/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\UpdateUserByIdController::__invoke
-  methods: PUT
+  methods: POST
 
 #TODO IMPLEMENT
 users_delete:

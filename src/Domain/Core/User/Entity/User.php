@@ -74,14 +74,29 @@ class User implements SerializableReadModel
         return $this->name;
     }
 
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function setPassword($password): void
+    {
+        $this->password = $password;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -102,6 +117,11 @@ class User implements SerializableReadModel
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function setStatus(Status $status): void
+    {
+        $this->status = $status;
     }
 
     /**
@@ -162,5 +182,27 @@ class User implements SerializableReadModel
     public function getId(): string
     {
         return Uuid::fromBytes($this->uuid->getBytes())->toString();
+    }
+
+    public function update(
+        ?string $name = null,
+        ?string $email = null,
+        ?string $password = null,
+        ?Status $status = null,
+    ): self
+    {
+        if ($name) {
+            $this->setName($name);
+        }
+        if ($email) {
+            $this->setEmail($email);
+        }
+        if ($this->password) {
+            $this->setPassword($password);
+        }
+        if ($status) {
+            $this->status = $status;
+        }
+        return $this;
     }
 }

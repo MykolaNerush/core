@@ -21,6 +21,7 @@ final class GetUserByIdController extends QueryController
 
     #[OA\Get(
         summary: 'Get user by UUID',
+        security: [['Bearer' => []]],
         responses: [
             new OA\Response(response: 200, description: 'Ok'),
             new OA\Response(response: 400, description: 'Bad request'),

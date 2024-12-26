@@ -20,6 +20,7 @@ final class GetUsersController extends QueryController
 
     #[OA\Get(
         summary: 'Get users',
+        security: [['Bearer' => []]],
         responses: [
             new OA\Response(response: 200, description: 'Ok'),
             new OA\Response(response: 400, description: 'Bad request'),
