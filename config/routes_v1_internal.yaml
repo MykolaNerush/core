@@ -8,9 +8,9 @@ users_list:
   path: /users
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\GetUsersController::__invoke
   methods: GET
-#TODO IMPLEMENT
+
 users_single:
-  path: /users/{id}
+  path: /users/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\GetUserByIdController::__invoke
   methods: GET
 #TODO IMPLEMENT

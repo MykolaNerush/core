@@ -48,8 +48,9 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
         $this->em->flush();
     }
 
-    public function get(UuidInterface $uuid): User
+    public function getByUuid(UuidInterface $uuid): User
     {
-        // TODO: Implement get() method.
+        $queryBuilder = $this->getQueryBuilderByUuid($uuid);
+        return $this->oneOrException($queryBuilder);
     }
 }

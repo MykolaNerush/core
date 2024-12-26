@@ -10,7 +10,7 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 
 interface UserRepositoryInterface
 {
-    public function get(UuidInterface $uuid): User;
+    public function getByUuid(UuidInterface $uuid): User;
 
     public function create(User $user): void;
 

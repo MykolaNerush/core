@@ -23,7 +23,7 @@ readonly class RequestToDtoMiddleware
         if (is_array($controller) && isset($controller[0]) && method_exists($controller[0], '__invoke')) {
             $request = $event->getRequest();
 
-            $dtoClass = $controller[0]->getDtoClass();
+            $dtoClass = $controller[0]->dtoClass;
             $dto = $this->mapRequestToDto($request, $dtoClass);
 
             $errors = $this->validator->validate($dto);

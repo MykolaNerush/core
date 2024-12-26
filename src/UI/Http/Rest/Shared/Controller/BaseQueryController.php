@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Shared\Controller;
 
 use App\Application\Query\Shared\Collection;
+use App\Application\Query\Shared\Item;
 use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ abstract class BaseQueryController extends BaseController
 {
     public function __construct(
         protected BaseJsonApiFormatter  $formatter,
-        protected UrlGeneratorInterface $router
+        protected UrlGeneratorInterface $router,
     )
     {
     }
@@ -22,6 +23,11 @@ abstract class BaseQueryController extends BaseController
     protected function jsonCollection(Collection $collection): JsonResponse
     {
         return new JsonResponse($this->formatter::collection($collection));
+    }
+
+    protected function json(Item $resource): JsonResponse
+    {
+        return new JsonResponse($this->formatter::one($resource));
     }
 
 

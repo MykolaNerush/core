@@ -32,17 +32,6 @@ services:
     arguments:
       - '@validator'
 
-
   App\UI\Http\Rest\Internal\Controller\:
     resource: '../src/UI/Http/Rest/Internal/Controller/'
     tags: [ 'controller.service_arguments' ]
-
-  # User repository service definition
-#  App\Infrastructure\Core\User\Repository\UserRepository:
-#    arguments:
-#      $em: '@doctrine.orm.entity_manager'
-#
-#  # Account repository service definition
-#  App\Infrastructure\Core\Account\Repository\AccountRepository:
-#    arguments:
-#      $em: '@doctrine.orm.entity_manager'

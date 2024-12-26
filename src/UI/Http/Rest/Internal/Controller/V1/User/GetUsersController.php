@@ -7,26 +7,16 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 use App\Application\Query\User\GetUsers\GetUsersQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
-use App\UI\Http\Rest\Internal\Response\JsonApiFormatter;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
 
 #[OA\Tag(name: 'User')]
 final class GetUsersController extends QueryController
 {
-    public function __construct(
-        JsonApiFormatter                     $formatter,
-        UrlGeneratorInterface                $router,
-        private readonly MessageBusInterface $messageBus,
-    )
-    {
-        parent::__construct($formatter, $router, GetUsersRequest::class);
-    }
+    public string $dtoClass = GetUsersRequest::class;
 
     #[OA\Get(
         summary: 'Get users',
@@ -91,7 +81,7 @@ final class GetUsersController extends QueryController
             uuid: $request->get('filter')['uuid'] ?? null,
             emailSearch: $request->get('filter')['email'] ?? null,
         );
-        $envelope = $this->messageBus->dispatch($query);
+        $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
