@@ -1,161 +1,55 @@
 parameters:
-  ignoreErrors:
-#    - message: '#^Cannot call method update\(\) on mixed\.$#'
-#      identifier: method.nonObject
-#      count: 1
-#      path: src/Application/Command/User/Update/UpdateUserHandler.php
-#
-#    - message: '#^Parameter \#1 \$user of method App\\Domain\\Core\\User\\Repository\\UserRepositoryInterface\:\:update\(\) expects App\\Domain\\Core\\User\\Entity\\User, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Application/Command/User/Update/UpdateUserHandler.php
-#
-#    - message: '#^Parameter \#1 \$serializableReadModel of class App\\Application\\Query\\Shared\\Item constructor expects Broadway\\ReadModel\\SerializableReadModel, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Application/Query/User/GetUser/GetUserHandler.php
-#
-#    - message: '#^Binary operation "\." between non\-falsy\-string and array\<string\>\|string results in an error\.$#'
-#      identifier: binaryOp.invalid
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Call to an undefined method Broadway\\ReadModel\\SerializableReadModel\:\:setDeletedAt\(\)\.$#'
-#      identifier: method.notFound
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Method App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:allAsArrayOrException\(\) should return array\<int, mixed\> but returns array\<mixed\>\.$#'
-#      identifier: return.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Method App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:getFilteredQueryBuilder\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
-#      identifier: missingType.iterableValue
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \$data of class App\\Domain\\Core\\Shared\\Query\\Dto\\PaginatedData constructor expects array\<string, mixed\>, array\|null given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \$model of method App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:setRepository\(\) expects class\-string, string given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \$objectOrClass of class ReflectionClass constructor expects class\-string\<T of object\>\|T of object, string given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \$sort of method Doctrine\\ORM\\QueryBuilder\:\:orderBy\(\) expects Doctrine\\ORM\\Query\\Expr\\OrderBy\|string, array\<string\>\|string given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \$sort of method Doctrine\\ORM\\QueryBuilder\:\:orderBy\(\) expects Doctrine\\ORM\\Query\\Expr\\OrderBy\|string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#2 \$filters of method App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:addConditions\(\) expects array\<int, array\<int, array\<string\>\|string\>\>, array given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#2 \$transformer of class League\\Fractal\\Resource\\Collection constructor expects \(callable\(\)\: mixed\)\|League\\Fractal\\TransformerAbstract\|null, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Property App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T$#'
-#      identifier: missingType.generics
-#      count: 1
-#      path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
-#
-#    - message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/Infrastructure/Shared/Serializer/JsonApiSerializer.php
-#
-#    - message: '#^Part \$id \(mixed\) of encapsed string cannot be cast to string\.$#'
-#      identifier: encapsedStringPart.nonString
-#      count: 2
-#      path: src/Infrastructure/Shared/Serializer/JsonApiSerializer.php
-#
-#    - message: '#^Parameter \$email of class App\\Application\\Command\\User\\Create\\CreateUserCommand constructor expects string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/CreateUserController.php
-#
-#    - message: '#^Parameter \$name of class App\\Application\\Command\\User\\Create\\CreateUserCommand constructor expects string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/CreateUserController.php
-#
-#    - message: '#^Parameter \$password of class App\\Application\\Command\\User\\Create\\CreateUserCommand constructor expects string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/CreateUserController.php
-#
-#    - message: '#^Cannot access offset ''email'' on mixed\.$#'
-#      identifier: offsetAccess.nonOffsetAccessible
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Cannot access offset ''uuid'' on mixed\.$#'
-#      identifier: offsetAccess.nonOffsetAccessible
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Cannot cast mixed to int\.$#'
-#      identifier: cast.int
-#      count: 2
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \#1 \$collection of method App\\UI\\Http\\Rest\\Shared\\Controller\\BaseController\:\:jsonCollection\(\) expects App\\Application\\Query\\Shared\\Collection, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \$emailSearch of class App\\Application\\Query\\User\\GetUsers\\GetUsersQuery constructor expects string\|null, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \$order of class App\\Application\\Query\\User\\GetUsers\\GetUsersQuery constructor expects string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \$routeGenerator of class App\\Application\\Query\\User\\GetUsers\\GetUsersQuery constructor expects Closure, callable\(\)\: mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \$sort of class App\\Application\\Query\\User\\GetUsers\\GetUsersQuery constructor expects string, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
-#
-#    - message: '#^Parameter \$uuid of class App\\Application\\Query\\User\\GetUsers\\GetUsersQuery constructor expects string\|null, mixed given\.$#'
-#      identifier: argument.type
-#      count: 1
-#      path: src/UI/Http/Rest/Internal/Controller/V1/User/GetUsersController.php
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and array\<string\>\|string results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
 
-    - message: '#^Parameter \$email of class App\\Application\\Command\\User\\Update\\UpdateUserCommand constructor expects string\|null, mixed given\.$#'
-      identifier: argument.type
-      count: 1
-      path: src/UI/Http/Rest/Internal/Controller/V1/User/UpdateUserByIdController.php
+		-
+			message: '#^Call to an undefined method Broadway\\ReadModel\\SerializableReadModel\:\:setDeletedAt\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
 
-    - message: '#^Parameter \$name of class App\\Application\\Command\\User\\Update\\UpdateUserCommand constructor expects string\|null, mixed given\.$#'
-      identifier: argument.type
-      count: 1
-      path: src/UI/Http/Rest/Internal/Controller/V1/User/UpdateUserByIdController.php
+		-
+			message: '#^Method App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:getFilteredQueryBuilder\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
 
-    - message: '#^Parameter \$password of class App\\Application\\Command\\User\\Update\\UpdateUserCommand constructor expects string\|null, mixed given\.$#'
-      identifier: argument.type
-      count: 1
-      path: src/UI/Http/Rest/Internal/Controller/V1/User/UpdateUserByIdController.php
+		-
+			message: '#^Parameter \#1 \$className of method Doctrine\\ORM\\EntityManagerInterface\:\:getRepository\(\) expects class\-string\<object\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
+
+		-
+			message: '#^Parameter \#1 \$data of class App\\Domain\\Core\\Shared\\Query\\Dto\\PaginatedData constructor expects array\<string, mixed\>, array\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
+
+		-
+			message: '#^Parameter \#1 \$objectOrClass of class ReflectionClass constructor expects class\-string\<T of object\>\|T of object, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
+
+		-
+			message: '#^Parameter \#1 \$sort of method Doctrine\\ORM\\QueryBuilder\:\:orderBy\(\) expects Doctrine\\ORM\\Query\\Expr\\OrderBy\|string, array\<string\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
+
+		-
+			message: '#^Property App\\Infrastructure\\Shared\\Query\\Repository\\MysqlRepository\:\:\$repository with generic class Doctrine\\ORM\\EntityRepository does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to method Doctrine\\ORM\\EntityManagerInterface\:\:getRepository\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Infrastructure/Shared/Query/Repository/MysqlRepository.php

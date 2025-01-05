@@ -17,15 +17,12 @@ use App\Domain\Shared\Query\Exception\NotFoundException;
 use App\Infrastructure\Shared\Serializer\JsonApiSerializer;
 use Broadway\ReadModel\SerializableReadModel;
 
-/**
- * @template T of object
- */
 abstract class MysqlRepository
 {
     protected string $class;
 
     protected string $alias;
-    /** @var EntityRepository<T> */
+
     protected EntityRepository $repository;
 
     /**
@@ -126,7 +123,7 @@ abstract class MysqlRepository
     }
 
     /**
-     * @param class-string<T> $model
+     * @param string $model
      */
     private function setRepository(string $model): void
     {
