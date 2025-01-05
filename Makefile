@@ -1,6 +1,6 @@
-export CONTAINER_PHP=$(shell sudo docker ps -aqf "name=php8_3")
+export CONTAINER_PHP=$(shell docker ps -aqf "name=php8_3")
 export WORK_DIR="/var/www/php/core.lc"
-DOCKER_EXEC=sudo docker exec -it $(CONTAINER_PHP) bash -c
+DOCKER_EXEC=docker exec -it $(CONTAINER_PHP) bash -c
 
 # Styling for output
 COLOR_RESET=\033[0m
