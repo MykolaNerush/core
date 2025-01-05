@@ -17,12 +17,15 @@ use App\Domain\Shared\Query\Exception\NotFoundException;
 use App\Infrastructure\Shared\Serializer\JsonApiSerializer;
 use Broadway\ReadModel\SerializableReadModel;
 
+/**
+ * @template T of object
+ */
 abstract class MysqlRepository
 {
     protected string $class;
 
     protected string $alias;
-
+    /** @var EntityRepository<T> */
     protected EntityRepository $repository;
 
     /**
@@ -34,7 +37,7 @@ abstract class MysqlRepository
         $this->alias = lcfirst((new \ReflectionClass($this->class))->getShortName());
     }
 
-    public function remove(SerializableReadModel $model, $force = false): void
+    public function remove(SerializableReadModel $model, bool $force = false): void
     {
         if ($force) {
             $this->entityManager->remove($model);
@@ -123,7 +126,7 @@ abstract class MysqlRepository
     }
 
     /**
-     * @param class-string $model
+     * @param class-string<T> $model
      */
     private function setRepository(string $model): void
     {
@@ -166,9 +169,12 @@ abstract class MysqlRepository
     }
 
     /**
+     * @param int $page
+     * @param int $perPage
+     * @param string $order
      * @param string|array<int, string|string[]> $sort
-     * @param array<int, array<int, string|string[]>> $filters
-     *
+     * @param array $filters
+     * @param QueryBuilder|null $queryBuilder
      * @return QueryBuilder
      *
      * Each filter is an array with the following structure:
@@ -221,6 +227,7 @@ abstract class MysqlRepository
                 $fieldName = $field;
             }
             $paramName = !empty($filter[2]) ? $filter[2] : $fieldName;
+            $paramName = is_string($paramName) ? $paramName : '';
             if (is_array($value)) {
                 if (!array_key_exists(1, $value)) {
                     $queryBuilder->andWhere(sprintf('%s.%s %s', $alias, $fieldName, $value[0]));
@@ -246,7 +253,7 @@ abstract class MysqlRepository
             return;
         }
         if (is_string($value) || is_object($value)) {
-            if (method_exists($value, 'isEmpty') && $value->isEmpty()) {
+            if (method_exists($value, 'isEmpty') && is_object($value) && $value->isEmpty()) {
                 return;
             }
         }
@@ -286,13 +293,13 @@ abstract class MysqlRepository
             /** @var string|string[] $associations */
             if (is_array($associations)) {
                 foreach ($associations as $association) {
-                    if (false !== mb_strpos($sort, $association)) {
+                    if (is_string($sort) && false !== mb_strpos($sort, $association)) {
                         $associative = true;
 
                         break;
                     }
                 }
-            } elseif (false !== mb_strpos($sort, $associations)) {
+            } elseif (is_string($sort) && false !== mb_strpos($sort, $associations)) {
                 $associative = true;
             }
         }
@@ -303,6 +310,10 @@ abstract class MysqlRepository
         }
     }
 
+    /**
+     * @param array<string, mixed> $filters
+     *
+     */
     public function findOneBy(array $filters): mixed
     {
         $queryBuilder = $this->getQueryBuilder(true);

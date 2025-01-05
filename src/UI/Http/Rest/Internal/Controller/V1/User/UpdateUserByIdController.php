@@ -48,7 +48,7 @@ final class UpdateUserByIdController
             new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error")
         ]
     )]
-    public function __invoke($uuid, Request $request, MessageBusInterface $messageBus): JsonResponse
+    public function __invoke(string $uuid, Request $request, MessageBusInterface $messageBus): JsonResponse
     {
         $command = new UpdateUserCommand(
             currentUuid: Uuid::fromString($uuid),

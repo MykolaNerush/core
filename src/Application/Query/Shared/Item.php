@@ -23,7 +23,9 @@ final class Item
     {
         $this->id = $serializableReadModel->getId();
         $this->type = $this->type($serializableReadModel);
-        $this->resource = $serializableReadModel->serialize();
+        /** @var array<string, string|mixed> $serialized */
+        $serialized = $serializableReadModel->serialize();
+        $this->resource = $serialized;
         $this->serializableReadModel = $serializableReadModel;
     }
 

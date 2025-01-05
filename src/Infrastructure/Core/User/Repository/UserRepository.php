@@ -47,12 +47,12 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
         $this->em->flush();
     }
 
-    public function delete(User $user, $force = false): void
+    public function delete(User $user, bool $force = false): void
     {
         $this->remove($user, $force);
     }
 
-    public function getByUuid(UuidInterface $uuid): User
+    public function getByUuid(UuidInterface $uuid): mixed
     {
         $queryBuilder = $this->getQueryBuilderByUuid($uuid);
         return $this->oneOrException($queryBuilder);

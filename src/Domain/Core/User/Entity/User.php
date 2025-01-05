@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Core\User\Enum\Status;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use App\Domain\Core\Account\Entity\Account;
@@ -44,8 +45,11 @@ class User implements SerializableReadModel
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
-    private $accounts;
+    /**
+     * @var Collection<int, Account>
+     */
+    #[ORM\OneToMany(targetEntity: Account::class, mappedBy: 'user')]
+    private Collection $accounts;
 
     public function __construct(
         UuidInterface $uuid,
@@ -74,7 +78,7 @@ class User implements SerializableReadModel
         return $this->name;
     }
 
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -84,7 +88,7 @@ class User implements SerializableReadModel
         return $this->email;
     }
 
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -94,7 +98,7 @@ class User implements SerializableReadModel
         return $this->password;
     }
 
-    public function setPassword($password): void
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
@@ -135,44 +139,49 @@ class User implements SerializableReadModel
     }
 
     /**
-     * @return Account[]
+     * @return Collection<int, Account>|null
      */
-    public function getAccounts(): \Doctrine\Common\Collections\Collection
+    public function getAccounts(): ?Collection
     {
         return $this->accounts;
     }
 
     /**
-     * @param array<string, string|mixed> $data
+     * @param array<string, mixed> $data
      *
      * @throws AssertionFailedException
      */
     public static function deserialize(array $data): self
     {
-        $instance = new self();
-
-        $instance->uuid = Uuid::fromString($data['uuid']);
-//        $instance->account = \App\Domain\Core\Account\Account::deserialize($data['account']);
-        return $instance;
+        return new self(
+            is_string($data['uuid']) ? Uuid::fromString($data['uuid']) : Uuid::fromString(''),
+            is_string($data['name']) ? $data['name'] : '',
+            is_string($data['email']) ? $data['email'] : '',
+            is_string($data['password']) ? $data['password'] : '',
+        );
     }
 
+
     /**
-     * @return array<string, string|mixed>
+     * @return array<string, mixed>
      */
     public function serialize(): array
     {
         $accounts = [];
 
-        foreach ($this->getAccounts() as $account) {
-            $accounts[] = [
-                'uuid' => $account->getUuid(),
-                'accountName' => $account->getAccountName(),
-                'balance' => $account->getBalance(),
-                'createdAt' => $account->getCreatedAt(),
-                'updatedAt' => $account->getUpdatedAt(),
-                'deletedAt' => $account->getDeletedAt(),
-                'status' => $account->getStatus(),
-            ];
+        if ($this->getAccounts()) {
+            /* @var Account $account */
+            foreach ($this->getAccounts() as $account) {
+                $accounts[] = [
+                    'uuid' => $account->getUuid(),
+                    'accountName' => $account->getAccountName(),
+                    'balance' => $account->getBalance(),
+                    'createdAt' => $account->getCreatedAt(),
+                    'updatedAt' => $account->getUpdatedAt(),
+                    'deletedAt' => $account->getDeletedAt(),
+                    'status' => $account->getStatus(),
+                ];
+            }
         }
 
         return [
@@ -183,11 +192,12 @@ class User implements SerializableReadModel
             'status' => $this->getStatus()->label(),
             'account' => $accounts,
             'timestamps' => [
-                'createdAt' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
+                'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updatedAt' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];
     }
+
 
     public function getId(): string
     {
@@ -207,7 +217,7 @@ class User implements SerializableReadModel
         if ($email) {
             $this->setEmail($email);
         }
-        if ($this->password) {
+        if ($password) {
             $this->setPassword($password);
         }
         if ($status) {

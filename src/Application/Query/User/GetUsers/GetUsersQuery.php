@@ -9,13 +9,13 @@ use App\Application\Query\Shared\Queries\BasePageQuery;
 final class GetUsersQuery extends BasePageQuery
 {
     public function __construct(
-        public         $routeGenerator,
-        public int     $page = BasePageQuery::PAGE,
-        public int     $perPage = BasePageQuery::PER_PAGE,
-        public string  $order = BasePageQuery::ORDER,
-        public string  $sort = BasePageQuery::SORT,
-        public ?string $uuid = null,
-        public ?string $emailSearch = null,
+        public \Closure $routeGenerator,
+        public int      $page = BasePageQuery::PAGE,
+        public int      $perPage = BasePageQuery::PER_PAGE,
+        public string   $order = BasePageQuery::ORDER,
+        public string   $sort = BasePageQuery::SORT,
+        public ?string  $uuid = null,
+        public ?string  $emailSearch = null,
     )
     {
         parent::__construct($routeGenerator, $page, $perPage, $order, $sort, $uuid);

@@ -53,12 +53,18 @@ final class CreateUserController extends CommandController
     )]
     public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
     {
+        /** @var string $name */
+        $name = $request->get('name');
+        /** @var string $email */
+        $email = $request->get('email');
+        /** @var string $password */
+        $password = $request->get('password');
         $uuid = Uuid::uuid4();
         $command = new CreateUserCommand(
             uuid: $uuid,
-            name: $request->get('name'),
-            email: $request->get('email'),
-            password: $request->get('password'),
+            name: $name,
+            email: $email,
+            password: $password,
         );
         $envelope = $messageBus->dispatch($command);
         $handledStamp = $envelope->last(HandledStamp::class);

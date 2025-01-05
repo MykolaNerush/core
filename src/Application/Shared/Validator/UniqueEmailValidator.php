@@ -14,15 +14,20 @@ class UniqueEmailValidator extends ConstraintValidator
     {
     }
 
-    public function validate($value, Constraint $constraint): void
+    /**
+     * @param mixed $value
+     * @param UniqueEmail $constraint
+     */
+    public function validate(mixed $value, Constraint $constraint): void
     {
         /* @var UniqueEmail $constraint */
         if (null === $value || '' === $value) {
             return;
         }
+
         if ($this->userRepository->findOneBy(['email' => $value])) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', is_string($value) ? $value : '')
                 ->addViolation();
         }
     }

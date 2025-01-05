@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
+use App\Application\Query\Shared\Collection;
 use App\Application\Query\User\GetUsers\GetUsersQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
@@ -74,21 +75,36 @@ final class GetUsersController extends QueryController
     )]
     public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
     {
+        /** @var string $order */
+        $order = $request->get('order', 'ASC');
+        /** @var string $sort */
+        $sort = $request->get('sort', 'createdAt');
+        /** @var array<string, mixed> $filter */
+        $filter = $request->get('filter', []);
+        /** @var ?string $uuid */
+        $uuid = $filter['uuid'] ?? null;
+        /** @var ?string $emailSearch */
+        $emailSearch = $filter['email'] ?? null;
+        /** @var int $page */
+        $page = $request->get('page', 1);
+        /** @var int $perPage */
+        $perPage = $request->get('perPage', 10);
+
         $query = new GetUsersQuery(
             routeGenerator: $this->routeWithPageAsCallable($request),
-            page: (int)$request->get('page', 1),
-            perPage: (int)$request->get('perPage', 10),
-            order: $request->get('order', 'ASC'),
-            sort: $request->get('sort', 'createdAt'),
-            uuid: $request->get('filter')['uuid'] ?? null,
-            emailSearch: $request->get('filter')['email'] ?? null,
+            page: (int)$page,
+            perPage: (int)$perPage,
+            order: $order,
+            sort: $sort,
+            uuid: $uuid,
+            emailSearch: $emailSearch,
         );
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-
+        /** @var Collection $users */
         $users = $handledStamp->getResult();
         return $this->jsonCollection($users);
 

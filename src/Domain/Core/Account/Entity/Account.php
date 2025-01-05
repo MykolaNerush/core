@@ -11,7 +11,7 @@ use App\Domain\Core\Account\Enum\Status;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Entity(repositoryClass: 'App\Infrastructure\Core\Account\Repository\AccountRepository')]
+#[ORM\Entity]
 #[ORM\Table(name: 'accounts')]
 class Account
 {
@@ -30,15 +30,15 @@ class Account
     private DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $deletedAt;
+    private ?DateTimeImmutable $deletedAt = null;
 
     #[ORM\Column(type: 'string', enumType: Status::class)]
     private Status $status;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'accounts', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'accounts')]
     #[ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', onDelete: 'CASCADE')]
     private User $user;
 
@@ -50,8 +50,6 @@ class Account
         $this->status = $status;
         $this->user = $user;
         $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = null;
-        $this->deletedAt = null;
     }
 
     public function getUuid(): UuidInterface
@@ -79,9 +77,19 @@ class Account
         return $this->updatedAt;
     }
 
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
     public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deletedAt;
+    }
+
+    public function setDeletedAt(): void
+    {
+        $this->deletedAt = new DateTimeImmutable();
     }
 
     public function getStatus(): Status

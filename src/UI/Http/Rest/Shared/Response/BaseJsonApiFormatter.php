@@ -19,6 +19,9 @@ final class BaseJsonApiFormatter
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function collection(Collection $collection): array
     {
         return $collection->data;

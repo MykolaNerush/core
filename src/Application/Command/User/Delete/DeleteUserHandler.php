@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Command\User\Delete;
 
+use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -15,9 +16,12 @@ readonly class DeleteUserHandler
     )
     {
     }
+
     public function __invoke(DeleteUserCommand $command): void
     {
         $user = $this->userRepository->getByUuid($command->uuid);
-        $this->userRepository->delete($user);
+        if ($user instanceof User) {
+            $this->userRepository->delete($user);
+        }
     }
 }

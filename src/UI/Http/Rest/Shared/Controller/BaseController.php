@@ -46,14 +46,16 @@ abstract class BaseController
     protected function routeWithPage(int $page, Request $request): string
     {
         $route = $request->attributes->get('_route');
+        $route = is_string($route) ? $route : '';
         $inputParams = $request->attributes->get('_route_params');
+        $inputParams = is_array($inputParams) ? $inputParams : [];
         $newParams = array_merge($inputParams, $request->query->all());
         $newParams['page'] = $page;
-
+        /** @var array<string, mixed> $newParams */
         return $this->route($route, $newParams, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    protected function routeWithPageAsCallable(Request $request): callable
+    protected function routeWithPageAsCallable(Request $request): \Closure
     {
         return function (int $page) use ($request) {
             return $this->routeWithPage($page, $request);

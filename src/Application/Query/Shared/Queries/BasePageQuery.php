@@ -18,12 +18,12 @@ abstract class BasePageQuery extends BaseCommand
     public ?UuidInterface $uuidSearch = null;
 
     public function __construct(
-        public         $routeGenerator,
-        public int     $page = self::PAGE,
-        public int     $perPage = self::PER_PAGE,
-        public string  $order = self::ORDER,
-        public string  $sort = self::SORT,
-        public ?string $uuid = null
+        public \Closure $routeGenerator,
+        public int      $page = self::PAGE,
+        public int      $perPage = self::PER_PAGE,
+        public string   $order = self::ORDER,
+        public string   $sort = self::SORT,
+        public ?string  $uuid = null
     )
     {
         $this->perPage = min($perPage, self::MAX_PER_PAGE);

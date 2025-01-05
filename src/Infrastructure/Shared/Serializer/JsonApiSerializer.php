@@ -18,6 +18,7 @@ final class JsonApiSerializer extends FractalJsonApiSerializer
      */
     public function item(?string $resourceKey, array $data): array
     {
+        /** @var string $id */
         $id = $this->getIdFromData($data);
 
         $resource = [
@@ -31,7 +32,7 @@ final class JsonApiSerializer extends FractalJsonApiSerializer
         unset($resource['data']['attributes']['id']);
 
         if (isset($resource['data']['attributes']['links'])) {
-            $customLinks = $data['links'];
+            $customLinks = is_array($data['links']) ? $data['links'] : [];
             unset($resource['data']['attributes']['links']);
         }
 

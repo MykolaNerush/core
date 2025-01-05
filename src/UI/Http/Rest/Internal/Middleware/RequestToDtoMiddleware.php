@@ -20,17 +20,22 @@ readonly class RequestToDtoMiddleware
     {
         $controller = $event->getController();
 
-        if (is_array($controller) && isset($controller[0]) && method_exists($controller[0], '__invoke')) {
+        if (is_array($controller) && isset($controller[0]) && is_object($controller[0]) && method_exists($controller[0], '__invoke')) {
             $request = $event->getRequest();
 
-            $dtoClass = $controller[0]->dtoClass;
-            $dto = $this->mapRequestToDto($request, $dtoClass);
+            $controllerObject = $controller[0];
+            if (property_exists($controllerObject, 'dtoClass') && is_string($controllerObject->dtoClass)) {
+                $dtoClass = $controllerObject->dtoClass;
+                $dto = $this->mapRequestToDto($request, $dtoClass);
 
-            $errors = $this->validator->validate($dto);
-            if (count($errors) > 0) {
-                throw new \InvalidArgumentException((string)$errors);
-            }
+                $errors = $this->validator->validate($dto);
+                if (count($errors) > 0) {
+                    throw new \InvalidArgumentException((string)$errors);
+                }
 //            $request->attributes->set('dto', $dto);
+            } else {
+                throw new \LogicException('The controller does not have a "dtoClass" property.');
+            }
         }
     }
 
@@ -45,7 +50,7 @@ readonly class RequestToDtoMiddleware
         } elseif ($request->request->count() > 0) {
             $bodyParams = $request->request->all();
         }
-
+        $bodyParams = is_array($bodyParams) ? $bodyParams : [];
         // query and body params
         $allParams = array_merge($queryParams, $bodyParams);
 
