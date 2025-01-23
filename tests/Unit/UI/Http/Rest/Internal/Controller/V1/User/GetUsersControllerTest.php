@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\Tests\Unit\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Query\Shared\Collection;
 use App\UI\Http\Rest\Internal\Controller\V1\User\GetUsersController;

@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\Tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
 
+use App\Tests\Functional\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class GetUsersControllerTest extends WebTestCase
+class GetUsersControllerTest extends BaseTestCase
 {
     #[DataProvider('additionProvider')]
     public function testGetUsers($expectedResult, $filter, $expectedCode): void
@@ -38,23 +39,23 @@ class GetUsersControllerTest extends WebTestCase
             'Success, with one user' => [
                 [
                     [
-                        'id' => '2fafdcd9-ecc5-4e41-bf5d-f29fe1971b5b',
+                        'id' => '4bde8464-6fc3-4904-9095-b89305efa532',
                         'type' => 'users',
                         'attributes' =>
                             [
-                                'uuid' => '2fafdcd9-ecc5-4e41-bf5d-f29fe1971b5b',
+                                'uuid' => '4bde8464-6fc3-4904-9095-b89305efa532',
                                 'name' => 'Test',
                                 'email' => 'test@gmail.com',
                                 'status' => 'Active',
                                 'account' =>
                                     [
                                         [
-                                            'uuid' => 'f8540a38-dc5d-4c92-82a7-3284a61c1f68',
+                                            'uuid' => '392cad8f-8fb6-466d-82e4-a534ba5bfe69',
                                             'accountName' => 'Main Account John',
                                             'balance' => 1000,
                                             'createdAt' =>
                                                 [
-                                                    'date' => '2025-01-05 17:13:23.000000',
+                                                    'date' => '2025-01-05 16:44:16.000000',
                                                     'timezone_type' => 3,
                                                     'timezone' => 'UTC',
                                                 ],
@@ -65,7 +66,7 @@ class GetUsersControllerTest extends WebTestCase
                                     ],
                                 'timestamps' =>
                                     [
-                                        'createdAt' => '2025-01-05 17:13:23',
+                                        'createdAt' => '2025-01-05 16:44:16',
                                         'updatedAt' => NULL,
                                     ],
                             ],

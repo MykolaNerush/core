@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\Tests\Unit\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Command\User\Create\CreateUserCommand;
 use App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController;
