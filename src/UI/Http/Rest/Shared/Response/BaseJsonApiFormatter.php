@@ -7,7 +7,7 @@ namespace App\UI\Http\Rest\Shared\Response;
 use App\Application\Query\Shared\Collection;
 use App\Application\Query\Shared\Item;
 
-final class BaseJsonApiFormatter
+final class BaseJsonApiFormatter implements BaseJsonApiFormatterInterface
 {
     /**
      * @return array<string, mixed>
@@ -30,7 +30,7 @@ final class BaseJsonApiFormatter
     /**
      * @return array<string, mixed>
      */
-    protected static function model(Item $resource): array
+    public static function model(Item $resource): array
     {
         return [
             'id' => $resource->id,

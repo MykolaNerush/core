@@ -5,13 +5,13 @@ framework:
 
     transports:
       # https://symfony.com/doc/current/messenger.html#transport-configuration
-      async: '%env(MESSENGER_TRANSPORT_DSN)%'
-      # failed: 'doctrine://default?queue_name=failed'
+#      async: '%env(MESSENGER_TRANSPORT_DSN)%'
+      async: '%env(MESSENGER_TRANSPORT_DSN_RABBITMQ)%'
       sync: 'sync://'
+      failed: 'doctrine://default?queue_name=failed'
 
     routing:
-      # Route your messages to the transports
-      # 'App\Message\YourMessage': async
+#      'App\Application\Query\User\GetUser\GetUserQuery': async
       'App\Application\Query\User\GetUsers\GetUsersQuery': sync
 #
 #    middleware:

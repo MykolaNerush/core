@@ -6,7 +6,7 @@ namespace App\UI\Http\Rest\Shared\Controller;
 
 use App\Application\Query\Shared\Collection;
 use App\Application\Query\Shared\Item;
-use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatter;
+use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class BaseController
 {
     public function __construct(
-        protected BaseJsonApiFormatter  $formatter,
+        protected BaseJsonApiFormatterInterface  $formatter,
         protected UrlGeneratorInterface $router,
     )
     {

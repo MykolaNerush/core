@@ -21,25 +21,60 @@ class GetUsersControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame($expectedCode);
     }
 
-    public static function additionProvider(): \Generator
-    {
-        yield [
-            [], // expected
-            'page=111&perPage=11&order=DESC&sort=name', // filters
-            200,
-            'Empty data, wrong page' // description
-        ];
-//todo add
-//1. Тест на успішний запит (200 OK) - перевірити статус і респонс
-//2. Тест на відсутність результатів (200 OK, порожня колекція) - перевірити статус і респонс, користувачів немає
-//3. Тест на неправильні параметри сортування (400 Bad Request)
-//4. Тест на неправильний формат UUID (400 Bad Request)
-//5. Тест на відсутність авторизації (401 Unauthorized)
-//6. Тест на неправильні параметри запиту (400 Bad Request)
-//7. Тест на обробку помилок обробника запиту (500 Internal Server Error)
-//8. Тест на фільтрацію за email (200 OK)
-//9. Тест на пагінацію (200 OK)
 
+    public static function additionProvider(): array
+    {
+        return [
+            'Wrong order' => [
+                null, // expected
+                'page=1&perPage=1&order=DESC_&sort=name', // filters
+                500,
+            ],
+            'Empty data, wrong page' => [
+                [], // expected
+                'page=111&perPage=11&order=DESC&sort=name', // filters
+                200,
+            ],
+            'Success, with one user' => [
+                [
+                    [
+                        'id' => '2fafdcd9-ecc5-4e41-bf5d-f29fe1971b5b',
+                        'type' => 'users',
+                        'attributes' =>
+                            [
+                                'uuid' => '2fafdcd9-ecc5-4e41-bf5d-f29fe1971b5b',
+                                'name' => 'Test',
+                                'email' => 'test@gmail.com',
+                                'status' => 'Active',
+                                'account' =>
+                                    [
+                                        [
+                                            'uuid' => 'f8540a38-dc5d-4c92-82a7-3284a61c1f68',
+                                            'accountName' => 'Main Account John',
+                                            'balance' => 1000,
+                                            'createdAt' =>
+                                                [
+                                                    'date' => '2025-01-05 17:13:23.000000',
+                                                    'timezone_type' => 3,
+                                                    'timezone' => 'UTC',
+                                                ],
+                                            'updatedAt' => NULL,
+                                            'deletedAt' => NULL,
+                                            'status' => 'active',
+                                        ],
+                                    ],
+                                'timestamps' =>
+                                    [
+                                        'createdAt' => '2025-01-05 17:13:23',
+                                        'updatedAt' => NULL,
+                                    ],
+                            ],
+                    ],
+                ], // expected
+                'page=1&perPage=1&order=DESC&sort=name', // filters
+                200,
+            ],
+        ];
 
     }
 }
