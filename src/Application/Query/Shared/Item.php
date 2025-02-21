@@ -6,6 +6,9 @@ namespace App\Application\Query\Shared;
 
 use Broadway\ReadModel\SerializableReadModel;
 
+/**
+ * @template T
+ */
 final class Item
 {
     public string $id;

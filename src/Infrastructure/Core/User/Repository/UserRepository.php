@@ -12,12 +12,22 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends MysqlRepository<User>
+ */
 final class UserRepository extends MysqlRepository implements UserRepositoryInterface
 {
-    public function __construct(private readonly EntityManagerInterface $em)
+//    protected string $class = User::class;
+    /**
+     * @var class-string<User>
+     */
+    protected string $class = User::class;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+//        protected string $class = User::class
+    )
     {
-        $this->class = User::class;
-        parent::__construct($this->em);
+        parent::__construct($em);
     }
 
     public function page(

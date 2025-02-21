@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application\Query\Shared;
 
+/**
+ * @template T
+ */
 readonly class Collection
 {
     /**
-     * @param array<string, string|mixed> $data
+     * @param array<int, T> $data
      */
     public function __construct(
         public int   $page,

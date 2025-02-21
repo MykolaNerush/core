@@ -20,6 +20,10 @@ abstract class BaseController
     {
     }
 
+    /**
+     * @template T
+     * @param Collection<T> $collection
+     */
     protected function jsonCollection(Collection $collection): JsonResponse
     {
         return new JsonResponse($this->formatter::collection($collection));

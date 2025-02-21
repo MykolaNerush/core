@@ -9,27 +9,22 @@ use App\Application\Query\Shared\Item;
 
 final class BaseJsonApiFormatter implements BaseJsonApiFormatterInterface
 {
-    /**
-     * @return array<string, mixed>
-     */
     public static function one(Item $resource): array
     {
-        return array_filter([
+        return [
+            'status' => 'success',
             'data' => self::model($resource),
-        ]);
+        ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public static function collection(Collection $collection): array
     {
-        return $collection->data;
+        return [
+            'status' => 'success',
+            'data' => $collection->data['data'],
+        ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
     public static function model(Item $resource): array
     {
         return [

@@ -17,12 +17,21 @@ use App\Domain\Shared\Query\Exception\NotFoundException;
 use App\Infrastructure\Shared\Serializer\JsonApiSerializer;
 use Broadway\ReadModel\SerializableReadModel;
 
+/**
+ * @template T of object
+ */
 abstract class MysqlRepository
 {
+    /**
+     * @var class-string<T>
+     */
     protected string $class;
 
     protected string $alias;
 
+    /**
+     * @var EntityRepository<T>
+     */
     protected EntityRepository $repository;
 
     /**
@@ -38,7 +47,7 @@ abstract class MysqlRepository
     {
         if ($force) {
             $this->entityManager->remove($model);
-        } else {
+        } elseif (method_exists($model, 'setDeletedAt')) {
             $model->setDeletedAt();
             $this->update($model);
         }
@@ -123,7 +132,8 @@ abstract class MysqlRepository
     }
 
     /**
-     * @param string $model
+     * @param class-string<T> $model
+     * @return void
      */
     private function setRepository(string $model): void
     {
@@ -161,6 +171,7 @@ abstract class MysqlRepository
         $resource->setPaginator($paginatorAdapter);
         $fractal = new Manager();
         $fractal->setSerializer(new JsonApiSerializer());
+        /** @var array<string, string|mixed> $data */
         $data = $fractal->createData($resource)->toArray();
         return new PaginatedData($data, $paginator->count());
     }
@@ -169,8 +180,8 @@ abstract class MysqlRepository
      * @param int $page
      * @param int $perPage
      * @param string $order
-     * @param string|array<int, string|string[]> $sort
-     * @param array $filters
+     * @param string $sort
+     * @param array<int, array<int, string|string[]>> $filters
      * @param QueryBuilder|null $queryBuilder
      * @return QueryBuilder
      *
@@ -195,14 +206,14 @@ abstract class MysqlRepository
         int          $page,
         int          $perPage,
         string       $order,
-        array|string $sort,
+        string       $sort,
         array        $filters = [],
         QueryBuilder $queryBuilder = null
     ): QueryBuilder
     {
         $queryBuilder = $queryBuilder ?? $this->getQueryBuilder();
         $this->addConditions($queryBuilder, $filters);
-        $this->orderBy($queryBuilder, $order, $sort);
+        $queryBuilder->orderBy($this->alias . '.' . $sort, $order);
         $queryBuilder
             ->setFirstResult($perPage * ($page - 1))
             ->setMaxResults($perPage);
@@ -275,36 +286,13 @@ abstract class MysqlRepository
             ->setParameter($paramName, $value);
     }
 
-    /**
-     * @param string|array<int, string|string[]> $sort
-     */
     protected function orderBy(
         QueryBuilder $queryBuilder,
         string       $order,
-        array|string $sort
+        string       $sort
     ): void
     {
-        $associative = false;
-        if (is_array($sort)) {
-            [$sort, $associations] = $sort;
-            /** @var string|string[] $associations */
-            if (is_array($associations)) {
-                foreach ($associations as $association) {
-                    if (is_string($sort) && false !== mb_strpos($sort, $association)) {
-                        $associative = true;
-
-                        break;
-                    }
-                }
-            } elseif (is_string($sort) && false !== mb_strpos($sort, $associations)) {
-                $associative = true;
-            }
-        }
-        if ($associative) {
-            $queryBuilder->orderBy($sort, $order);
-        } else {
-            $queryBuilder->orderBy($this->alias . '.' . $sort, $order);
-        }
+        $queryBuilder->orderBy($this->alias . '.' . $sort, $order);
     }
 
     /**

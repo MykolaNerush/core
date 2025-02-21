@@ -11,6 +11,9 @@ use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @extends MysqlRepository<Account>
+ */
 final class AccountRepository extends MysqlRepository implements AccountRepositoryInterface
 {
 
@@ -19,19 +22,16 @@ final class AccountRepository extends MysqlRepository implements AccountReposito
         $this->class = Account::class;
         parent::__construct($this->em);
     }
-
-    public function get(UuidInterface $uuid): Account
-    {
-        //todo implementation
-    }
-
-    public function create(Account $account): void
-    {
-        //todo implementation
-    }
-
-    public function page(): PaginatedData
-    {
-        //todo implementation
-    }
+//todo implementation
+//    public function get(UuidInterface $uuid): Account
+//    {
+//    }
+// //todo implementation
+//    public function create(Account $account): void
+//    {
+//    }
+// //todo implementation
+//    public function page(): PaginatedData
+//    {
+//    }
 }

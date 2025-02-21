@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Core\User\Entity;
 
-use Assert\AssertionFailedException;
 use Broadway\ReadModel\SerializableReadModel;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -148,8 +147,6 @@ class User implements SerializableReadModel
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @throws AssertionFailedException
      */
     public static function deserialize(array $data): self
     {

@@ -10,9 +10,10 @@ use Ramsey\Uuid\UuidInterface;
 
 interface AccountRepositoryInterface
 {
-    public function get(UuidInterface $uuid): Account;
-
-    public function create(Account $account): void;
-
-    public function page(): PaginatedData;
+//todo implementation
+//    public function get(UuidInterface $uuid): Account;
+// //todo implementation
+//    public function create(Account $account): void;
+// //todo implementation
+//    public function page(): PaginatedData;
 }
