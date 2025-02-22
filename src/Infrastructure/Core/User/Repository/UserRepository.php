@@ -17,14 +17,10 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class UserRepository extends MysqlRepository implements UserRepositoryInterface
 {
-//    protected string $class = User::class;
-    /**
-     * @var class-string<User>
-     */
-    protected string $class = User::class;
     public function __construct(
         private readonly EntityManagerInterface $em,
-//        protected string $class = User::class
+        /** @var class-string<User> */
+        protected string $class = User::class
     )
     {
         parent::__construct($em);

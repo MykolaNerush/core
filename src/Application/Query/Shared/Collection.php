@@ -10,7 +10,7 @@ namespace App\Application\Query\Shared;
 readonly class Collection
 {
     /**
-     * @param array<int, T> $data
+     * @param array<mixed, T> $data
      */
     public function __construct(
         public int   $page,

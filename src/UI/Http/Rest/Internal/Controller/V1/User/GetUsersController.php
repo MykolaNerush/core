@@ -6,6 +6,7 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Query\Shared\Collection;
 use App\Application\Query\User\GetUsers\GetUsersQuery;
+use App\Domain\Core\User\Entity\User;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
 use OpenApi\Attributes as OA;
@@ -104,7 +105,7 @@ final class GetUsersController extends QueryController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        /** @var Collection $users */
+        /** @var Collection<array<int, array<string, mixed>>> $users */
         $users = $handledStamp->getResult();
         return $this->jsonCollection($users);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Query\Shared\Item;
+use App\Domain\Core\User\Entity\User;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,7 +48,7 @@ final class GetUserByIdController extends QueryController
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
 
-        /** @var Item $user */
+        /** @var Item<array<string, mixed>> $user */
         $user = $handledStamp->getResult();
         return $this->json($user);
     }

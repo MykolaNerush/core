@@ -21,7 +21,7 @@ final class BaseJsonApiFormatter implements BaseJsonApiFormatterInterface
     {
         return [
             'status' => 'success',
-            'data' => $collection->data['data'],
+            'data' => $collection->data,
         ];
     }
 

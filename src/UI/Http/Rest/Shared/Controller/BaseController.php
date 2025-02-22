@@ -21,7 +21,7 @@ abstract class BaseController
     }
 
     /**
-     * @template T
+     * @template T of array<int, array<string, mixed>>
      * @param Collection<T> $collection
      */
     protected function jsonCollection(Collection $collection): JsonResponse
@@ -29,6 +29,10 @@ abstract class BaseController
         return new JsonResponse($this->formatter::collection($collection));
     }
 
+    /**
+     * @template T of array<string, mixed>
+     * @param Item<T> $resource
+     */
     protected function json(Item $resource): JsonResponse
     {
         return new JsonResponse($this->formatter::one($resource));

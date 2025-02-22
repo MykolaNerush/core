@@ -181,7 +181,7 @@ abstract class MysqlRepository
      * @param int $perPage
      * @param string $order
      * @param string $sort
-     * @param array<int, array<int, string|string[]>> $filters
+     * @param array<int, array<int, string|string[]|mixed>> $filters
      * @param QueryBuilder|null $queryBuilder
      * @return QueryBuilder
      *
