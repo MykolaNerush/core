@@ -9,7 +9,9 @@ final readonly class PaginatedData
     /**
      * @param array<string, string|mixed> $data
      */
-    public function __construct(private array $data, private int $total)
+    public function __construct(
+        private array $data,
+    )
     {
     }
 
@@ -18,11 +20,22 @@ final readonly class PaginatedData
      */
     public function getData(): array
     {
-        return $this->data;
+        return $this->data['data'];
     }
 
-    public function getTotal(): int
+    /**
+     * @return array<string, string|mixed>
+     */
+    public function getMeta(): array
     {
-        return $this->total;
+        return $this->data['meta'];
+    }
+
+    /**
+     * @return array<string, string|mixed>
+     */
+    public function getLinks(): array
+    {
+        return $this->data['links'];
     }
 }

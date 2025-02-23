@@ -33,7 +33,6 @@ readonly class GetUsersHandler
             $query->uuidSearch,
             $query->emailSearch
         );
-        $data = array_values($result->getData());
-        return new Collection($query->page, $query->perPage, $result->getTotal(), $data);
+        return new Collection($result);
     }
 }

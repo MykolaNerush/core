@@ -19,9 +19,12 @@ final class BaseJsonApiFormatter implements BaseJsonApiFormatterInterface
 
     public static function collection(Collection $collection): array
     {
+        $data = $collection->PaginatedData;
         return [
             'status' => 'success',
-            'data' => $collection->data,
+            'data' => $data->getData(),
+            'meta' => $data->getMeta(),
+            'links' => $data->getLinks(),
         ];
     }
 

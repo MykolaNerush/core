@@ -173,7 +173,7 @@ abstract class MysqlRepository
         $fractal->setSerializer(new JsonApiSerializer());
         /** @var array<string, string|mixed> $data */
         $data = $fractal->createData($resource)->toArray();
-        return new PaginatedData($data, $paginator->count());
+        return new PaginatedData($data);
     }
 
     /**
