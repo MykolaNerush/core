@@ -30,7 +30,11 @@ readonly class RequestToDtoMiddleware
 
                 $errors = $this->validator->validate($dto);
                 if (count($errors) > 0) {
-                    throw new \InvalidArgumentException((string)$errors);
+                    $errorMessages = [];
+                    foreach ($errors as $error) {
+                        $errorMessages[] = $error->getMessage();
+                    }
+                    throw new \InvalidArgumentException(implode(', ', $errorMessages));
                 }
 //            $request->attributes->set('dto', $dto);
             } else {
