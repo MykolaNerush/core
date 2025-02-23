@@ -48,7 +48,6 @@ final class GetUserByIdController extends QueryController
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
 
-        /** @var Item<array<string, mixed>> $user */
         $user = $handledStamp->getResult();
         return $this->json($user);
     }

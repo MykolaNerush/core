@@ -59,7 +59,6 @@ abstract class BaseController
         $inputParams = is_array($inputParams) ? $inputParams : [];
         $newParams = array_merge($inputParams, $request->query->all());
         $newParams['page'] = $page;
-        /** @var array<string, mixed> $newParams */
         return $this->route($route, $newParams, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 

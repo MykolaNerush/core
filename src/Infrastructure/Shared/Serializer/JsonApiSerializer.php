@@ -18,7 +18,6 @@ final class JsonApiSerializer extends FractalJsonApiSerializer
      */
     public function item(?string $resourceKey, array $data): array
     {
-        /** @var string $id */
         $id = $this->getIdFromData($data);
 
         $resource = [

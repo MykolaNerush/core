@@ -71,10 +71,9 @@ class GetUsersControllerTest extends BaseTestCase
                             ],
                     ],
                 ], // expected
-                'page=1&perPage=1&order=DESC&sort=name', // filters
+                'page=1&perPage=1&order=DESC&sort=name&filter[uuid]=4bde8464-6fc3-4904-9095-b89305efa532', // filters
                 200,
             ],
         ];
-
     }
 }

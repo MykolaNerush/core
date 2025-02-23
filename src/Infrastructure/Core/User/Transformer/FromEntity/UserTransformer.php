@@ -18,7 +18,6 @@ final class UserTransformer extends TransformerAbstract
         $accounts = [];
 
         if ($user->getAccounts()) {
-            /* @var Account $account */
             foreach ($user->getAccounts() as $account) {
                 $accounts[] = [
                     'uuid' => $account->getUuid(),

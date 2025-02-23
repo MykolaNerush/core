@@ -167,7 +167,6 @@ class User implements SerializableReadModel
         $accounts = [];
 
         if ($this->getAccounts()) {
-            /* @var Account $account */
             foreach ($this->getAccounts() as $account) {
                 $accounts[] = [
                     'uuid' => $account->getUuid(),

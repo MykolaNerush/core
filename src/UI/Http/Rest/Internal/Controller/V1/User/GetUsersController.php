@@ -76,19 +76,12 @@ final class GetUsersController extends QueryController
     )]
     public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
     {
-        /** @var string $order */
         $order = $request->get('order', 'ASC');
-        /** @var string $sort */
         $sort = $request->get('sort', 'createdAt');
-        /** @var array<string, mixed> $filter */
         $filter = $request->get('filter', []);
-        /** @var ?string $uuid */
         $uuid = $filter['uuid'] ?? null;
-        /** @var ?string $emailSearch */
         $emailSearch = $filter['email'] ?? null;
-        /** @var int $page */
         $page = $request->get('page', 1);
-        /** @var int $perPage */
         $perPage = $request->get('perPage', 10);
 
         $query = new GetUsersQuery(
@@ -105,7 +98,6 @@ final class GetUsersController extends QueryController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        /** @var Collection<array<int, array<string, mixed>>> $users */
         $users = $handledStamp->getResult();
         return $this->jsonCollection($users);
 

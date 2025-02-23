@@ -2,86 +2,66 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
 
-use App\Application\Command\User\Update\UpdateUserCommand;
-use App\UI\Http\Rest\Internal\Controller\V1\User\UpdateUserByIdController;
-use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
+use App\Tests\Functional\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Ramsey\Uuid\Guid\Guid;
 
-class UpdateUserByIdControllerTest extends WebTestCase
+class UpdateUserByIdControllerTest extends BaseTestCase
 {
-    public function testInvokeWithValidRequest(): void
+    #[DataProvider('updateUsersErrorProvider')]
+    public function testUpdateUserError($uuid, $params, $expectedResult): void
     {
-        $uuid = Uuid::uuid4()->toString();
-        $request = new Request([], ['name' => 'John Doe', 'email' => 'johndoe@example.com', 'password' => 'securePassword']);
+        $client = static::createClient();
 
-        $updateUserCommand = new UpdateUserCommand(
-            currentUuid: Uuid::fromString($uuid),
-            name: 'John Doe',
-            email: 'johndoe@example.com',
-            password: 'securePassword'
-        );
-
-        $handledStamp = new HandledStamp('success', 'handler_alias');
-        $envelope = new Envelope($updateUserCommand, [$handledStamp]);
-
-        $mockMessageBus = $this->createMock(MessageBusInterface::class);
-        $mockMessageBus->expects($this->once())
-            ->method('dispatch')
-            ->with($this->equalTo($updateUserCommand))
-            ->willReturn($envelope);
-
-        $controller = new UpdateUserByIdController();
-        $response = $controller->__invoke($uuid, $request, $mockMessageBus);
-
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(JsonResponse::HTTP_OK, $response->getStatusCode());
+        $client->request('POST', '/api/v1/internal/users/' . $uuid, $params);
+        $actual = json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals($expectedResult, $actual);
     }
 
-    public function testInvokeWithMissingHandler(): void
+    public static function updateUsersErrorProvider(): array
     {
-        $uuid = Uuid::uuid4()->toString();
-        $request = new Request([], ['name' => 'John Doe', 'email' => 'johndoe@example.com', 'password' => 'securePassword']);
-
-        $updateUserCommand = new UpdateUserCommand(
-            currentUuid: Uuid::fromString($uuid),
-            name: 'John Doe',
-            email: 'johndoe@example.com',
-            password: 'securePassword'
-        );
-
-        $envelope = new Envelope($updateUserCommand);
-
-        $mockMessageBus = $this->createMock(MessageBusInterface::class);
-        $mockMessageBus->expects($this->once())
-            ->method('dispatch')
-            ->with($this->equalTo($updateUserCommand))
-            ->willReturn($envelope);
-
-        $controller = new UpdateUserByIdController();
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No handler was found for this query or handler failed to execute.');
-
-        $controller->__invoke($uuid, $request, $mockMessageBus);
+        return [
+            'Error, not valid fields.' => [
+                'e5010159-f361-4ab4-b5a2-4557144e3f11',
+                [
+                    'name' => 'n',
+                    'email' => 'wrongEmail',
+                ],
+                [
+                    'status' => 'error',
+                    'message' => 'The name must be at least 2 characters long., The email format is invalid.',
+                    'code' => 500,
+                ]
+            ],
+        ];
     }
 
-    public function testInvokeWithInvalidUuid(): void
+    #[DataProvider('successUpdateUsersProvider')]
+    public function testSuccessUpdateUser($uuid, $params): void
     {
-        $invalidUuid = 'invalid_uuid';
-        $request = new Request([], ['name' => 'John Doe', 'email' => 'johndoe@example.com', 'password' => 'securePassword']);
-        $mockMessageBus = $this->createMock(MessageBusInterface::class);
+        $client = static::createClient();
 
-        $controller = new UpdateUserByIdController();
+        $client->request('POST', '/api/v1/internal/users/' . $uuid, $params);
+        $this->assertResponseStatusCodeSame(200);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $client->request('GET', '/api/v1/internal/users/' . $uuid);
+        $this->assertResponseStatusCodeSame(200);
+        $createdUser = json_decode($client->getResponse()->getContent(), true);
 
-        $controller->__invoke($invalidUuid, $request, $mockMessageBus);
+        $this->assertEquals($params['name'], $createdUser['data']['attributes']['name']);
+    }
+
+    public static function successUpdateUsersProvider(): array
+    {
+        return [
+            'Success update user' => [
+                'e5010159-f361-4ab4-b5a2-4557144e3f11',
+                [
+                    'name' => 'Test_update_1',
+                ],
+            ],
+        ];
     }
 }
