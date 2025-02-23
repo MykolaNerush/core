@@ -32,7 +32,7 @@ class ExceptionListener
             'code' => $statusCode,
         ], $statusCode);
 
-        $this->logger->error('Exception occurred', [
+        $this->logger->error('Exception occurred: '.$exception->getMessage(), [
             'message' => $exception->getMessage(),
             'code' => $statusCode,
             'trace' => $exception->getTraceAsString()

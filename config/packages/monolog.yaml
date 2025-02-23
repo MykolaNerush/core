@@ -5,6 +5,15 @@ monolog:
 when@dev:
     monolog:
         handlers:
+            # Відправка логів на Graylog через GELF
+#            graylog:
+#                type: gelf
+#                level: error
+#                channels: ["!event"]
+#                publisher:
+#                    hostname: "20.5.0.6"
+#                    port: 12201
+
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
