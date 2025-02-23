@@ -6,7 +6,6 @@ namespace App\Tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Tests\Functional\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class GetUsersControllerTest extends BaseTestCase
 {

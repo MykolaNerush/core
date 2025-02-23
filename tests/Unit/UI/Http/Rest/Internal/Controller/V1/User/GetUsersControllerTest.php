@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Query\Shared\Collection;
+use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 use App\UI\Http\Rest\Internal\Controller\V1\User\GetUsersController;
 use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatter;
 use PHPUnit\Framework\TestCase;
@@ -40,15 +41,12 @@ class GetUsersControllerTest extends TestCase
                         'email' => 'jane.doe@example.com',
                     ]
                 ],
-            ]
+            ],
+            'meta' => [],
+            'links' => [],
         ];
-
-        $collection = new Collection(
-            page: 1,
-            perPage: 10,
-            total: 2,
-            data: $usersData
-        );
+        $paginatedData = new PaginatedData($usersData);
+        $collection = new Collection($paginatedData);
 
         $handledStamp = new HandledStamp($collection, 'handler');
         $envelope = new Envelope($collection, [$handledStamp]);
@@ -81,7 +79,6 @@ class GetUsersControllerTest extends TestCase
         $this->assertSame('Jane Doe', $responseData['data'][1]['attributes']['name']);
         $this->assertSame('jane.doe@example.com', $responseData['data'][1]['attributes']['email']);
     }
-
 
     public function testInvokeThrowsRuntimeExceptionWhenHandlerNotFound(): void
     {
