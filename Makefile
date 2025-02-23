@@ -38,11 +38,12 @@ install: drop_db drop_db_test create_test_db## Installs the project (rerun with 
 	@echo "Loading test data..."
 	$(DOCKER_EXEC) 'cd $(WORK_DIR) && bin/console doctrine:fixtures:load --no-interaction'
 
-#TODO add tests
-deploy: ## Runs code analysis before deployment
+phpstan: ##Runs PHPStan
 	@echo "Analyzing code with PHPStan..."
 	$(DOCKER_EXEC) 'cd $(WORK_DIR) && vendor/bin/phpstan analyse'
 
-test: ## Runs tests
+deploy: phpstan tests## Runs before deployment
+
+tests: ## Runs tests
 	@echo "Running PHPUnit tests..."
 	$(DOCKER_EXEC) 'cd $(WORK_DIR) && vendor/bin/phpunit'
