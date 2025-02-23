@@ -9,8 +9,9 @@
 - 🏗 **DDD (Domain-Driven Design)** — Clear architecture
 - 🐳 **Docker** — Environment isolation
 - 🐘 **MySQL** — Data storage
-- 📡 **RabbitMQ** — Event and queue processing
+- 📡 **RabbitMQ** — Event and queue processing (http://localhost:15672/#/ Login: admin, password: admin)
 - 🔥 **Redis** — Caching
+- 🔥 **Graylog** — Logs (http://localhost:9000/streams login:admin, password:123456789123456789password)
 
 ---
 
