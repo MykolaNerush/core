@@ -99,9 +99,9 @@
 ## 🎓 Installation
 ```bash
 git clone https://github.com/your-repo/core.git
-cd core
-composer install
+cd ../../../
 docker-compose up -d
+make install
 ```
 
 ---
