@@ -23,7 +23,7 @@ class Account
     private string $accountName;
 
     #[ORM\Column(type: Types::INTEGER)]
-    private float $balance;
+    private int $balance = 0;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
@@ -43,11 +43,10 @@ class Account
     ]
     private User $user;
 
-    public function __construct(string $accountName, float $balance, User $user, Status $status = Status::ACTIVE)
+    public function __construct(string $accountName, User $user, Status $status = Status::ACTIVE)
     {
         $this->uuid = Uuid::uuid4();
         $this->accountName = $accountName;
-        $this->balance = $balance;
         $this->status = $status;
         $this->user = $user;
         $this->createdAt = new DateTimeImmutable();
