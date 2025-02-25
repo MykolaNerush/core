@@ -6,14 +6,22 @@ namespace App\Domain\Core\Account\Repository;
 
 use App\Domain\Core\Account\Entity\Account;
 use App\Domain\Core\Shared\Query\Dto\PaginatedData;
+use App\Domain\Core\User\Entity\User;
 use Ramsey\Uuid\UuidInterface;
 
 interface AccountRepositoryInterface
 {
-//todo implementation
-//    public function get(UuidInterface $uuid): Account;
-// //todo implementation
-//    public function create(Account $account): void;
-// //todo implementation
-//    public function page(): PaginatedData;
+    public function create(Account $account): void;
+    public function getByUuid(UuidInterface $uuid): mixed;
+
+    public function update(Account $account): void;
+    public function delete(Account $account, bool $force = false): void;
+    public function page(
+        callable      $routeGenerator,
+        int           $page,
+        int           $perPage,
+        string        $order,
+        string        $sort,
+        UuidInterface $uuidSearch = null,
+    ): PaginatedData;
 }

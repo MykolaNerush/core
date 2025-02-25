@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Query\Shared\Collection;
-use App\Application\Query\User\GetUsers\GetUsersQuery;
-use App\Domain\Core\User\Entity\User;
+use App\Application\Query\Account\GetAccounts\GetAccountsQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
+use App\UI\Http\Rest\Internal\DTO\Accounts\GetAccountsRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
-#[OA\Tag(name: 'User')]
-final class GetUsersController extends QueryController
+#[OA\Tag(name: 'Account')]
+final class GetAccountsController extends QueryController
 {
-    public string $dtoClass = GetUsersRequest::class;
+    public string $dtoClass = GetAccountsRequest::class;
 
     #[OA\Get(
-        summary: 'Get users',
+        summary: 'Get accounts',
         security: [['Bearer' => []]],
         responses: [
             new OA\Response(response: Response::HTTP_OK, description: "Success"),
@@ -84,7 +83,7 @@ final class GetUsersController extends QueryController
         $page = $request->get('page', 1);
         $perPage = $request->get('perPage', 10);
 
-        $query = new GetUsersQuery(
+        $query = new GetAccountsQuery(
             routeGenerator: $this->routeWithPageAsCallable($request),
             page: (int)$page,
             perPage: (int)$perPage,
@@ -98,8 +97,8 @@ final class GetUsersController extends QueryController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        $users = $handledStamp->getResult();
-        return $this->jsonCollection($users);
+        $accounts = $handledStamp->getResult();
+        return $this->jsonCollection($accounts);
 
     }
 }

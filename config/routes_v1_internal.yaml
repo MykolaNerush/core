@@ -28,3 +28,30 @@ users_delete:
   path: /users/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\DeleteUserByIdController::__invoke
   methods: DELETE
+
+
+##Accounts
+accounts_list:
+  path: /accounts
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Account\GetAccountsController::__invoke
+  methods: GET
+
+accounts_single:
+  path: /accounts/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Account\GetAccountByIdController::__invoke
+  methods: GET
+
+accounts_create:
+  path: /accounts
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Account\CreateAccountController::__invoke
+  methods: POST
+
+accounts_update:
+  path: /accounts/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Account\UpdateAccountByIdController::__invoke
+  methods: POST
+
+accounts_delete:
+  path: /accounts/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Account\DeleteAccountByIdController::__invoke
+  methods: DELETE

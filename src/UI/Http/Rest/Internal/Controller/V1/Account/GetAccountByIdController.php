@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Application\Query\User\GetUser\GetUserQuery;
+use App\Application\Query\Account\GetAccount\GetAccountQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Users\GetUserRequest;
+use App\UI\Http\Rest\Internal\DTO\Accounts\GetAccountRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
-#[OA\Tag(name: 'User')]
-final class GetUserByIdController extends QueryController
+#[OA\Tag(name: 'Account')]
+final class GetAccountByIdController extends QueryController
 {
-    public string $dtoClass = GetUserRequest::class;
+    public string $dtoClass = GetAccountRequest::class;
 
     #[OA\Get(
-        summary: 'Get user by UUID',
+        summary: 'Get account by UUID',
         security: [['Bearer' => []]],
         responses: [
             new OA\Response(response: Response::HTTP_OK, description: "Success"),
@@ -39,14 +39,14 @@ final class GetUserByIdController extends QueryController
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse
     {
-        $query = new GetUserQuery(uuid: Uuid::fromString($uuid));
+        $query = new GetAccountQuery(uuid: Uuid::fromString($uuid));
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
 
-        $user = $handledStamp->getResult();
-        return $this->json($user);
+        $account = $handledStamp->getResult();
+        return $this->json($account);
     }
 }

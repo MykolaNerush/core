@@ -57,10 +57,4 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
     {
         $this->remove($user, $force);
     }
-
-    public function getByUuid(UuidInterface $uuid): mixed
-    {
-        $queryBuilder = $this->getQueryBuilderByUuid($uuid);
-        return $this->oneOrException($queryBuilder);
-    }
 }

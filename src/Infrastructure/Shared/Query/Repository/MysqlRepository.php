@@ -323,4 +323,9 @@ abstract class MysqlRepository
         $this->entityManager->flush();
     }
 
+    public function getByUuid(UuidInterface $uuid): mixed
+    {
+        $queryBuilder = $this->getQueryBuilderByUuid($uuid);
+        return $this->oneOrException($queryBuilder);
+    }
 }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Rest\Internal\DTO\Users;
+namespace App\UI\Http\Rest\Internal\DTO\Accounts;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GetUserRequest
+class DeleteAccountRequest
 {
     #[Assert\Uuid(
         message: 'The UUID format is invalid.',
