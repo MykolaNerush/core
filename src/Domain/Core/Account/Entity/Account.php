@@ -10,36 +10,37 @@ use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\Account\Enum\Status;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'accounts')]
 class Account
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid_binary', length: 16)]
-    #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $accountName;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: Types::INTEGER)]
     private float $balance;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
 
-    #[ORM\Column(type: 'string', enumType: Status::class)]
+    #[ORM\Column(type: Types::STRING, enumType: Status::class)]
     private Status $status;
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'accounts')]
-    #[ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', onDelete: 'CASCADE')]
+    #[
+        ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'accounts'),
+        ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', onDelete: 'CASCADE')
+    ]
     private User $user;
 
     public function __construct(string $accountName, float $balance, User $user, Status $status = Status::ACTIVE)
