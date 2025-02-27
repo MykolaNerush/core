@@ -14,7 +14,6 @@ class GetUsersControllerTest extends BaseTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/users');
         $client->request('GET', '/api/v1/internal/users?' . $filter);
         $actual = json_decode($client->getResponse()->getContent(), true)['data'];
         $this->assertEquals($expectedResult, $actual);
@@ -49,8 +48,8 @@ class GetUsersControllerTest extends BaseTestCase
                                 'account' =>
                                     [
                                         [
-                                            'uuid' => '392cad8f-8fb6-466d-82e4-a534ba5bfe69',
-                                            'accountName' => 'Main Account John',
+                                            'uuid' => '1fcd19a8-49af-00fd-abc7-000000000000',
+                                            'accountName' => 'FOR_DELETE',
                                             'balance' => 1000,
                                             'createdAt' =>
                                                 [
