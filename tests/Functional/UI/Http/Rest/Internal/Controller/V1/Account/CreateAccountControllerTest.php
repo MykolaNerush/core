@@ -55,7 +55,6 @@ class CreateAccountControllerTest extends BaseTestCase
         $attributes = $createdAccount['attributes'];
         $this->assertEquals($expectedResult['name'], $attributes['name']);
         $this->assertEquals($expectedResult['status'], $attributes['status']);
-//        $this->assertEquals($expectedResult['user'], $attributes['user']); //todo check this testSuccessCreateAccounts
     }
 
     public static function successCreateAccountProvider(): array

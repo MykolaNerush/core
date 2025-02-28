@@ -20,7 +20,7 @@ final class AccountTransformer extends TransformerAbstract
             'uuid' => $account->getUuid(),
             'name' => $account->getAccountName(),
             'status' => $account->getStatus()->label(),
-            'user' => $account->getUser(),
+            'user' => $account->getUser()->serialize(),
             'timestamps' => [
                 'createdAt' => $account->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updatedAt' => $account->getUpdatedAt()?->format('Y-m-d H:i:s'),
