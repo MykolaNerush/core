@@ -51,10 +51,6 @@ class CreateUserControllerTest extends TestCase
         $response = $controller->__invoke($this->request, $this->mockMessageBus);
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(JsonResponse::HTTP_CREATED, $response->getStatusCode());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('id', $responseData);
-        $this->assertNotEmpty($responseData['id']);
-        $this->assertTrue(Uuid::isValid($responseData['id']));
     }
 
     public function testCreateThrowsExceptionWhenNoHandlerStamp(): void

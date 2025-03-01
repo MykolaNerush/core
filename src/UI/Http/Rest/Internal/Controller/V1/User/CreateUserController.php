@@ -56,7 +56,6 @@ final class CreateUserController extends CommandController
         $name = $request->get('name');
         $email = $request->get('email');
         $password = $request->get('password');
-        $uuid = Uuid::uuid4();
         $command = new CreateUserCommand(
             name: $name,
             email: $email,
@@ -67,7 +66,6 @@ final class CreateUserController extends CommandController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        return new JsonResponse(['id' => $uuid], Response::HTTP_CREATED);
-
+        return new JsonResponse([], Response::HTTP_CREATED);
     }
 }

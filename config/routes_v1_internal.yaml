@@ -55,3 +55,29 @@ accounts_delete:
   path: /accounts/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\Account\DeleteAccountByIdController::__invoke
   methods: DELETE
+  
+##Videos
+videos_list:
+  path: /videos
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Video\GetVideosController::__invoke
+  methods: GET
+
+videos_single:
+  path: /videos/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Video\GetVideoByIdController::__invoke
+  methods: GET
+
+videos_create:
+  path: /videos
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Video\CreateVideoController::__invoke
+  methods: POST
+
+videos_update:
+  path: /videos/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Video\UpdateVideoByIdController::__invoke
+  methods: POST
+
+videos_delete:
+  path: /videos/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Video\DeleteVideoByIdController::__invoke
+  methods: DELETE

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Core\User\Repository;
+namespace App\Infrastructure\Core\Video\Repository;
 
-use App\Domain\Core\User\Entity\User;
-use App\Domain\Core\User\Repository\UserRepositoryInterface;
-use App\Infrastructure\Core\User\Transformer\FromEntity\UserTransformer;
+use App\Domain\Core\Video\Entity\Video;
+use App\Domain\Core\Video\Repository\VideoRepositoryInterface;
+use App\Infrastructure\Core\Video\Transformer\FromEntity\VideoTransformer;
 use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @extends MysqlRepository<User>
+ * @extends MysqlRepository<Video>
  */
-final class UserRepository extends MysqlRepository implements UserRepositoryInterface
+final class VideoRepository extends MysqlRepository implements VideoRepositoryInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        /** @var class-string<User> */
-        protected string                        $class = User::class
+        /** @var class-string<Video> */
+        protected string                        $class = Video::class
     )
     {
         parent::__construct($this->em);
@@ -42,9 +42,8 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
                 ['email', ['LIKE', (null !== $emailSearch) ? '%' . $emailSearch . '%' : null], 'email'],
             ]),
             $routeGenerator,
-            new UserTransformer(),
-            'users'
+            new VideoTransformer(),
+            'videos'
         );
     }
-
 }
