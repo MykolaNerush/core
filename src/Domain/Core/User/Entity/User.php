@@ -50,14 +50,13 @@ class User implements SerializableReadModel
     private Collection $accounts;
 
     public function __construct(
-        UuidInterface $uuid,
-        string        $name,
-        string        $email,
-        string        $password,
-        Status        $status = Status::NEW,
+        string $name,
+        string $email,
+        string $password,
+        Status $status = Status::NEW,
     )
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -111,9 +110,9 @@ class User implements SerializableReadModel
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(): void
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt = null): void
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = $updatedAt ?? new DateTimeImmutable();
     }
 
     public function getDeletedAt(): ?DateTimeImmutable
@@ -121,9 +120,9 @@ class User implements SerializableReadModel
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(): void
+    public function setDeletedAt(?DateTimeImmutable $deletedAt = null): void
     {
-        $this->deletedAt = new DateTimeImmutable();
+        $this->deletedAt = $deletedAt ?? new DateTimeImmutable();
     }
 
     public function getStatus(): Status
@@ -150,7 +149,7 @@ class User implements SerializableReadModel
     public static function deserialize(array $data): self
     {
         return new self(
-            is_string($data['uuid']) ? Uuid::fromString($data['uuid']) : Uuid::fromString(''),
+//            Uuid::fromString($data['uuid'] ?? Uuid::uuid4()->toString())
             is_string($data['name']) ? $data['name'] : '',
             is_string($data['email']) ? $data['email'] : '',
             is_string($data['password']) ? $data['password'] : '',
@@ -196,7 +195,8 @@ class User implements SerializableReadModel
 
     public function getId(): string
     {
-        return Uuid::fromBytes($this->uuid->getBytes())->toString();
+        return $this->uuid->toString();
+//        return Uuid::fromBytes($this->uuid->getBytes())->toString();
     }
 
     public function update(
@@ -204,7 +204,7 @@ class User implements SerializableReadModel
         ?string $email = null,
         ?string $password = null,
         ?Status $status = null,
-    ): self
+    ): void
     {
         if ($name) {
             $this->setName($name);
@@ -219,6 +219,5 @@ class User implements SerializableReadModel
             $this->status = $status;
         }
         $this->setUpdatedAt();
-        return $this;
     }
 }

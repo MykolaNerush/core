@@ -31,7 +31,7 @@ final class CreateAccountController extends CommandController
         ]
     )]
     #[OA\Parameter(
-        name: 'name',
+        name: 'accountName',
         description: 'Account name',
         in: 'query',
         required: true,
@@ -39,18 +39,20 @@ final class CreateAccountController extends CommandController
     )]
     public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
     {
-        $name = $request->get('name');
-        $uuid = Uuid::uuid4();
+        $accountName = $request->get('accountName');
+//todo test, need add security
+//        $userUuid = $this->security->getUser()->getUuid()->toString();
+        $userUuid = '724afee0-d001-47e5-a9d4-29a3f19b81b8';
         $command = new CreateAccountCommand(
-            uuid: $uuid,
-            name: $name,
+            userUuid: $userUuid,
+            accountName: $accountName,
         );
         $envelope = $messageBus->dispatch($command);
         $handledStamp = $envelope->last(HandledStamp::class);
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        return new JsonResponse(['id' => $uuid], Response::HTTP_CREATED);
+        return new JsonResponse([], Response::HTTP_CREATED);
 
     }
 }

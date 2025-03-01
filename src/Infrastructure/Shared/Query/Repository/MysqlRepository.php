@@ -55,6 +55,12 @@ abstract class MysqlRepository
         $this->flush();
     }
 
+    public function create(SerializableReadModel $model): void
+    {
+        $this->persist($model);
+        $this->flush();
+    }
+
     public function clear(): void
     {
         $this->entityManager->clear();

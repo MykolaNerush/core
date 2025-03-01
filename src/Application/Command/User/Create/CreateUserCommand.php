@@ -9,7 +9,6 @@ use Ramsey\Uuid\UuidInterface;
 readonly class CreateUserCommand
 {
     public function __construct(
-        public UuidInterface $uuid,
         public string        $name,
         public string        $email,
         public string        $password

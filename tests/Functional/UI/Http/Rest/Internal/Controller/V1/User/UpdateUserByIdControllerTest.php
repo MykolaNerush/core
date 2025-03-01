@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\tests\Functional\UI\Http\Rest\Internal\Controller\V1\User;
 
+use App\Domain\Core\User\Entity\User;
+use App\Infrastructure\Core\User\Repository\UserRepository;
 use App\Tests\Functional\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Guid\Guid;
+use Symfony\Component\HttpFoundation\Response;
 
 class UpdateUserByIdControllerTest extends BaseTestCase
 {
@@ -44,13 +47,12 @@ class UpdateUserByIdControllerTest extends BaseTestCase
         $client = static::createClient();
 
         $client->request('POST', '/api/v1/internal/users/' . $uuid, $params);
-        $this->assertResponseStatusCodeSame(200);
-
-        $client->request('GET', '/api/v1/internal/users/' . $uuid);
-        $this->assertResponseStatusCodeSame(200);
-        $createdUser = json_decode($client->getResponse()->getContent(), true);
-
-        $this->assertEquals($params['name'], $createdUser['data']['attributes']['name']);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        /* @var ?User $updatedUser */
+        $updatedUser = $userRepository->findOneBy(['name' => $params['name']]);
+        $this->assertNotNull($updatedUser);
+        $this->assertEquals($params['name'], $updatedUser->getName());
     }
 
     public static function successUpdateUsersProvider(): array

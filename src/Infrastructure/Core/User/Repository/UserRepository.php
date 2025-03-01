@@ -20,10 +20,10 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
     public function __construct(
         private readonly EntityManagerInterface $em,
         /** @var class-string<User> */
-        protected string $class = User::class
+        protected string                        $class = User::class
     )
     {
-        parent::__construct($em);
+        parent::__construct($this->em);
     }
 
     public function page(
@@ -45,12 +45,6 @@ final class UserRepository extends MysqlRepository implements UserRepositoryInte
             new UserTransformer(),
             'users'
         );
-    }
-
-    public function create(User $user): void
-    {
-        $this->em->persist($user);
-        $this->em->flush();
     }
 
     public function delete(User $user, bool $force = false): void

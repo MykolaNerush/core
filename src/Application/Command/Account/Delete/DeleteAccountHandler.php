@@ -21,7 +21,7 @@ readonly class DeleteAccountHandler
     {
         $account = $this->accountRepository->getByUuid($command->uuid);
         if ($account instanceof Account) {
-            $this->accountRepository->delete($account);
+            $this->accountRepository->remove($account);
         }
     }
 }

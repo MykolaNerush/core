@@ -44,9 +44,9 @@ class Account implements SerializableReadModel
     ]
     private User $user;
 
-    public function __construct(UuidInterface $uuid, string $accountName, User $user, Status $status = Status::ACTIVE)
+    public function __construct(string $accountName, User $user, Status $status = Status::ACTIVE)
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->accountName = $accountName;
         $this->status = $status;
         $this->user = $user;
@@ -125,7 +125,8 @@ class Account implements SerializableReadModel
 
     public function getId(): string
     {
-        return Uuid::fromBytes($this->uuid->getBytes())->toString();
+        return $this->uuid->toString();
+//        return Uuid::fromBytes($this->uuid->getBytes())->toString();
     }
 
     /**
@@ -134,7 +135,7 @@ class Account implements SerializableReadModel
     public static function deserialize(array $data): self
     {
         return new self(
-            is_string($data['uuid']) ? Uuid::fromString($data['uuid']) : Uuid::fromString(''),
+//            Uuid::fromString($data['uuid'] ?? Uuid::uuid4()->toString())
             is_string($data['accountName']) ? $data['name'] : '',
             !empty($data['status']) ? $data['status'] : '',
             !empty($data['user']) ? $data['user'] : '',
@@ -159,12 +160,11 @@ class Account implements SerializableReadModel
         ];
     }
 
-    public function update(?string $accountName = null): self
+    public function update(?string $accountName = null): void
     {
         if ($accountName) {
             $this->setAccountName($accountName);
         }
         $this->setUpdatedAt();
-        return $this;
     }
 }

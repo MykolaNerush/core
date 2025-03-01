@@ -9,8 +9,8 @@ use Ramsey\Uuid\UuidInterface;
 readonly class CreateAccountCommand
 {
     public function __construct(
-        public UuidInterface $uuid,
-        public string        $name,
+        public string $userUuid,
+        public string $accountName,
     )
     {
     }

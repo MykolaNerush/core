@@ -56,9 +56,8 @@ final class CreateVideoController extends CommandController
         $name = $request->get('name');
         $email = $request->get('email');
         $password = $request->get('password');
-        $uuid = Uuid::uuid4();
+        //todo fix !!!!!
         $command = new CreateUserCommand(
-            uuid: $uuid,
             name: $name,
             email: $email,
             password: $password,

@@ -21,7 +21,7 @@ readonly class DeleteUserHandler
     {
         $user = $this->userRepository->getByUuid($command->uuid);
         if ($user instanceof User) {
-            $this->userRepository->delete($user);
+            $this->userRepository->remove($user);
         }
     }
 }

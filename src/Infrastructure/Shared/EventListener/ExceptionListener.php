@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Psr\Log\LoggerInterface;
 
-class ExceptionListener
+readonly class ExceptionListener
 {
 
     public function __construct(private LoggerInterface $logger)

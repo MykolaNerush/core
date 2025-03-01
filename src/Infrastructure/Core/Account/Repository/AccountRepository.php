@@ -22,16 +22,6 @@ final class AccountRepository extends MysqlRepository implements AccountReposito
         $this->class = Account::class;
         parent::__construct($this->em);
     }
-    public function create(Account $account): void
-    {
-        $this->em->persist($account);
-        $this->em->flush();
-    }
-
-    public function delete(Account $account, bool $force = false): void
-    {
-        $this->remove($account, $force);
-    }
 
     public function page(
         callable       $routeGenerator,

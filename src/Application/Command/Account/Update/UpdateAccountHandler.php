@@ -21,7 +21,7 @@ readonly class UpdateAccountHandler
     {
         $account = $this->accountRepository->getByUuid($command->currentUuid);
         /** @var Account $account */
-        $account = $account->update(
+        $account->update(
             $command->accountName,
         );
         $this->accountRepository->update($account);

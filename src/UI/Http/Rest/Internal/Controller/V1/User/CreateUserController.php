@@ -58,7 +58,6 @@ final class CreateUserController extends CommandController
         $password = $request->get('password');
         $uuid = Uuid::uuid4();
         $command = new CreateUserCommand(
-            uuid: $uuid,
             name: $name,
             email: $email,
             password: $password,

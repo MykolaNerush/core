@@ -57,16 +57,15 @@ class Video implements SerializableReadModel
     private ?DateTimeImmutable $deletedAt = null;
 
     public function __construct(
-        UuidInterface $uuid,
-        string        $title,
-        ?string       $description = null,
-        ?string       $filePath = null,
-        ?string       $thumbnailPath = null,
-        ?int          $duration = 0,
-        Status        $status = Status::DRAFT,
+        string  $title,
+        ?string $description = null,
+        ?string $filePath = null,
+        ?string $thumbnailPath = null,
+        ?int    $duration = 0,
+        Status  $status = Status::DRAFT,
     )
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->title = $title;
         $this->description = $description;
         $this->filePath = $filePath;
@@ -168,7 +167,7 @@ class Video implements SerializableReadModel
 
     public function getId(): string
     {
-        return Uuid::fromBytes($this->uuid->getBytes())->toString();
+        return $this->uuid->toString();
     }
 
     /**
@@ -177,7 +176,6 @@ class Video implements SerializableReadModel
     public static function deserialize(array $data): self
     {
         return new self(
-            Uuid::fromString($data['uuid']),
             $data['title'],
             $data['description'] ?? null,
             $data['filePath'] ?? null,
@@ -215,7 +213,7 @@ class Video implements SerializableReadModel
         ?string $thumbnailPath = null,
         ?int    $duration = null,
         ?Status $status = null
-    ): self
+    ): void
     {
         if ($title !== null) {
             $this->setTitle($title);
@@ -236,6 +234,5 @@ class Video implements SerializableReadModel
             $this->setStatus($status);
         }
         $this->setUpdatedAt();
-        return $this;
     }
 }

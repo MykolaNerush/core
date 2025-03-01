@@ -15,7 +15,6 @@ interface AccountRepositoryInterface
     public function getByUuid(UuidInterface $uuid): mixed;
 
     public function update(Account $account): void;
-    public function delete(Account $account, bool $force = false): void;
     public function page(
         callable      $routeGenerator,
         int           $page,

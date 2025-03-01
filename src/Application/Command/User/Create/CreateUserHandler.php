@@ -20,7 +20,6 @@ readonly class CreateUserHandler
     public function __invoke(CreateUserCommand $command): void
     {
         $user = new User(
-            $command->uuid,
             $command->name,
             $command->email,
             $command->password,
