@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Core\Video\Entity;
 
+use App\Domain\Shared\Entity\TimestampableEntity;
 use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
@@ -14,7 +15,7 @@ use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
-class Video implements SerializableReadModel
+class Video extends TimestampableEntity implements SerializableReadModel
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -46,16 +47,6 @@ class Video implements SerializableReadModel
 //    #[ORM\JoinTable(name: 'video_tags')]
 //    private Collection $tags;
 
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $deletedAt = null;
-
     public function __construct(
         string  $title,
         ?string $description = null,
@@ -78,36 +69,6 @@ class Video implements SerializableReadModel
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?DateTimeImmutable $createdAt = null): void
-    {
-        $this->createdAt = $createdAt ?? new DateTimeImmutable();
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
-    }
-
-    public function getDeletedAt(): ?DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(): void
-    {
-        $this->deletedAt = new DateTimeImmutable();
     }
 
     public function getTitle(): string

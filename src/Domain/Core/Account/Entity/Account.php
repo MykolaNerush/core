@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Core\Account\Entity;
 
+use App\Domain\Shared\Entity\TimestampableEntity;
 use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
@@ -15,7 +16,7 @@ use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'accounts')]
-class Account implements SerializableReadModel
+class Account extends TimestampableEntity implements SerializableReadModel
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -25,15 +26,6 @@ class Account implements SerializableReadModel
 
     #[ORM\Column(type: Types::INTEGER)]
     private int $balance = 0;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $deletedAt = null;
 
     #[ORM\Column(type: Types::STRING, enumType: Status::class)]
     private Status $status;
@@ -66,36 +58,6 @@ class Account implements SerializableReadModel
     public function getBalance(): float
     {
         return $this->balance;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?DateTimeImmutable $createdAt = null): void
-    {
-        $this->createdAt = $createdAt ?? new DateTimeImmutable();
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
-    }
-
-    public function getDeletedAt(): ?DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(): void
-    {
-        $this->deletedAt = new DateTimeImmutable();
     }
 
     public function getStatus(): Status
