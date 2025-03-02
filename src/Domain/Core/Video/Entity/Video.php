@@ -31,7 +31,7 @@ class Video implements SerializableReadModel
     private ?string $thumbnailPath = null;
 
     #[ORM\Column(type: Types::INTEGER)]
-    private int $duration = 0;
+    private ?int $duration = 0;
 
 //todo add STATUS
     #[ORM\Column(type: Types::STRING, enumType: Status::class)]
@@ -145,7 +145,7 @@ class Video implements SerializableReadModel
         $this->thumbnailPath = $thumbnailPath;
     }
 
-    public function getDuration(): int
+    public function getDuration(): ?int
     {
         return $this->duration;
     }

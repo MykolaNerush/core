@@ -13,6 +13,7 @@ interface UserRepositoryInterface
     public function getByUuid(UuidInterface $uuid): mixed;
     public function update(User $user): void;
     public function create(User $user): void;
+    public function remove(User $user): void;
     public function page(
         callable      $routeGenerator,
         int           $page,

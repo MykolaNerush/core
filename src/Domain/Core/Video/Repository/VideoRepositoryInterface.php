@@ -15,6 +15,7 @@ interface VideoRepositoryInterface
     public function update(Video $video): void;
 
     public function create(Video $video): void;
+    public function remove(Video $video): void;
 
     public function page(
         callable      $routeGenerator,

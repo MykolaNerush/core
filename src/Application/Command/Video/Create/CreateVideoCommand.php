@@ -7,7 +7,7 @@ namespace App\Application\Command\Video\Create;
 readonly class CreateVideoCommand
 {
     public function __construct(
-        public ?string $title,
+        public string $title,
         public ?string $description,
         public ?string $filePath,
         public ?string $thumbnailPath,

@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Application\Query\Video\GetVideo\GetVideoQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Videos\GetVideoRequest;
+use App\UI\Http\Rest\Internal\DTO\Video\GetVideoRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
