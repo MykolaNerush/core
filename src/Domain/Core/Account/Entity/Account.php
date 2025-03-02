@@ -73,6 +73,11 @@ class Account implements SerializableReadModel
         return $this->createdAt;
     }
 
+    public function setCreatedAt(?DateTimeImmutable $createdAt = null): void
+    {
+        $this->createdAt = $createdAt ?? new DateTimeImmutable();
+    }
+
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
