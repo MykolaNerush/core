@@ -11,8 +11,11 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 interface VideoRepositoryInterface
 {
     public function getByUuid(UuidInterface $uuid): mixed;
+
     public function update(Video $video): void;
+
     public function create(Video $video): void;
+
     public function page(
         callable      $routeGenerator,
         int           $page,
@@ -20,6 +23,10 @@ interface VideoRepositoryInterface
         string        $order,
         string        $sort,
         UuidInterface $uuidSearch = null,
-        string        $emailSearch = null
+        string        $title = null,
+        string        $description = null,
+        string        $filePath = null,
+        string        $thumbnailPath = null,
+        int           $duration = null,
     ): PaginatedData;
 }

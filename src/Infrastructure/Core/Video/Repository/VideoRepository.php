@@ -33,13 +33,21 @@ final class VideoRepository extends MysqlRepository implements VideoRepositoryIn
         string         $order,
         string         $sort,
         ?UuidInterface $uuidSearch = null,
-        string         $emailSearch = null
+        string         $title = null,
+        string         $description = null,
+        string         $filePath = null,
+        string         $thumbnailPath = null,
+        int            $duration = null,
     ): PaginatedData
     {
         return $this->getFilteredPaginatedData(
             $this->getFilteredQueryBuilder($page, $perPage, $order, $sort, [
                 ['uuid', $uuidSearch],
-                ['email', ['LIKE', (null !== $emailSearch) ? '%' . $emailSearch . '%' : null], 'email'],
+                ['title', ['LIKE', (null !== $title) ? '%' . $title . '%' : null], 'title'],
+                ['description', ['LIKE', (null !== $description) ? '%' . $description . '%' : null], 'description'],
+                ['filePath', ['LIKE', (null !== $filePath) ? '%' . $filePath . '%' : null], 'filePath'],
+                ['thumbnailPath', ['LIKE', (null !== $thumbnailPath) ? '%' . $thumbnailPath . '%' : null], 'thumbnailPath'],
+                ['duration', ['=', (null !== $duration) ? $duration : null], 'duration'],
             ]),
             $routeGenerator,
             new VideoTransformer(),
