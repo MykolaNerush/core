@@ -25,7 +25,7 @@ final class VideoTransformer extends TransformerAbstract
             'duration' => $video->getDuration(),
             'status' => $video->getStatus()->label(),
             'timestamps' => [
-                'createdAt' => $video->getCreatedAt()->format('Y-m-d H:i:s'),
+                'createdAt' => $video->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $video->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];

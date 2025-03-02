@@ -22,7 +22,7 @@ final class AccountTransformer extends TransformerAbstract
             'status' => $account->getStatus()->label(),
             'user' => $account->getUser()->serialize(),
             'timestamps' => [
-                'createdAt' => $account->getCreatedAt()->format('Y-m-d H:i:s'),
+                'createdAt' => $account->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $account->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];

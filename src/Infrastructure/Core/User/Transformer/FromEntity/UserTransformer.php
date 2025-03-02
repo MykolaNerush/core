@@ -39,7 +39,7 @@ final class UserTransformer extends TransformerAbstract
             'status' => $user->getStatus()->label(),
             'account' => $accounts,
             'timestamps' => [
-                'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+                'createdAt' => $user->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $user->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];

@@ -38,7 +38,7 @@ class CreateUserControllerTest extends TestCase
     public function testCreateReturnsProperResponseOnSuccess(): void
     {
         $envelope = new Envelope(
-            new CreateUserCommand(Uuid::uuid4(), 'Test User', 'test@example.com', 'password123'),
+            new CreateUserCommand('Test User', 'test@example.com', 'password123'),
             [new HandledStamp(true, 'handler_name')]
         );
         $this->mockMessageBus

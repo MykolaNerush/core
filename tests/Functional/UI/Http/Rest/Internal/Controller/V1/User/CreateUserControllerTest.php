@@ -8,7 +8,6 @@ use App\Domain\Core\User\Entity\User;
 use App\Infrastructure\Core\User\Repository\UserRepository;
 use App\Tests\Functional\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Ramsey\Uuid\Guid\Guid;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateUserControllerTest extends BaseTestCase

@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BaseTestCase extends WebTestCase
@@ -27,6 +26,7 @@ class BaseTestCase extends WebTestCase
             $dumps = [
                 'core_test.users.sql',
                 'core_test.accounts.sql',
+                'core_test.videos.sql',
             ];
 
             foreach ($dumps as $dump) {

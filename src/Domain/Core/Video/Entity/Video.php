@@ -165,7 +165,7 @@ class Video extends TimestampableEntity implements SerializableReadModel
             'duration' => $this->getDuration(),
             'status' => $this->getStatus()->label(),
             'timestamps' => [
-                'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+                'createdAt' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
                 'deletedAt' => $this->getDeletedAt()?->format('Y-m-d H:i:s'),
             ],

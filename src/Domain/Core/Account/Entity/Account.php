@@ -121,7 +121,7 @@ class Account extends TimestampableEntity implements SerializableReadModel
             'status' => $this->getStatus()->label(),
             'user' => $this->getUser(),
             'timestamps' => [
-                'createdAt' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
+                'createdAt' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];
