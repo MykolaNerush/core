@@ -18,13 +18,13 @@ class AccountFixtures extends Fixture
         $user2 = $this->getReference('user_jane', User::class);
         $user3 = $this->getReference('user_alice', User::class);
 
-        $account1 = new Account(Uuid::uuid4(), 'Main Account John', $user1, Status::ACTIVE);
+        $account1 = new Account('Main Account John', $user1, Status::ACTIVE);
         $manager->persist($account1);
 
-        $account2 = new Account(Uuid::uuid4(), 'Main Account Jane', $user2, Status::ACTIVE);
+        $account2 = new Account('Main Account Jane', $user2, Status::ACTIVE);
         $manager->persist($account2);
 
-        $account3 = new Account(Uuid::uuid4(), 'Main Account Alice', $user3, Status::ACTIVE);
+        $account3 = new Account('Main Account Alice', $user3, Status::ACTIVE);
         $manager->persist($account3);
 
         $manager->flush();

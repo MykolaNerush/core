@@ -14,13 +14,13 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $user1 = new User(Uuid::uuid4(), 'Test', 'test@gmail.com', 'test', Status::ACTIVE);
+        $user1 = new User('Test', 'test@gmail.com', 'test', Status::ACTIVE);
         $manager->persist($user1);
 
-        $user2 = new User(Uuid::uuid4(), 'Jane Doe', 'jane@example.com', 'password', Status::ACTIVE);
+        $user2 = new User('Jane Doe', 'jane@example.com', 'password', Status::ACTIVE);
         $manager->persist($user2);
 
-        $user3 = new User(Uuid::uuid4(), 'Alice Smith', 'alice@example.com', 'password', Status::ACTIVE);
+        $user3 = new User('Alice Smith', 'alice@example.com', 'password', Status::ACTIVE);
         $manager->persist($user3);
 
         $manager->flush();
