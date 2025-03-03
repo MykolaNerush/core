@@ -17,7 +17,8 @@ readonly class CreateUserHandler
     )
     {
     }
-    public function __invoke(CreateUserCommand $command): void
+
+    public function __invoke(CreateUserCommand $command): string
     {
         $user = new User(
             $command->name,
@@ -26,5 +27,6 @@ readonly class CreateUserHandler
             Status::NEW,
         );
         $this->userRepository->create($user);
+        return $user->getId();
     }
 }

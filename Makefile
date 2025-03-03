@@ -42,7 +42,7 @@ phpstan: ##Runs PHPStan
 	@echo "Analyzing code with PHPStan..."
 	$(DOCKER_EXEC) 'cd $(WORK_DIR) && vendor/bin/phpstan analyse'
 
-deploy: phpstan test## Runs before deployment
+deploy: test phpstan## Runs before deployment
 
 test: ## Runs tests
 	@echo "Running PHPUnit tests..."

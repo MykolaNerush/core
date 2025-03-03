@@ -52,7 +52,7 @@ final class CreateAccountController extends CommandController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        return new JsonResponse([], Response::HTTP_CREATED);
-
+        $accountId = $handledStamp->getResult();
+        return new JsonResponse(['id' => $accountId], Response::HTTP_CREATED);
     }
 }

@@ -83,6 +83,7 @@ final class CreateVideoController extends CommandController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        return new JsonResponse([], Response::HTTP_CREATED);
+        $videoId = $handledStamp->getResult();
+        return new JsonResponse(['id' => $videoId], Response::HTTP_CREATED);
     }
 }

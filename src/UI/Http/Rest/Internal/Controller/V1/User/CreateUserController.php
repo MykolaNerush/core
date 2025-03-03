@@ -66,6 +66,7 @@ final class CreateUserController extends CommandController
         if (!$handledStamp) {
             throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
         }
-        return new JsonResponse([], Response::HTTP_CREATED);
+        $userId = $handledStamp->getResult();
+        return new JsonResponse(['id' => $userId], Response::HTTP_CREATED);
     }
 }

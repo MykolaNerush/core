@@ -23,7 +23,7 @@ readonly class CreateAccountHandler
     {
     }
 
-    public function __invoke(CreateAccountCommand $command): void
+    public function __invoke(CreateAccountCommand $command): string
     {
         $uuid = Uuid::fromString($command->userUuid);
         //todo add get auth user
@@ -39,5 +39,6 @@ readonly class CreateAccountHandler
             Status::NEW,
         );
         $this->accountRepository->create($account);
+        return $account->getId();
     }
 }

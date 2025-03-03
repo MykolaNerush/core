@@ -16,7 +16,7 @@ readonly class CreateVideoHandler
     )
     {
     }
-    public function __invoke(CreateVideoCommand $command): void
+    public function __invoke(CreateVideoCommand $command): string
     {
         //todo add relation to User
         $video = new Video(
@@ -27,5 +27,6 @@ readonly class CreateVideoHandler
             $command->duration,
         );
         $this->videoRepository->create($video);
+        return $video->getId();
     }
 }
