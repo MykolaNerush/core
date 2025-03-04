@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Command\Account\Create\CreateAccountCommand;
+use App\Domain\Core\User\Entity\User;
+use App\Domain\Core\User\Repository\UserRepositoryInterface;
+use App\Domain\Shared\Query\Exception\NotFoundException;
 use App\UI\Http\Rest\Internal\Controller\CommandController;
 use App\UI\Http\Rest\Internal\DTO\Account\CreateAccountRequest;
 use OpenApi\Attributes as OA;
@@ -37,14 +40,23 @@ final class CreateAccountController extends CommandController
         required: true,
         schema: new OA\Schema(type: 'string')
     )]
-    public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
+    public function __invoke(
+        Request                 $request,
+        MessageBusInterface     $messageBus,
+        UserRepositoryInterface $userRepository, //todo remove after add auth user
+    ): JsonResponse
     {
         $accountName = $request->get('accountName');
-//todo test, need add security
-//        $userUuid = $this->security->getUser()->getUuid()->toString();
+        //todo add get auth user
         $userUuid = '724afee0-d001-47e5-a9d4-29a3f19b81b8';
+        $uuid = Uuid::fromString($userUuid);
+        /* @var User $user */
+        $user = $userRepository->getByUuid($uuid);
+        if (!$user) {
+            throw new NotFoundException(lcfirst((new \ReflectionClass(User::class))->getShortName()));
+        }
         $command = new CreateAccountCommand(
-            userUuid: $userUuid,
+            user: $user,
             accountName: $accountName,
         );
         $envelope = $messageBus->dispatch($command);

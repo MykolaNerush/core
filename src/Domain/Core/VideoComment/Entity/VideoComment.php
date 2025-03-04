@@ -29,8 +29,8 @@ class VideoComment implements SerializableReadModel
     #[ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', nullable: false)]
     private User $user;
 
-    #[ORM\Column(Types::TEXT)]
-    private string $content;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $comment;
 
     #[ORM\Column(type: Types::STRING, enumType: CommentStatus::class)]
     private CommentStatus $status;
@@ -45,17 +45,16 @@ class VideoComment implements SerializableReadModel
     private ?DateTimeImmutable $deletedAt = null;
 
     public function __construct(
-        UuidInterface $uuid,
         Video         $video,
         User          $user,
-        string        $content,
-        CommentStatus $status= CommentStatus::PENDING
+        string        $comment,
+        CommentStatus $status = CommentStatus::PENDING
     )
     {
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->video = $video;
         $this->user = $user;
-        $this->content = $content;
+        $this->comment = $comment;
         $this->status = $status;
         $this->createdAt = new DateTimeImmutable();
     }
@@ -110,14 +109,14 @@ class VideoComment implements SerializableReadModel
         $this->user = $user;
     }
 
-    public function getContent(): string
+    public function getComment(): string
     {
-        return $this->content;
+        return $this->comment;
     }
 
-    public function setContent(string $content): void
+    public function setComment(string $comment): void
     {
-        $this->content = $content;
+        $this->comment = $comment;
     }
 
     public function getStatus(): CommentStatus
@@ -139,7 +138,7 @@ class VideoComment implements SerializableReadModel
         $comment->uuid = Uuid::fromString($data['uuid']);
         $comment->video = $data['video'];
         $comment->user = $data['user'];
-        $comment->content = $data['content'];
+        $comment->comment = $data['comment'];
         $comment->status = CommentStatus::from($data['status']);
         $comment->createdAt = new DateTimeImmutable($data['createdAt']);
         $comment->updatedAt = isset($data['updatedAt']) ? new DateTimeImmutable($data['updatedAt']) : null;
@@ -156,7 +155,7 @@ class VideoComment implements SerializableReadModel
             'uuid' => $this->uuid->toString(),
             'video' => $this->video->getUuid()->toString(),
             'user' => $this->user->getUuid()->toString(),
-            'content' => $this->content,
+            'comment' => $this->comment,
             'status' => $this->status->value,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt?->format('Y-m-d H:i:s'),
@@ -165,12 +164,12 @@ class VideoComment implements SerializableReadModel
     }
 
     public function update(
-        ?string        $content = null,
+        ?string        $comment = null,
         ?CommentStatus $status = null
     ): self
     {
-        if ($content !== null) {
-            $this->setContent($content);
+        if ($comment !== null) {
+            $this->setComment($comment);
         }
         if ($status !== null) {
             $this->setStatus($status);

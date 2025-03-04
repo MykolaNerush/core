@@ -55,8 +55,8 @@ accounts_delete:
   path: /accounts/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\Account\DeleteAccountByIdController::__invoke
   methods: DELETE
-  
-##Videos
+
+##Video
 videos_list:
   path: /videos
   controller: App\UI\Http\Rest\Internal\Controller\V1\Video\GetVideosController::__invoke
@@ -80,4 +80,31 @@ videos_update:
 videos_delete:
   path: /videos/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\Video\DeleteVideoByIdController::__invoke
+  methods: DELETE
+
+##VideoComment
+video_comments_list:
+  path: /video-comments
+  controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\GetVideoCommentsController::__invoke
+  methods: GET
+
+video-comments_single:
+  path: /video-comments/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\GetVideoCommentsByIdController::__invoke
+  methods: GET
+
+video-comments_create:
+  path: /video-comments
+  controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\CreateVideoCommentsController::__invoke
+  methods: POST
+
+
+video-comments_update:
+  path: /video-comments/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\UpdateVideoCommentsByIdController::__invoke
+  methods: POST
+
+video-comments_delete:
+  path: /video-comments/{uuid}
+  controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\DeleteVideoCommentsByIdController::__invoke
   methods: DELETE
