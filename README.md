@@ -75,7 +75,7 @@
 
 ## 📡 API Endpoints
 
-### 🏠 Users (`/api/v1/internal/users`)
+### 🏠 User (`/api/v1/internal/users`)
 | Method | URL | Description |
 |-------|-----|-------------|
 | `GET` | `/api/v1/internal/users` | Get users list |

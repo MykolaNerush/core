@@ -6,7 +6,7 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Command\User\Create\CreateUserCommand;
 use App\UI\Http\Rest\Internal\Controller\CommandController;
-use App\UI\Http\Rest\Internal\DTO\Users\CreateUserRequest;
+use App\UI\Http\Rest\Internal\DTO\User\CreateUserRequest;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;

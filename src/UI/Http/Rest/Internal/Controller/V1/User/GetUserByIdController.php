@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Application\Query\User\GetUser\GetUserQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Users\GetUserRequest;
+use App\UI\Http\Rest\Internal\DTO\User\GetUserRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;

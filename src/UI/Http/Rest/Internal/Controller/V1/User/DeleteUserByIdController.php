@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Command\User\Delete\DeleteUserCommand;
-use App\UI\Http\Rest\Internal\DTO\Users\DeleteUserRequest;
+use App\UI\Http\Rest\Internal\DTO\User\DeleteUserRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Ramsey\Uuid\Uuid;

@@ -3,7 +3,7 @@ healthz:
   controller: App\UI\Http\Rest\Internal\Controller\V1\Healthz\HealthzController::__invoke
   methods: GET
 
-##Users
+##User
 users_list:
   path: /users
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\GetUsersController::__invoke
@@ -30,7 +30,7 @@ users_delete:
   methods: DELETE
 
 
-##Accounts
+##Account
 accounts_list:
   path: /accounts
   controller: App\UI\Http\Rest\Internal\Controller\V1\Account\GetAccountsController::__invoke

@@ -8,7 +8,7 @@ use App\Application\Query\Shared\Collection;
 use App\Application\Query\User\GetUsers\GetUsersQuery;
 use App\Domain\Core\User\Entity\User;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Users\GetUsersRequest;
+use App\UI\Http\Rest\Internal\DTO\User\GetUsersRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Command\Account\Delete\DeleteAccountCommand;
-use App\UI\Http\Rest\Internal\DTO\Accounts\DeleteAccountRequest;
+use App\UI\Http\Rest\Internal\DTO\Account\DeleteAccountRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Ramsey\Uuid\Uuid;

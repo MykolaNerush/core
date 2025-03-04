@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Command\Account\Update\UpdateAccountCommand;
-use App\UI\Http\Rest\Internal\DTO\Accounts\UpdateAccountRequest;
+use App\UI\Http\Rest\Internal\DTO\Account\UpdateAccountRequest;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;

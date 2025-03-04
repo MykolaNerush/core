@@ -7,7 +7,7 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 use App\Application\Query\Shared\Collection;
 use App\Application\Query\Account\GetAccounts\GetAccountsQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
-use App\UI\Http\Rest\Internal\DTO\Accounts\GetAccountsRequest;
+use App\UI\Http\Rest\Internal\DTO\Account\GetAccountsRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
