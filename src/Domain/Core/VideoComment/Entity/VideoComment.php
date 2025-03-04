@@ -134,16 +134,12 @@ class VideoComment implements SerializableReadModel
      */
     public static function deserialize(array $data): self
     {
-        $comment = new self();
-        $comment->uuid = Uuid::fromString($data['uuid']);
-        $comment->video = $data['video'];
-        $comment->user = $data['user'];
-        $comment->comment = $data['comment'];
-        $comment->status = CommentStatus::from($data['status']);
-        $comment->createdAt = new DateTimeImmutable($data['createdAt']);
-        $comment->updatedAt = isset($data['updatedAt']) ? new DateTimeImmutable($data['updatedAt']) : null;
-        $comment->deletedAt = isset($data['deletedAt']) ? new DateTimeImmutable($data['deletedAt']) : null;
-        return $comment;
+        return new self(
+            $data['video'],
+            $data['user'],
+            $data['comment'],
+            CommentStatus::from($data['status']),
+        );
     }
 
     /**

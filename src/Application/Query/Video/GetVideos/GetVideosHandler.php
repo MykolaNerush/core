@@ -30,7 +30,7 @@ readonly class GetVideosHandler
             $query->perPage,
             $query->order,
             $query->sort,
-            $query->uuidSearch,
+            $query->uuid,
             $query->title,
             $query->description,
             $query->filePath,

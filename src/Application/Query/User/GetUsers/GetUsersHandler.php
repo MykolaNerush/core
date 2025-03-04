@@ -30,8 +30,8 @@ readonly class GetUsersHandler
             $query->perPage,
             $query->order,
             $query->sort,
-            $query->uuidSearch,
-            $query->emailSearch
+            $query->uuid,
+            $query->email
         );
         return new Collection($result);
     }

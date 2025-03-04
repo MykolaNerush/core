@@ -77,7 +77,7 @@ final class GetVideoCommentsController extends QueryController
         $order = $request->get('order', 'ASC');
         $sort = $request->get('sort', 'createdAt');
         $filter = $request->get('filter', []);
-        $uuid = $filter['uuid'] ?? null;
+        $uuid = !empty($filter['uuid']) ? $this->getUuidOrNull($filter['uuid']) : null;
 
         $comment = $filter['comment'] ?? null;
 

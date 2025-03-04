@@ -105,7 +105,7 @@ final class GetVideosController extends QueryController
         $order = $request->get('order', 'ASC');
         $sort = $request->get('sort', 'createdAt');
         $filter = $request->get('filter', []);
-        $uuid = $filter['uuid'] ?? null;
+        $uuid = !empty($filter['uuid']) ? $this->getUuidOrNull($filter['uuid']) : null;
 
         $title = $filter['title'] ?? null;
         $description = $filter['description'] ?? null;

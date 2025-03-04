@@ -38,4 +38,10 @@ class GetAccountsRequest
         strict: true
     )]
     public ?string $uuid = null;
+
+    #[Assert\Uuid(
+        message: 'The user UUID format is invalid.',
+        strict: true
+    )]
+    public ?string $user = null;
 }

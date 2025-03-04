@@ -79,8 +79,8 @@ final class GetUsersController extends QueryController
         $order = $request->get('order', 'ASC');
         $sort = $request->get('sort', 'createdAt');
         $filter = $request->get('filter', []);
-        $uuid = $filter['uuid'] ?? null;
-        $emailSearch = $filter['email'] ?? null;
+        $uuid = !empty($filter['uuid']) ? $this->getUuidOrNull($filter['uuid']) : null;
+        $email = $filter['email'] ?? null;
         $page = $request->get('page', 1);
         $perPage = $request->get('perPage', 10);
 
@@ -91,7 +91,7 @@ final class GetUsersController extends QueryController
             order: $order,
             sort: $sort,
             uuid: $uuid,
-            emailSearch: $emailSearch,
+            email: $email,
         );
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);

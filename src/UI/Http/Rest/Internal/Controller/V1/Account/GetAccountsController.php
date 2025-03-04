@@ -9,6 +9,7 @@ use App\Application\Query\Account\GetAccounts\GetAccountsQuery;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\Account\GetAccountsRequest;
 use OpenApi\Attributes as OA;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,8 +68,8 @@ final class GetAccountsController extends QueryController
         schema: new OA\Schema(type: 'string')
     )]
     #[OA\Parameter(
-        name: 'filter[email]',
-        description: 'Example: some-string-as-a-part-of-email',
+        name: 'filter[user]',
+        description: 'Example: some-string-as-a-part-of-user',
         in: 'query',
         required: false,
         schema: new OA\Schema(type: 'string')
@@ -78,8 +79,8 @@ final class GetAccountsController extends QueryController
         $order = $request->get('order', 'ASC');
         $sort = $request->get('sort', 'createdAt');
         $filter = $request->get('filter', []);
-        $uuid = $filter['uuid'] ?? null;
-        $emailSearch = $filter['email'] ?? null;
+        $uuid = !empty($filter['uuid']) ? $this->getUuidOrNull($filter['uuid']) : null;
+        $user = !empty($filter['user']) ? $this->getUuidOrNull($filter['user']) : null;
         $page = $request->get('page', 1);
         $perPage = $request->get('perPage', 10);
 
@@ -90,7 +91,7 @@ final class GetAccountsController extends QueryController
             order: $order,
             sort: $sort,
             uuid: $uuid,
-            emailSearch: $emailSearch,
+            user: $user,
         );
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);

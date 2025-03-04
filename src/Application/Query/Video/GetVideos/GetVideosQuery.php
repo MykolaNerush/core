@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Query\Video\GetVideos;
 
 use App\Application\Query\Shared\Queries\BasePageQuery;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetVideosQuery extends BasePageQuery
 {
@@ -14,7 +15,7 @@ final class GetVideosQuery extends BasePageQuery
         public int      $perPage = BasePageQuery::PER_PAGE,
         public string   $order = BasePageQuery::ORDER,
         public string   $sort = BasePageQuery::SORT,
-        public ?string  $uuid = null,
+        public ?UuidInterface  $uuid = null,
         public ?string  $title = null,
         public ?string  $description = null,
         public ?string  $filePath = null,

@@ -21,7 +21,7 @@ final class VideoCommentsTransformer extends TransformerAbstract
             'user' => $videoComments->getUser(),
             'video' => $videoComments->getVideo(),
             'timestamps' => [
-                'createdAt' => $videoComments->getCreatedAt()?->format('Y-m-d H:i:s'),
+                'createdAt' => $videoComments->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updatedAt' => $videoComments->getUpdatedAt()?->format('Y-m-d H:i:s'),
             ],
         ];

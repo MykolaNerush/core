@@ -10,6 +10,7 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 use App\Infrastructure\Core\Account\Transformer\FromEntity\AccountTransformer;
 use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -29,12 +30,14 @@ final class AccountRepository extends MysqlRepository implements AccountReposito
         int            $perPage,
         string         $order,
         string         $sort,
-        ?UuidInterface $uuidSearch = null,
+        ?UuidInterface $uuid = null,
+        ?UuidInterface $user = null,
     ): PaginatedData
     {
         return $this->getFilteredPaginatedData(
             $this->getFilteredQueryBuilder($page, $perPage, $order, $sort, [
-                ['uuid', $uuidSearch],
+                ['uuid', $uuid],
+                ['user', $user],
             ]),
             $routeGenerator,
             new AccountTransformer(),

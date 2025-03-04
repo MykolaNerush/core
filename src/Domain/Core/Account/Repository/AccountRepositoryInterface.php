@@ -12,16 +12,20 @@ use Ramsey\Uuid\UuidInterface;
 interface AccountRepositoryInterface
 {
     public function create(Account $account): void;
+
     public function getByUuid(UuidInterface $uuid): mixed;
 
     public function update(Account $account): void;
+
     public function remove(Account $account): void;
+
     public function page(
-        callable      $routeGenerator,
-        int           $page,
-        int           $perPage,
-        string        $order,
-        string        $sort,
-        UuidInterface $uuidSearch = null,
+        callable       $routeGenerator,
+        int            $page,
+        int            $perPage,
+        string         $order,
+        string         $sort,
+        ?UuidInterface $uuid = null,
+        ?UuidInterface $user = null,
     ): PaginatedData;
 }

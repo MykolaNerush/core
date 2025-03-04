@@ -30,7 +30,8 @@ readonly class GetAccountsHandler
             $query->perPage,
             $query->order,
             $query->sort,
-            $query->uuidSearch,
+            $query->uuid,
+            $query->user,
         );
         return new Collection($result);
     }

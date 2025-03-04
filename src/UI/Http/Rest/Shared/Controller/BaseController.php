@@ -7,6 +7,9 @@ namespace App\UI\Http\Rest\Shared\Controller;
 use App\Application\Query\Shared\Collection;
 use App\Application\Query\Shared\Item;
 use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -67,5 +70,20 @@ abstract class BaseController
         return function (int $page) use ($request) {
             return $this->routeWithPage($page, $request);
         };
+    }
+
+    /**
+     * Get instance of UuidInterface from string or null.
+     */
+    protected function getUuidOrNull(?string $param): ?UuidInterface
+    {
+        if (null === $param) {
+            return null;
+        }
+        try {
+            return Uuid::fromString($param);
+        } catch (InvalidUuidStringException) {
+            return null;
+        }
     }
 }

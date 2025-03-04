@@ -30,7 +30,7 @@ readonly class GetVideoCommentsHandler
             $query->perPage,
             $query->order,
             $query->sort,
-            $query->uuidSearch,
+            $query->uuid,
             $query->comment,
         );
         return new Collection($result);
