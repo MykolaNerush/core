@@ -153,8 +153,8 @@ class VideoComment implements SerializableReadModel
     {
         return [
             'uuid' => $this->uuid->toString(),
-            'video' => $this->video->getUuid()->toString(),
-            'user' => $this->user->getUuid()->toString(),
+            'video' => $this->video->serialize(),
+            'user' => $this->user->serialize(),
             'comment' => $this->comment,
             'status' => $this->status->value,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),

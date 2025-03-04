@@ -21,7 +21,6 @@ final class DeleteAccountByIdController
     #[OA\Delete(
         summary: "Delete account by ID",
         security: [['Bearer' => []]],
-        tags: ['Account'],
         parameters: [
             new OA\Parameter(
                 name: "id",

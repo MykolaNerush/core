@@ -33,7 +33,6 @@ final class UpdateVideoByIdController
                 ]
             )
         ),
-        tags: ['Video'],
         parameters: [
             new OA\Parameter(
                 name: "id",

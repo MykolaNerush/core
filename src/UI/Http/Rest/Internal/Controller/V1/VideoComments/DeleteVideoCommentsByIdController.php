@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Rest\Internal\Controller\V1\User;
+namespace App\UI\Http\Rest\Internal\Controller\V1\VideoComments;
 
-use App\Application\Command\User\Delete\DeleteUserCommand;
-use App\UI\Http\Rest\Internal\DTO\User\DeleteUserRequest;
+use App\Application\Command\VideoComments\Delete\DeleteVideoCommentsCommand;
+use App\UI\Http\Rest\Internal\DTO\VideoComments\DeleteVideoCommentsRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Ramsey\Uuid\Uuid;
@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
-#[OA\Tag(name: 'User')]
-final class DeleteUserByIdController
+#[OA\Tag(name: 'Video comments')]
+final class DeleteVideoCommentsByIdController
 {
-    public string $dtoClass = DeleteUserRequest::class;
+    public string $dtoClass = DeleteVideoCommentsRequest::class;
 
     #[OA\Delete(
-        summary: "Delete user by ID",
+        summary: "Delete video comment by ID",
         security: [['Bearer' => []]],
         parameters: [
             new OA\Parameter(
@@ -30,14 +30,14 @@ final class DeleteUserByIdController
             )
         ],
         responses: [
-            new OA\Response(response: Response::HTTP_OK, description: "User deleted successfully"),
+            new OA\Response(response: Response::HTTP_OK, description: "Video comment deleted successfully"),
             new OA\Response(response: Response::HTTP_BAD_REQUEST, description: "Bad Request"),
             new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error")
         ]
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse
     {
-        $command = new DeleteUserCommand(uuid: Uuid::fromString($uuid));
+        $command = new DeleteVideoCommentsCommand(uuid: Uuid::fromString($uuid));
         $envelope = $messageBus->dispatch($command);
         $handledStamp = $envelope->last(HandledStamp::class);
         if (!$handledStamp) {

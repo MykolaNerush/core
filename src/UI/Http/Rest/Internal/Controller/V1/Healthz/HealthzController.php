@@ -8,6 +8,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+#[OA\Tag(name: 'Health')]
 final class HealthzController
 {
     #[OA\Get(

@@ -21,7 +21,6 @@ final class DeleteVideoByIdController
     #[OA\Delete(
         summary: "Delete video by ID",
         security: [['Bearer' => []]],
-        tags: ['Video'],
         parameters: [
             new OA\Parameter(
                 name: "id",

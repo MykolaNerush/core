@@ -30,7 +30,6 @@ final class UpdateAccountByIdController
                 ]
             )
         ),
-        tags: ['Account'],
         parameters: [
             new OA\Parameter(
                 name: "id",
