@@ -1,2 +1,13 @@
 parameters:
 	ignoreErrors:
+		-
+			message: '#^Method App\\Infrastructure\\Shared\\Factory\\AccountFactory\:\:class\(\) should return class\-string\<App\\Domain\\Core\\User\\Entity\\User\> but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Infrastructure/Shared/Factory/AccountFactory.php
+
+		-
+			message: '#^Method App\\Infrastructure\\Shared\\Factory\\VideoFactory\:\:defaults\(\) never returns callable\(int\)\: array\<string, mixed\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Infrastructure/Shared/Factory/VideoFactory.php

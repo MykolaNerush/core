@@ -34,23 +34,23 @@ class UserVideo
         $this->role = $role;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;
     }
 
-    public function getVideo(): ?Video
+    public function getVideo(): Video
     {
         return $this->video;
     }
 
-    public function setVideo(?Video $video): self
+    public function setVideo(Video $video): self
     {
         $this->video = $video;
         return $this;
