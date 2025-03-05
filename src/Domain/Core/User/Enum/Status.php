@@ -11,6 +11,8 @@ enum Status: string
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
     case SUSPENDED = 'suspended';
+    case ADMIN = 'admin';
+    case MODERATOR = 'moderator';
 
     public function label(): string
     {
@@ -20,6 +22,8 @@ enum Status: string
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
             self::SUSPENDED => 'Suspended',
+            self::ADMIN => 'Admin',
+            self::MODERATOR => 'Moderator',
         };
     }
 }
