@@ -10,8 +10,7 @@ use App\Domain\Core\Video\Entity\Video;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'user_videos')]
+#[ORM\Entity, ORM\Table(name: 'user_videos')]
 class UserVideo
 {
     #[ORM\Id]

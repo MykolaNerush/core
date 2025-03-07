@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Core\Video\Entity;
 
+use App\Domain\Core\UserVideo\Entity\UserVideo;
+use App\Domain\Core\VideoComment\Entity\VideoComment;
 use App\Domain\Shared\Entity\TimestampableEntity;
 use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,9 +14,9 @@ use App\Domain\Core\Video\Enum\Status;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'videos')]
+#[ORM\Entity, ORM\Table(name: 'videos')]
 class Video extends TimestampableEntity implements SerializableReadModel
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
@@ -34,18 +36,14 @@ class Video extends TimestampableEntity implements SerializableReadModel
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $duration = 0;
 
-//todo add STATUS
     #[ORM\Column(type: Types::STRING, enumType: Status::class)]
     private Status $status;
 
-//todo add in future
-//    #[ORM\OneToMany(mappedBy: 'video', targetEntity: Comment::class, cascade: ['remove'])]
-//    private Collection $comments;
-//    #[ORM\OneToMany(mappedBy: 'video', targetEntity: Rating::class, cascade: ['remove'])]
-//    private Collection $ratings;
-//    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'videos')]
-//    #[ORM\JoinTable(name: 'video_tags')]
-//    private Collection $tags;
+    #[ORM\OneToMany(targetEntity: VideoComment::class, mappedBy: 'video')]
+    private Collection $comments;
+
+    #[ORM\OneToMany(targetEntity: UserVideo::class, mappedBy: 'video')]
+    private Collection $userVideos;
 
     public function __construct(
         string  $title,
@@ -135,6 +133,17 @@ class Video extends TimestampableEntity implements SerializableReadModel
     {
         return $this->uuid->toString();
     }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function getUserVideos(): Collection
+    {
+        return $this->userVideos;
+    }
+
 
     /**
      * @param array<string, mixed> $data

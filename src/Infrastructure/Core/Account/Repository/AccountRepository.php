@@ -10,7 +10,6 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 use App\Infrastructure\Core\Account\Transformer\FromEntity\AccountTransformer;
 use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**

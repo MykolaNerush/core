@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Core\User\Entity;
 
+use App\Domain\Core\UserVideo\Entity\UserVideo;
 use App\Domain\Shared\Entity\TimestampableEntity;
 use Broadway\ReadModel\SerializableReadModel;
 use DateTimeImmutable;
@@ -15,10 +16,11 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use App\Domain\Core\Account\Entity\Account;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'users')]
-class User extends TimestampableEntity implements SerializableReadModel
+#[ORM\Entity, ORM\Table(name: 'users')]
+class User extends TimestampableEntity implements UserInterface, PasswordAuthenticatedUserInterface, SerializableReadModel
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -41,6 +43,22 @@ class User extends TimestampableEntity implements SerializableReadModel
     #[ORM\OneToMany(targetEntity: Account::class, mappedBy: 'user')]
     private Collection $accounts;
 
+    #[ORM\ManyToMany(targetEntity: UserRole::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'user_roles_mapping')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uuid', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'role', referencedColumnName: 'role', onDelete: 'CASCADE')]
+    #[ORM\OneToMany(targetEntity: UserRoleMapping::class, mappedBy: 'user')]
+    private Collection $roles;
+
+    #[ORM\OneToMany(targetEntity: UserVideo::class, mappedBy: 'user')]
+    private Collection $userVideos;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $confirmationToken = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isEmailConfirmed = false;
+
     public function __construct(
         string $name,
         string $email,
@@ -55,6 +73,18 @@ class User extends TimestampableEntity implements SerializableReadModel
         $this->status = $status;
         $this->createdAt = new DateTimeImmutable();
         $this->accounts = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+        return $this;
     }
 
     public function getUuid(): UuidInterface
@@ -108,6 +138,11 @@ class User extends TimestampableEntity implements SerializableReadModel
     public function getAccounts(): ?Collection
     {
         return $this->accounts;
+    }
+
+    public function getUserVideos(): Collection
+    {
+        return $this->userVideos;
     }
 
     /**
@@ -186,5 +221,53 @@ class User extends TimestampableEntity implements SerializableReadModel
             $this->status = $status;
         }
         $this->setUpdatedAt();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return array_map(fn(UserRole $role) => $role->getRole(), $this->roles->toArray());
+    }
+
+    public function addRole(UserRole $role): void
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+    }
+
+    public function removeRole(UserRole $role): void
+    {
+        $this->roles->removeElement($role);
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles->clear();
+        foreach ($roles as $role) {
+            if ($role instanceof UserRole) {
+                $this->roles->add($role);
+            }
+        }
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function setIsEmailConfirmed(bool $isEmailConfirmed): void
+    {
+        $this->isEmailConfirmed = $isEmailConfirmed;
+    }
+
+    public function getIsEmailConfirmed(): bool
+    {
+        return $this->isEmailConfirmed;
     }
 }

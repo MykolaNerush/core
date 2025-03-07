@@ -34,6 +34,7 @@ final class UserTransformer extends TransformerAbstract
         return [
             'id' => $user->getUuid(),
             'uuid' => $user->getUuid(),
+            'videos' => $user->getUserVideos(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'status' => $user->getStatus()->label(),

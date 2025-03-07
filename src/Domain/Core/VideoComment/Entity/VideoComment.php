@@ -14,8 +14,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\DBAL\Types\Types;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'video_comments')]
+#[ORM\Entity, ORM\Table(name: 'video_comments')]
 class VideoComment implements SerializableReadModel
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]

@@ -9,29 +9,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class GetVideoCommentsRequest
 {
-    /**
-     * @var int
-     */
     #[Assert\Positive(message: 'Invalid page parameter')]
-    public $page = BasePageQuery::PAGE;
+    public int $page = BasePageQuery::PAGE;
 
-    /**
-     * @var int
-     */
     #[Assert\Positive(message: 'Invalid per page')]
-    public $perPage = BasePageQuery::PER_PAGE;
+    public int $perPage = BasePageQuery::PER_PAGE;
 
-    /**
-     * @var string
-     */
     #[Assert\Choice(choices: ['ASC', 'DESC'], message: 'Invalid order')]
-    public $order = BasePageQuery::ORDER;
+    public string $order = BasePageQuery::ORDER;
 
-    /**
-     * @var string
-     */
     #[Assert\Choice(choices: ['status', 'createdAt', 'updatedAt'], message: 'Invalid sort')]
-    public $sort = BasePageQuery::SORT;
+    public string $sort = BasePageQuery::SORT;
 
     #[Assert\Uuid(
         message: 'The UUID format is invalid.',

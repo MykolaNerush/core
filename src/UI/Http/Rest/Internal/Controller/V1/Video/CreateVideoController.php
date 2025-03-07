@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[OA\Tag(name: 'Video')]
 final class CreateVideoController extends CommandController
@@ -22,10 +23,25 @@ final class CreateVideoController extends CommandController
     #[OA\Post(
         summary: 'Create video',
         security: [['Bearer' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'title', type: 'string'),
+                        new OA\Property(property: 'description', type: 'string'),
+                        new OA\Property(property: 'file', type: 'string', format: 'binary'),
+                        new OA\Property(property: 'thumbnail', type: 'string', format: 'binary'),
+                        new OA\Property(property: 'duration', type: 'integer'),
+                    ],
+                    type: 'object'
+                )
+            )
+        ),
         responses: [
-            new OA\Response(response: Response::HTTP_CREATED, description: 'video created successfully'),
+            new OA\Response(response: Response::HTTP_CREATED, description: 'Video created successfully'),
             new OA\Response(response: Response::HTTP_BAD_REQUEST, description: 'Bad request'),
-            new OA\Response(response: Response::HTTP_CONFLICT, description: 'Conflict'),
             new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal server error')
         ]
     )]
@@ -39,13 +55,6 @@ final class CreateVideoController extends CommandController
     #[OA\Parameter(
         name: 'description',
         description: 'Description',
-        in: 'query',
-        required: false,
-        schema: new OA\Schema(type: 'string')
-    )]
-    #[OA\Parameter(
-        name: 'filePath',
-        description: 'filePath',
         in: 'query',
         required: false,
         schema: new OA\Schema(type: 'string')
@@ -68,15 +77,16 @@ final class CreateVideoController extends CommandController
     {
         $title = $request->get('title');
         $description = $request->get('description');
-        $filePath = $request->get('filePath');
         $thumbnailPath = $request->get('thumbnailPath');
         $duration = $request->get('duration', 0);
+        /** @var UploadedFile|null $videoFile */
+        $videoFile = $request->files->get('file');
         $command = new CreateVideoCommand(
             title: $title,
             description: $description,
-            filePath: $filePath,
             thumbnailPath: $thumbnailPath,
-            duration: $duration,
+            videoFile: $videoFile,
+            duration: $duration, //todo get from file
         );
         $envelope = $messageBus->dispatch($command);
         $handledStamp = $envelope->last(HandledStamp::class);

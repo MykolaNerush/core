@@ -108,3 +108,13 @@ video-comments_delete:
   path: /video-comments/{uuid}
   controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\DeleteVideoCommentsByIdController::__invoke
   methods: DELETE
+
+signup:
+  path: /signup
+  controller: App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController::__invoke
+  methods: POST
+
+singin:
+  path: /signin
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\SignUpController::__invoke
+  methods: POST

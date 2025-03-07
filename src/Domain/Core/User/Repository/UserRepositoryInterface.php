@@ -11,9 +11,15 @@ use App\Domain\Core\Shared\Query\Dto\PaginatedData;
 interface UserRepositoryInterface
 {
     public function getByUuid(UuidInterface $uuid): mixed;
+
     public function update(User $user): void;
-    public function create(User $user): void;
+
+    public function createUser(string $name, string $email, string $password): User;
+
     public function remove(User $user): void;
+
+    public function confirmEmail(string $email): void;
+
     public function page(
         callable      $routeGenerator,
         int           $page,

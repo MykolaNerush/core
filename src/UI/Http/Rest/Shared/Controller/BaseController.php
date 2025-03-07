@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class BaseController
 {
     public function __construct(
-        protected BaseJsonApiFormatterInterface  $formatter,
-        protected UrlGeneratorInterface $router,
+        protected BaseJsonApiFormatterInterface $formatter,
+        protected UrlGeneratorInterface         $router,
     )
     {
     }

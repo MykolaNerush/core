@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\DTO\Video;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateVideoRequest
@@ -43,4 +44,11 @@ class CreateVideoRequest
 
     #[Assert\Positive(message: 'Invalid page parameter')]
     public ?string $duration;
+
+    #[Assert\NotNull(message: 'The file field is required.')]
+    #[Assert\File(
+        maxSize: '500M',
+        mimeTypes: ['video/mp4', 'video/avi', 'video/mpeg', 'video/quicktime']
+    )]
+    public UploadedFile $file;
 }

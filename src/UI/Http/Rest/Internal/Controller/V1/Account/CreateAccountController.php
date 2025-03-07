@@ -48,7 +48,7 @@ final class CreateAccountController extends CommandController
     {
         $accountName = $request->get('accountName');
         //todo add get auth user
-        $userUuid = '724afee0-d001-47e5-a9d4-29a3f19b81b8';
+        $userUuid = 'ea24298e-7832-4c93-b345-de980b6783aa';
         $uuid = Uuid::fromString($userUuid);
         /* @var User $user */
         $user = $userRepository->getByUuid($uuid);

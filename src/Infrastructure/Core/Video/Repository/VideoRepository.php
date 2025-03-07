@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Core\Video\Repository;
 
+use App\Domain\Core\UserVideo\Entity\UserVideo;
 use App\Domain\Core\Video\Entity\Video;
 use App\Domain\Core\Video\Repository\VideoRepositoryInterface;
 use App\Infrastructure\Core\Video\Transformer\FromEntity\VideoTransformer;
 use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use App\Domain\Core\Shared\Query\Dto\PaginatedData;
+use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -54,4 +56,11 @@ final class VideoRepository extends MysqlRepository implements VideoRepositoryIn
             'videos'
         );
     }
+
+    public function createUerVideo(UserVideo $userVideo): void
+    {
+        $this->em->persist($userVideo);
+        $this->em->flush();
+    }
+
 }
