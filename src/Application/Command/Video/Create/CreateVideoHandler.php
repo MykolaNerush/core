@@ -49,11 +49,6 @@ readonly class CreateVideoHandler
             video: $video,
         );
         $this->videoRepository->createUerVideo($userVideo);
-echo "<pre>";
-var_export($video->getId());
-var_export($userVideo->getVideo()->getId());
-var_export($userVideo->getUser()->getId());
-die();
         return $video->getId();
     }
 }

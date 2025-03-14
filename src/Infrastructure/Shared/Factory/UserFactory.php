@@ -33,17 +33,23 @@ class UserFactory extends PersistentProxyObjectFactory
     {
         $email = self::faker()->email();
         $name = self::faker()->firstName(33);
-        $plainPassword = self::faker()->password(1, 3);
-
-        $user = new User($name, $email, $plainPassword, Status::ACTIVE);
 
         return [
-            'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'email' => $email,
             'name' => $name,
-            'password' => $this->hashPassword($user, $plainPassword),
-            'status' => $user->getStatus(),
+            'password' => '',
+            'plainPassword' => 'test',
+            'status' => Status::ACTIVE,
         ];
+    }
+
+    protected function initialize(): static
+    {
+        return $this->afterInstantiate(function (User $user) {
+            if ($user->getPlainPassword()) {
+                $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
+            }
+        });
     }
 
     private function hashPassword(User $user, string $plainPassword): string

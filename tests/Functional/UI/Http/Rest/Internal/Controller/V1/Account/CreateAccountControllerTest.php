@@ -32,8 +32,8 @@ class CreateAccountControllerTest extends BaseTestCase
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'The accountName field is required.',
-                    'code' => 500,
+                    'messages' => ['The accountName field is required.'],
+                    'code' => 400,
                 ]
             ],
         ];

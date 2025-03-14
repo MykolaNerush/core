@@ -28,11 +28,11 @@ readonly class ExceptionListener
 
         $response = new JsonResponse([
             'status' => 'error',
-            'message' => $exception->getMessage(),
+            'messages' => [$exception->getMessage()],
             'code' => $statusCode,
         ], $statusCode);
 
-        $this->logger->error('Exception occurred: '.$exception->getMessage(), [
+        $this->logger->error('Exception occurred: ' . $exception->getMessage(), [
             'message' => $exception->getMessage(),
             'code' => $statusCode,
             'trace' => $exception->getTraceAsString()

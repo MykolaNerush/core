@@ -53,8 +53,11 @@ readonly class RequestValidatorListener
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }
-
-            return new JsonResponse(['errors' => $errorMessages], 400);
+            return new JsonResponse([
+                'status' => 'error',
+                'messages' => $errorMessages,
+                'code' => 400,
+            ], 400);
         }
 
         return $dto;

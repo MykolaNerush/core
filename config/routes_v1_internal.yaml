@@ -114,7 +114,7 @@ signup:
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController::__invoke
   methods: POST
 
-singin:
+signin:
   path: /signin
-  controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\SignUpController::__invoke
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\SignInController::__invoke
   methods: POST

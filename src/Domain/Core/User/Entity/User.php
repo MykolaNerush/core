@@ -18,6 +18,7 @@ use App\Domain\Core\Account\Entity\Account;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
 #[ORM\Entity, ORM\Table(name: 'users')]
 class User extends TimestampableEntity implements UserInterface, PasswordAuthenticatedUserInterface, SerializableReadModel
@@ -43,6 +44,9 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     #[ORM\OneToMany(targetEntity: Account::class, mappedBy: 'user')]
     private Collection $accounts;
 
+    /**
+     * @var Collection<int, UserRole>
+     */
     #[ORM\ManyToMany(targetEntity: UserRole::class, inversedBy: 'users')]
     #[ORM\JoinTable(name: 'user_roles_mapping')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uuid', onDelete: 'CASCADE')]
@@ -50,6 +54,9 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     #[ORM\OneToMany(targetEntity: UserRoleMapping::class, mappedBy: 'user')]
     private Collection $roles;
 
+    /**
+     * @var Collection<int, UserVideo>
+     */
     #[ORM\OneToMany(targetEntity: UserVideo::class, mappedBy: 'user')]
     private Collection $userVideos;
 
@@ -58,6 +65,7 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isEmailConfirmed = false;
+    private ?string $plainPassword;
 
     public function __construct(
         string $name,
@@ -140,9 +148,35 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
         return $this->accounts;
     }
 
+    /**
+     * @return Collection<int, UserVideo>
+     */
     public function getUserVideos(): Collection
     {
         return $this->userVideos;
+    }
+
+    public function addUserVideos(UserVideo $userVideos): void
+    {
+        if (!$this->userVideos->contains($userVideos)) {
+            $this->userVideos->add($userVideos);
+        }
+    }
+
+    public function removeUserVideos(UserVideo $userVideos): void
+    {
+        $this->userVideos->removeElement($userVideos);
+    }
+
+    /**
+     * @param UserVideo[] $userVideos
+     */
+    public function setUserVideos(array $userVideos): void
+    {
+        $this->userVideos->clear();
+        foreach ($userVideos as $video) {
+            $this->userVideos->add($video);
+        }
     }
 
     /**
@@ -225,12 +259,15 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
 
     public function getUserIdentifier(): string
     {
+        Assert::stringNotEmpty($this->email, 'User identifier (email) cannot be empty.');
         return $this->email;
     }
 
     public function getRoles(): array
     {
-        return array_map(fn(UserRole $role) => $role->getRole(), $this->roles->toArray());
+        $roles = array_map(fn(UserRoleMapping $mapping) => $mapping->getRole()->getRole(), $this->roles->toArray());
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
     }
 
     public function addRole(UserRole $role): void
@@ -245,20 +282,31 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
         $this->roles->removeElement($role);
     }
 
+    /**
+     * @param UserRole[] $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles->clear();
         foreach ($roles as $role) {
-            if ($role instanceof UserRole) {
-                $this->roles->add($role);
-            }
+            $this->roles->add($role);
         }
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function setIsEmailConfirmed(bool $isEmailConfirmed): void

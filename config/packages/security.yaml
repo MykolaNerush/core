@@ -1,30 +1,41 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    providers:
-        user_provider:
-            entity:
-                class: App\Domain\Core\User\Entity\User
-                property: email
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: user_provider
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Domain\Core\User\Entity\User
+        property: email
 
-    access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/moderator, roles: ROLE_MODERATOR }
+  firewalls:
+    api:
+      pattern: ^/api/v1/internal
+#      stateless: true
+      jwt: ~
+      provider: app_user_provider
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+  access_control:
+    - { path: ^/api/v1/internal/signin, roles: PUBLIC_ACCESS }
+    - { path: ^/api/v1/internal, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
-    security:
-        password_hashers:
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+  security:
+    password_hashers:
+      Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+        algorithm: auto
+        cost: 4
+        time_cost: 3
+        memory_cost: 10
+#access_control:
+#  - { path: ^/api/v1/internal/signin, roles: PUBLIC_ACCESS }
+#  - { path: ^/api/v1/internal, roles: IS_AUTHENTICATED_FULLY }
+##    access_control:
+###         - { path: ^/admin, roles: ROLE_ADMIN }
+###         - { path: ^/moderator, roles: ROLE_MODERATOR }
+##         - { path: ^/api/auth, roles: PUBLIC_ACCESS }
+##         - { path: ^/api, roles: ROLE_USER }
+##         - { path: ^/api/v1/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }

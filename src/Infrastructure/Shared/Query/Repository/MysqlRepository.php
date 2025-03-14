@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Shared\Query\Repository;
 
 use App\Domain\Core\Shared\Query\Dto\PaginatedData;
+use App\Infrastructure\Shared\Exception\NotFoundException;
+use App\Infrastructure\Shared\Serializer\JsonApiSerializer;
+use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -13,9 +16,6 @@ use League\Fractal\Manager;
 use League\Fractal\Pagination\DoctrinePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use Ramsey\Uuid\UuidInterface;
-use App\Domain\Shared\Query\Exception\NotFoundException;
-use App\Infrastructure\Shared\Serializer\JsonApiSerializer;
-use Broadway\ReadModel\SerializableReadModel;
 
 /**
  * @template T of object

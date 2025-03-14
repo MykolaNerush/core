@@ -48,3 +48,7 @@ services:
   App\Infrastructure\Shared\Validation\RequestValidatorListener:
     tags:
       - { name: kernel.event_listener, event: kernel.controller }
+
+  App\Infrastructure\Core\User\Service\Auth\JwtTokenService:
+    arguments:
+      $jwtEncoder: '@lexik_jwt_authentication.encoder'
