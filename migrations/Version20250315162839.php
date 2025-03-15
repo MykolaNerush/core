@@ -7,15 +7,20 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240315000000 extends AbstractMigration
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20250315162839 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Create authentication_log table';
+        return '';
     }
 
     public function up(Schema $schema): void
     {
+        // this up() migration is auto-generated, please modify it to your needs
+        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE authentication_log (
             id INT AUTO_INCREMENT NOT NULL,
             user_id BINARY(16) DEFAULT NULL,
@@ -35,4 +40,4 @@ final class Version20240315000000 extends AbstractMigration
     {
         $this->addSql('DROP TABLE authentication_log');
     }
-} 
+}
