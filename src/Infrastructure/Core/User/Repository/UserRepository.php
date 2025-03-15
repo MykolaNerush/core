@@ -11,10 +11,15 @@ use App\Infrastructure\Core\User\Transformer\FromEntity\UserTransformer;
 use App\Infrastructure\Shared\Mailer\UserMailer;
 use App\Infrastructure\Shared\Query\Repository\MysqlRepository;
 use App\Domain\Core\Shared\Query\Dto\PaginatedData;
+use App\Domain\Core\Account\Account;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends MysqlRepository<User>

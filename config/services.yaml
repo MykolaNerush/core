@@ -4,29 +4,32 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  upload_video_dir: '%kernel.project_dir%/%env(UPLOAD_VIDEO_DIR)%'
+  upload_video_dir: "%kernel.project_dir%/%env(UPLOAD_VIDEO_DIR)%"
+  jwt_secret: "%env(JWT_SECRET)%"
+  jwt_issuer: "%env(JWT_ISSUER)%"
+  jwt_ttl: "%env(JWT_TTL)%"
 
 services:
   _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
+    autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
   # Default resource configuration for the App namespace
   App\:
-    resource: '../src/'
+    resource: "../src/"
     exclude:
-      - '../src/DependencyInjection/'
-      - '../src/Entity/'
-      - '../src/Kernel.php'
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
 
   App\UI\Http\Rest\Internal\Controller\:
-    resource: '../src/UI/Http/Rest/Internal/Controller/'
-    tags: [ 'controller.service_arguments' ]
+    resource: "../src/UI/Http/Rest/Internal/Controller/"
+    tags: [ "controller.service_arguments" ]
 
   App\Application\Shared\Validator\UniqueEmailValidator:
     arguments:
       $userRepository: '@App\Infrastructure\Core\User\Repository\UserRepository'
-    tags: [ 'validator.constraint_validator' ]
+    tags: [ "validator.constraint_validator" ]
 
   App\Infrastructure\Shared\EventListener\ExceptionListener:
     tags:
@@ -34,21 +37,47 @@ services:
 
   App\Infrastructure\Shared\Mailer\UserMailer:
     arguments:
-      $secretKey: '%env(EMAIL_CONFIRMATION_SECRET_KEY)%'
+      $secretKey: "%env(EMAIL_CONFIRMATION_SECRET_KEY)%"
 
   #  VALIDATORS
   App\Domain\Core\User\Validator\Constraints\ConfirmEmailRequestConstraintValidator:
     arguments:
-      $secretKey: '%env(EMAIL_CONFIRMATION_SECRET_KEY)%'
+      $secretKey: "%env(EMAIL_CONFIRMATION_SECRET_KEY)%"
       $userRepository: '@App\Domain\Core\User\Repository\UserRepositoryInterface'
       $userConfirmationService: '@App\Infrastructure\Shared\Services\User\UserConfirmationService'
     tags:
-      - { name: validator.constraint_validator, alias: app_valid_signature_validator }
+      - {
+        name: validator.constraint_validator,
+        alias: app_valid_signature_validator,
+      }
 
   App\Infrastructure\Shared\Validation\RequestValidatorListener:
     tags:
       - { name: kernel.event_listener, event: kernel.controller }
 
-  App\Infrastructure\Core\User\Service\Auth\JwtTokenService:
+  App\Infrastructure\Core\Auth\Repository\RedisTokenRepository:
     arguments:
-      $jwtEncoder: '@lexik_jwt_authentication.encoder'
+      $redis: "@snc_redis.default"
+
+  App\Domain\Core\Auth\Repository\TokenRepositoryInterface:
+    alias: App\Infrastructure\Core\Auth\Repository\RedisTokenRepository
+
+  App\Infrastructure\Core\Auth\Service\DatabaseAuthenticationLogger:
+    arguments:
+      $connection: "@doctrine.dbal.default_connection"
+
+  App\Domain\Core\Auth\Service\AuthenticationLoggerInterface:
+    alias: App\Infrastructure\Core\Auth\Service\DatabaseAuthenticationLogger
+
+  App\Infrastructure\Core\Auth\Service\RedisIpLimiter:
+    arguments:
+      $redis: "@snc_redis.default"
+
+  # Auth commands
+  App\Infrastructure\Core\Auth\Command\WhitelistIpCommand:
+    arguments:
+      $redis: "@snc_redis.default"
+    tags: [ "console.command" ]
+
+  # Redis client alias
+  Predis\ClientInterface: "@snc_redis.default"

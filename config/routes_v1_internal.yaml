@@ -109,6 +109,7 @@ video-comments_delete:
   controller: App\UI\Http\Rest\Internal\Controller\V1\VideoComments\DeleteVideoCommentsByIdController::__invoke
   methods: DELETE
 
+# Authentication routes
 signup:
   path: /signup
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\CreateUserController::__invoke
@@ -117,4 +118,14 @@ signup:
 signin:
   path: /signin
   controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\SignInController::__invoke
+  methods: POST
+
+refresh_token:
+  path: /refresh-token
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\RefreshTokenController::__invoke
+  methods: POST
+
+revoke_token:
+  path: /revoke-token
+  controller: App\UI\Http\Rest\Internal\Controller\V1\Auth\RevokeTokenController::__invoke
   methods: POST

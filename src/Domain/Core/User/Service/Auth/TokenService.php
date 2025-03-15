@@ -8,9 +8,19 @@ use App\Domain\Core\User\Entity\User;
 
 interface TokenService
 {
-    public function createToken(User $user): string;
+    /**
+     * @return array{token: string, refresh_token: string, expires_in: int}
+     */
+    public function createToken(User $user): array;
 
     public function validateToken(string $token): bool;
 
     public function getUserFromToken(string $token): array;
+
+    /**
+     * @return array{token: string, refresh_token: string, expires_in: int}
+     */
+    public function refreshToken(string $refreshToken): array;
+
+    public function revokeToken(string $token): void;
 }

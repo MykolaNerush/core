@@ -20,6 +20,5 @@ class SignInUserRequest
 
     #[Assert\NotBlank(message: 'The email field is required.')]
     #[Assert\Email(message: 'The email format is invalid.')]
-    #[UniqueEmail]
     public string $email;
 }
