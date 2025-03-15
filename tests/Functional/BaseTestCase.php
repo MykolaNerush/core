@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BaseTestCase extends WebTestCase
@@ -27,6 +28,7 @@ class BaseTestCase extends WebTestCase
                 'core_test.users.sql',
                 'core_test.accounts.sql',
                 'core_test.videos.sql',
+                'core_test.user_roles_mapping.sql',
             ];
 
             foreach ($dumps as $dump) {
@@ -38,6 +40,23 @@ class BaseTestCase extends WebTestCase
         } catch (\PDOException $e) {
             throw new \RuntimeException('Failed to set up the database: ' . $e->getMessage(), 0, $e);
         }
+    }
+
+    protected static function createAuthClient(string $username = 'auth@gmail.com', string $password = 'test'): KernelBrowser
+    {
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/v1/internal/signin',
+            [
+                'email' => $username,
+                'password' => $password,
+            ]
+        );
+        $data = json_decode($client->getResponse()->getContent(), true);
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+
+        return $client;
     }
 
 }

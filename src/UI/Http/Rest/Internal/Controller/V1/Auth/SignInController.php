@@ -4,33 +4,39 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\Controller\V1\Auth;
 
-use App\Infrastructure\Core\User\Repository\UserRepository;
-use App\Infrastructure\Shared\Security\JWTTokenGenerator;
+use App\Application\Command\User\Auth\SignIn\SignInCommand;
+use App\UI\Http\Rest\Internal\Controller\CommandController;
+use App\UI\Http\Rest\Internal\DTO\Auth\SignInUserRequest;
+use App\UI\Http\Rest\Shared\Response\BaseJsonApiFormatterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class SignInController
+final class SignInController extends CommandController
 {
     public function __construct(
-        private readonly UserRepository              $userRepository,
-        private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly JWTTokenGenerator $tokenGenerator
-    ) {}
-
-    public function __invoke(Request $request): JsonResponse
+        protected BaseJsonApiFormatterInterface $formatter,
+        protected UrlGeneratorInterface         $router,
+    )
     {
-        $data = json_decode($request->getContent(), true);
-        if (!$data) {
-            return new JsonResponse(['error' => 'Invalid JSON'], JsonResponse::HTTP_BAD_REQUEST);
-        }
+        parent::__construct($formatter, $router);
+    }
 
-        $user = $this->userRepository->findByEmail($data['email'] ?? '');
-        if (!$user || !$this->passwordHasher->isPasswordValid($user, $data['password'] ?? '')) {
-            return new JsonResponse(['error' => 'Invalid credentials'], JsonResponse::HTTP_UNAUTHORIZED);
-        }
+    public string $dtoClass = SignInUserRequest::class;
 
-        $token = $this->tokenGenerator->generateToken($user);
-        return new JsonResponse(['token' => $token]);
+    public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
+    {
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $command = new SignInCommand($email, $password);
+        $envelope = $messageBus->dispatch($command);
+        $handledStamp = $envelope->last(HandledStamp::class);
+        if (!$handledStamp) {
+            throw new \RuntimeException('No handler was found for this query or handler failed to execute.');
+        }
+        $result = $handledStamp->getResult();
+        return new JsonResponse($result);
     }
 }

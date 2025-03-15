@@ -16,7 +16,7 @@ class UpdateVideoByIdControllerTest extends BaseTestCase
     #[DataProvider('updateVideosErrorProvider')]
     public function testUpdateVideoError($uuid, $params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/videos/' . $uuid, $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -33,8 +33,8 @@ class UpdateVideoByIdControllerTest extends BaseTestCase
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'The title must be at least 2 characters long.',
-                    'code' => 500,
+                    'messages' => ['The title must be at least 2 characters long.'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -43,7 +43,7 @@ class UpdateVideoByIdControllerTest extends BaseTestCase
     #[DataProvider('successUpdateVideosProvider')]
     public function testSuccessUpdateVideo($uuid, $params): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/videos/' . $uuid, $params);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

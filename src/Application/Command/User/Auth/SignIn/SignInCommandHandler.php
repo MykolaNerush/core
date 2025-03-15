@@ -25,7 +25,7 @@ final readonly class SignInCommandHandler
     {
         $user = $this->userRepository->findOneBy(['email' => $command->email]);
         if (!$user || !$this->passwordHasher->isPasswordValid($user, $command->password)) {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException('Invalid credentials.');
         }
         return [
             'token' => $this->tokenService->createToken($user)
