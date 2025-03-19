@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
-use App\Application\Query\Shared\Collection;
 use App\Application\Query\User\GetUsers\GetUsersQuery;
-use App\Domain\Core\User\Entity\User;
 use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\User\GetUsersRequest;
 use OpenApi\Attributes as OA;
@@ -15,8 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'User')]
+//#[IsGranted('ROLE_ADMIN')]
 final class GetUsersController extends QueryController
 {
     public string $dtoClass = GetUsersRequest::class;

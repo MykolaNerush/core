@@ -81,3 +81,9 @@ services:
 
   # Redis client alias
   Predis\ClientInterface: "@snc_redis.default"
+
+  # Security voters
+  App\Infrastructure\Core\Security\Voter\ResourceVoter:
+    tags:
+      - { name: security.voter }
+    public: false

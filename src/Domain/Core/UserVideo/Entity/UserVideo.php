@@ -7,11 +7,12 @@ namespace App\Domain\Core\UserVideo\Entity;
 use App\Domain\Core\UserVideo\Enum\Role;
 use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\Video\Entity\Video;
+use App\Domain\Shared\Entity\OwnableInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'user_videos')]
-class UserVideo
+class UserVideo implements OwnableInterface
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userVideos')]
@@ -63,6 +64,11 @@ class UserVideo
     public function setRole(Role $role): void
     {
         $this->role = $role;
+    }
+
+    public function getOwnerId(): string
+    {
+        return $this->user->getUuid()->toString();
     }
 
 }
