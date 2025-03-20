@@ -6,17 +6,19 @@ namespace App\Infrastructure\Shared\Factory;
 
 use App\Domain\Core\Account\Entity\Account;
 use App\Domain\Core\User\Entity\User;
+use App\Domain\Core\User\Entity\UserRole;
+use App\Domain\Core\User\Entity\UserRoleMapping;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use \App\Domain\Core\Account\Enum\Status;
 
 /**
  * @extends PersistentProxyObjectFactory<User>
  */
-class AccountFactory extends PersistentProxyObjectFactory
+class UserRoleMappingFactory extends PersistentProxyObjectFactory
 {
     public static function class(): string
     {
-        return Account::class;
+        return UserRoleMapping::class;
     }
 
     /**
@@ -25,10 +27,8 @@ class AccountFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'accountName' => self::faker()->text(255),
-            'balance' => self::faker()->randomNumber(),
-            'createdAt' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'status' => Status::ACTIVE,
+            'user' => UserFactory::new(),
+            'role' => UserRoleFactory::new(),
         ];
     }
 }

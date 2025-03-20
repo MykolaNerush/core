@@ -35,7 +35,7 @@ class Account extends TimestampableEntity implements SerializableReadModel
     ]
     private User $user;
 
-    public function __construct(string $accountName, User $user, Status $status = Status::ACTIVE)
+    public function __construct(string $accountName, User $user, Status $status = Status::NEW)
     {
         $this->uuid = Uuid::uuid4();
         $this->accountName = $accountName;

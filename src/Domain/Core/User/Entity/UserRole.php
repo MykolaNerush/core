@@ -15,7 +15,7 @@ class UserRole
     private string $role;
 
     #[ORM\OneToMany(targetEntity: UserRoleMapping::class, mappedBy: 'role')]
-    private Collection $users;
+    private Collection $users; //TODO CHECK !!!!!!!!!!!!!!!!!
 
 
     public function __construct(string $role)

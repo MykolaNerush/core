@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Shared\DataFixtures;
 
+use App\Domain\Core\User\Entity\UserRole;
+use App\Domain\Core\User\Entity\UserRoleMapping;
 use App\Infrastructure\Shared\Factory\AccountFactory;
 use App\Infrastructure\Shared\Factory\UserFactory;
+use App\Infrastructure\Shared\Factory\UserRoleFactory;
+use App\Infrastructure\Shared\Factory\UserRoleMappingFactory;
 use App\Infrastructure\Shared\Factory\UserVideoFactory;
 use App\Infrastructure\Shared\Factory\VideoCommentFactory;
 use App\Infrastructure\Shared\Factory\VideoFactory;
@@ -16,44 +20,42 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $users = UserFactory::createMany(3);
-        $videos = VideoFactory::createMany(3);
+        $user = UserFactory::createOne([
+            'email' => 'admin@gmail.com',
+            'plainPassword' => 'test',
+            'name' => 'admin',
+        ]);
 
+        $roles = array_map(fn($role) => UserRoleFactory::createOne(['role' => $role]), ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MODERATOR']);
+        foreach ($roles as $role) {
+            UserRoleMappingFactory::createOne([
+                'user' => $user,
+                'role' => $role,
+            ]);
+        }
+
+        $videos = VideoFactory::createMany(3);
         $manager->flush();
         $manager->clear();
 
-        AccountFactory::createMany(3, function () use (&$users) {
-            return [
-                'user' => $users[array_rand($users)]
-            ];
-        });
-        // unique relations between User and Video
-        $userVideoCombinations = [];
-        foreach ($users as $user) {
-            foreach ($videos as $video) {
-                $userVideoCombinations[] = ['user' => $user, 'video' => $video];
-            }
+        AccountFactory::createOne([
+            'user' => $user,
+        ]);
+
+        foreach ($videos as $video) {
+            UserVideoFactory::createOne([
+                'user' => $user,
+                'video' => $video,
+            ]);
         }
 
-        shuffle($userVideoCombinations);
-        UserVideoFactory::createMany(3, function () use (&$userVideoCombinations) {
-            return array_pop($userVideoCombinations);
-        });
-
-        // We also make comments unique for different videos
-        $videoCommentCombinations = [];
-        foreach ($users as $user) {
-            foreach ($videos as $video) {
-                $videoCommentCombinations[] = ['video' => $video, 'user' => $user];
-            }
+        foreach ($videos as $video) {
+            VideoCommentFactory::createOne([
+                'video' => $video,
+                'user' => $user,
+            ]);
         }
-
-        shuffle($videoCommentCombinations);
-        VideoCommentFactory::createMany(3, function () use (&$videoCommentCombinations) {
-            return array_pop($videoCommentCombinations);
-        });
 
         $manager->flush();
     }
-
 }

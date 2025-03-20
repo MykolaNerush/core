@@ -15,7 +15,7 @@ final class UserVideoFactory extends PersistentProxyObjectFactory
         return [
             'user' => UserFactory::new(),
             'video' => VideoFactory::new(),
-            'role' => Role::VIEWER,
+            'role' => Role::OWNER,
         ];
     }
 

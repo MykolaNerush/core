@@ -31,13 +31,12 @@ class UserFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
-        $email = self::faker()->email();
-        $name = self::faker()->firstName(33);
 
         return [
-            'email' => $email,
-            'name' => $name,
+            'email' => self::faker()->email(),
+            'name' => self::faker()->firstName(33),
             'password' => '',
+            'is_email_confirmed' => 1,
             'plainPassword' => 'test',
             'status' => Status::ACTIVE,
         ];
@@ -50,10 +49,5 @@ class UserFactory extends PersistentProxyObjectFactory
                 $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
             }
         });
-    }
-
-    private function hashPassword(User $user, string $plainPassword): string
-    {
-        return $this->passwordHasher->hashPassword($user, $plainPassword);
     }
 }
