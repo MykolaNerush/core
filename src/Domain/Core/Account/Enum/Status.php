@@ -16,7 +16,7 @@ enum Status: string
     {
         return match ($this) {
             self::NEW => 'New',
-            self::BLOCKED => 'blocked',
+            self::BLOCKED => 'Blocked',
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
             self::SUSPENDED => 'Suspended',
