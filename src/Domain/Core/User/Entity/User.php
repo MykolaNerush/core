@@ -38,11 +38,8 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     #[ORM\Column(type: Types::STRING, enumType: Status::class)]
     private Status $status;
 
-    /**
-     * @var Collection<int, Account>
-     */
-    #[ORM\OneToMany(targetEntity: Account::class, mappedBy: 'user')]
-    private Collection $accounts;
+    #[ORM\OneToOne(targetEntity: Account::class, mappedBy: 'user')]
+    private ?Account $account = null;
 
     /**
      * @var Collection<int, UserRole>
@@ -80,7 +77,6 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
         $this->password = $password;
         $this->status = $status;
         $this->createdAt = new DateTimeImmutable();
-        $this->accounts = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
 
@@ -140,12 +136,14 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
         $this->status = $status;
     }
 
-    /**
-     * @return Collection<int, Account>|null
-     */
-    public function getAccounts(): ?Collection
+    public function getAccount(): ?Account
     {
-        return $this->accounts;
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): void
+    {
+        $this->account = $account;
     }
 
     /**
@@ -185,7 +183,6 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     public static function deserialize(array $data): self
     {
         return new self(
-//            Uuid::fromString($data['uuid'] ?? Uuid::uuid4()->toString())
             is_string($data['name']) ? $data['name'] : '',
             is_string($data['email']) ? $data['email'] : '',
             is_string($data['password']) ? $data['password'] : '',
@@ -198,21 +195,16 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
      */
     public function serialize(): array
     {
-        $accounts = [];
-
-        if ($this->getAccounts()) {
-            foreach ($this->getAccounts() as $account) {
-                $accounts[] = [
-                    'uuid' => $account->getUuid(),
-                    'accountName' => $account->getAccountName(),
-                    'balance' => $account->getBalance(),
-                    'createdAt' => $account->getCreatedAt(),
-                    'updatedAt' => $account->getUpdatedAt(),
-                    'deletedAt' => $account->getDeletedAt(),
-                    'status' => $account->getStatus(),
-                ];
-            }
-        }
+        $account = $this->account;
+        $account = [
+            'uuid' => $account?->getUuid(),
+            'accountName' => $account?->getAccountName(),
+            'balance' => $account?->getBalance(),
+            'createdAt' => $account?->getCreatedAt(),
+            'updatedAt' => $account?->getUpdatedAt(),
+            'deletedAt' => $account?->getDeletedAt(),
+            'status' => $account?->getStatus(),
+        ];
 
         return [
             'id' => $this->getUuid(),
@@ -220,7 +212,7 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
             'name' => $this->getName(),
             'email' => $this->getEmail(),
             'status' => $this->getStatus()->label(),
-            'account' => $accounts,
+            'account' => $account,
             'timestamps' => [
                 'createdAt' => $this->getCreatedAt()?->format('Y-m-d H:i:s'),
                 'updatedAt' => $this->getUpdatedAt()?->format('Y-m-d H:i:s'),

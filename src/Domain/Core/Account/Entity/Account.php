@@ -30,7 +30,7 @@ class Account extends TimestampableEntity implements SerializableReadModel
     private Status $status;
 
     #[
-        ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'accounts'),
+        ORM\OneToOne(targetEntity: User::class, inversedBy: 'account'),
         ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', onDelete: 'CASCADE')
     ]
     private User $user;
