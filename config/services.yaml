@@ -24,12 +24,12 @@ services:
 
   App\UI\Http\Rest\Internal\Controller\:
     resource: "../src/UI/Http/Rest/Internal/Controller/"
-    tags: [ "controller.service_arguments" ]
+    tags: ["controller.service_arguments"]
 
   App\Application\Shared\Validator\UniqueEmailValidator:
     arguments:
       $userRepository: '@App\Infrastructure\Core\User\Repository\UserRepository'
-    tags: [ "validator.constraint_validator" ]
+    tags: ["validator.constraint_validator"]
 
   App\Infrastructure\Shared\EventListener\ExceptionListener:
     tags:
@@ -47,9 +47,9 @@ services:
       $userConfirmationService: '@App\Infrastructure\Shared\Services\User\UserConfirmationService'
     tags:
       - {
-        name: validator.constraint_validator,
-        alias: app_valid_signature_validator,
-      }
+          name: validator.constraint_validator,
+          alias: app_valid_signature_validator,
+        }
 
   App\Infrastructure\Shared\Validation\RequestValidatorListener:
     tags:
@@ -77,13 +77,13 @@ services:
   App\Infrastructure\Core\Auth\Command\WhitelistIpCommand:
     arguments:
       $redis: "@snc_redis.default"
-    tags: [ "console.command" ]
+    tags: ["console.command"]
 
   # Redis client alias
   Predis\ClientInterface: "@snc_redis.default"
 
   # Security voters
-  App\Infrastructure\Core\Security\Voter\ResourceVoter:
-    tags:
-      - { name: security.voter }
-    public: false
+  App\Domain\Shared\Security\ResourceVoter:
+    arguments:
+      $security: "@security.helper"
+    tags: ["security.voter"]
