@@ -31,9 +31,6 @@ readonly class ExceptionListener
             'messages' => [$exception->getMessage()],
             'code' => $statusCode,
         ], $statusCode);
-//echo "<pre>";
-//var_export($exception->getTraceAsString());
-//die();
         $this->logger->error('Exception occurred: ' . $exception->getMessage(), [
             'message' => $exception->getMessage(),
             'code' => $statusCode,

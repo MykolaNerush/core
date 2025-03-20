@@ -6,7 +6,6 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Command\Account\Create\CreateAccountCommand;
 use App\Domain\Core\User\Entity\User;
-use App\Domain\Core\User\Repository\UserRepositoryInterface;
 use App\Infrastructure\Shared\Exception\NotFoundException;
 use App\UI\Http\Rest\Internal\Controller\CommandController;
 use App\UI\Http\Rest\Internal\DTO\Account\CreateAccountRequest;
@@ -17,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[OA\Tag(name: 'Account')]
 final class CreateAccountController extends CommandController
@@ -43,18 +43,12 @@ final class CreateAccountController extends CommandController
     public function __invoke(
         Request                 $request,
         MessageBusInterface     $messageBus,
-        UserRepositoryInterface $userRepository, //todo remove after add auth user
+        Security $security
     ): JsonResponse
     {
         $accountName = $request->get('accountName');
-        //todo add get auth user
-        $userUuid = 'ea24298e-7832-4c93-b345-de980b6783aa';
-        $uuid = Uuid::fromString($userUuid);
         /* @var User $user */
-        $user = $userRepository->getByUuid($uuid);
-        if (!$user) {
-            throw new NotFoundException(lcfirst((new \ReflectionClass(User::class))->getShortName()));
-        }
+        $user = $security->getUser();
         $command = new CreateAccountCommand(
             user: $user,
             accountName: $accountName,
