@@ -43,6 +43,7 @@ readonly class RequestValidatorListener
         $data = array_merge(
             $request->query->all(),
             $request->request->all(),
+            $request->attributes->all(),
             json_decode($request->getContent(), true) ?? []
         );
         $dto = $this->serializer->deserialize(json_encode($data), $dtoClass, 'json', ['disable_type_enforcement' => true]);

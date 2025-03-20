@@ -13,9 +13,10 @@ use App\Domain\Core\Account\Enum\Status;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\DBAL\Types\Types;
+use App\Domain\Shared\Security\OwnedResourceInterface;
 
 #[ORM\Entity, ORM\Table(name: 'accounts')]
-class Account extends TimestampableEntity implements SerializableReadModel
+class Account extends TimestampableEntity implements SerializableReadModel, OwnedResourceInterface
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -132,5 +133,10 @@ class Account extends TimestampableEntity implements SerializableReadModel
             $this->setAccountName($accountName);
         }
         $this->setUpdatedAt();
+    }
+
+    public function getOwnerId(): string
+    {
+        return $this->user->getId();
     }
 }

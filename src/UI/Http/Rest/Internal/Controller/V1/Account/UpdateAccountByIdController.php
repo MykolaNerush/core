@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
 use App\Application\Command\Account\Update\UpdateAccountCommand;
+use App\Domain\Core\Account\Repository\AccountRepositoryInterface;
+use App\Domain\Shared\Security\ResourceVoter;
 use App\UI\Http\Rest\Internal\DTO\Account\UpdateAccountRequest;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[OA\Tag(name: 'Account')]
-final class UpdateAccountByIdController
+final class UpdateAccountByIdController extends AbstractController
 {
     public string $dtoClass = UpdateAccountRequest::class;
 
@@ -46,8 +49,12 @@ final class UpdateAccountByIdController
             new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: "Internal server Error")
         ]
     )]
-    public function __invoke(string $uuid, Request $request, MessageBusInterface $messageBus): JsonResponse
+    public function __invoke(string $uuid, Request $request, MessageBusInterface $messageBus, AccountRepositoryInterface $accountRepository,): JsonResponse
     {
+        $account = $accountRepository->findOneBy(['uuid' => Uuid::fromString($uuid)->getBytes()]);
+
+        $this->denyAccessUnlessGranted(ResourceVoter::UPDATE, $account);
+
         $command = new UpdateAccountCommand(
             currentUuid: Uuid::fromString($uuid),
             accountName: $request->get('accountName'),
