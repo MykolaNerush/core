@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\DTO\User;
 
+use App\Domain\Core\User\Validator\Constraints\UpdateUserRequestConstraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Application\Shared\Validator\UniqueEmail;
 
+#[Assert\GroupSequence(['UpdateUserRequest', 'Custom'])]
+#[UpdateUserRequestConstraint(groups: ['Custom'])]
 class UpdateUserRequest
 {
     #[Assert\Length(

@@ -13,8 +13,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class BaseController
+abstract class BaseController extends AbstractController
 {
     public function __construct(
         protected BaseJsonApiFormatterInterface $formatter,
@@ -36,7 +37,7 @@ abstract class BaseController
      * @template T of array<string, mixed>
      * @param Item<T> $resource
      */
-    protected function json(Item $resource): JsonResponse
+    protected function jsonItem(Item $resource): JsonResponse
     {
         return new JsonResponse($this->formatter::one($resource));
     }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
 use App\Application\Command\User\Update\UpdateUserCommand;
+use App\Domain\Core\Account\Entity\Account;
+use App\Domain\Shared\Security\ResourceVoter;
+use App\UI\Http\Rest\Internal\Controller\CommandController;
 use App\UI\Http\Rest\Internal\DTO\User\UpdateUserRequest;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[OA\Tag(name: 'User')]
-final class UpdateUserByIdController
+final class UpdateUserByIdController extends CommandController
 {
     public string $dtoClass = UpdateUserRequest::class;
 
@@ -49,6 +52,7 @@ final class UpdateUserByIdController
     )]
     public function __invoke(string $uuid, Request $request, MessageBusInterface $messageBus): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ResourceVoter::UPDATE, ['repo' => Account::class, 'uuid' => $uuid]);
         $command = new UpdateUserCommand(
             currentUuid: Uuid::fromString($uuid),
             name: $request->get('name'),

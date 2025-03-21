@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Video;
 
 use App\Application\Command\Video\Delete\DeleteVideoCommand;
+use App\Domain\Core\Video\Entity\Video;
+use App\Domain\Shared\Security\ResourceVoter;
+use App\UI\Http\Rest\Internal\Controller\QueryController;
 use App\UI\Http\Rest\Internal\DTO\Video\DeleteVideoRequest;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +17,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[OA\Tag(name: 'Video')]
-final class DeleteVideoByIdController
+final class DeleteVideoByIdController extends QueryController
 {
     public string $dtoClass = DeleteVideoRequest::class;
 
@@ -37,6 +40,7 @@ final class DeleteVideoByIdController
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ResourceVoter::VIEW, ['repo' => Video::class, 'uuid' => $uuid]);
         $command = new DeleteVideoCommand(uuid: Uuid::fromString($uuid));
         $envelope = $messageBus->dispatch($command);
         $handledStamp = $envelope->last(HandledStamp::class);

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\Internal\Controller\V1\Video;
 
 use App\Application\Command\Video\Update\UpdateVideoCommand;
+use App\Domain\Core\Video\Entity\Video;
+use App\Domain\Shared\Security\ResourceVoter;
+use App\UI\Http\Rest\Internal\Controller\CommandController;
 use App\UI\Http\Rest\Internal\DTO\Video\UpdateVideoRequest;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +18,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[OA\Tag(name: 'Video')]
-final class UpdateVideoByIdController
+final class UpdateVideoByIdController extends CommandController
 {
     public string $dtoClass = UpdateVideoRequest::class;
 
@@ -51,6 +54,7 @@ final class UpdateVideoByIdController
     )]
     public function __invoke(string $uuid, Request $request, MessageBusInterface $messageBus): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ResourceVoter::UPDATE, ['repo' => Video::class, 'uuid' => $uuid]);
         $command = new UpdateVideoCommand(
             currentUuid: Uuid::fromString($uuid),
             title: $request->get('title'),

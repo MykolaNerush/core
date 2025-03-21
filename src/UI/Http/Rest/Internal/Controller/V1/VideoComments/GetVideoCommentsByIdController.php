@@ -47,6 +47,6 @@ final class GetVideoCommentsByIdController extends QueryController
         }
 
         $video = $handledStamp->getResult();
-        return $this->json($video);
+        return $this->jsonItem($video);
     }
 }

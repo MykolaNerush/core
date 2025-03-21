@@ -7,6 +7,7 @@ namespace App\Domain\Core\Account\Validator\Constraints;
 use App\Application\Shared\Validator\AbstractRequestConstraint;
 
 #[\Attribute]
-class AccountUpdateRequestConstraint extends AbstractRequestConstraint
+class DeleteAccountRequestConstraint extends AbstractRequestConstraint
 {
+
 }

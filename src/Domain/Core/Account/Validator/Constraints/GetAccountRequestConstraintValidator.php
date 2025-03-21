@@ -7,7 +7,7 @@ namespace App\Domain\Core\Account\Validator\Constraints;
 use App\UI\Http\Rest\Internal\DTO\Account\UpdateAccountRequest;
 use Symfony\Component\Validator\Constraint;
 
-class AccountUpdateRequestConstraintValidator extends AbstractAccountRequestConstraintValidator
+class GetAccountRequestConstraintValidator extends AbstractAccountRequestConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\Controller\V1\User;
 
+use App\Domain\Core\User\Entity\User;
+use App\Domain\Shared\Security\ResourceVoter;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,6 +41,8 @@ final class GetUserByIdController extends QueryController
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ResourceVoter::VIEW, ['repo' => User::class, 'uuid' => $uuid]);
+
         $query = new GetUserQuery(uuid: Uuid::fromString($uuid));
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);
@@ -47,6 +51,6 @@ final class GetUserByIdController extends QueryController
         }
 
         $user = $handledStamp->getResult();
-        return $this->json($user);
+        return $this->jsonItem($user);
     }
 }

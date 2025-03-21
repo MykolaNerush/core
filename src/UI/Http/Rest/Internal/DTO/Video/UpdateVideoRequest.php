@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\DTO\Video;
 
+use App\Domain\Core\Video\Validator\Constrains\UpdateVideoRequestConstraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[Assert\GroupSequence(['UpdateVideoRequest', 'Custom'])]
+#[UpdateVideoRequestConstraint(groups: ['Custom'])]
 class UpdateVideoRequest
 {
     #[Assert\Length(

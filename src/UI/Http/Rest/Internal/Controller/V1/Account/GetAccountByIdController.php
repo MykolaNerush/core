@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\Controller\V1\Account;
 
+use App\Domain\Core\Account\Entity\Account;
+use App\Domain\Shared\Security\ResourceVoter;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,6 +41,8 @@ final class GetAccountByIdController extends QueryController
     )]
     public function __invoke(string $uuid, MessageBusInterface $messageBus): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ResourceVoter::VIEW, ['repo' => Account::class, 'uuid' => $uuid]);
+
         $query = new GetAccountQuery(uuid: Uuid::fromString($uuid));
         $envelope = $messageBus->dispatch($query);
         $handledStamp = $envelope->last(HandledStamp::class);
@@ -47,6 +51,6 @@ final class GetAccountByIdController extends QueryController
         }
 
         $account = $handledStamp->getResult();
-        return $this->json($account);
+        return $this->jsonItem($account);
     }
 }

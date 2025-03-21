@@ -8,6 +8,8 @@ use App\Application\Command\VideoComments\Create\CreateVideoCommentsCommand;
 use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\User\Repository\UserRepositoryInterface;
 use App\Domain\Core\Video\Entity\Video;
+use App\Domain\Core\VideoComment\Entity\VideoComment;
+use App\Domain\Shared\Security\ResourceVoter;
 use App\UI\Http\Rest\Internal\Controller\CommandController;
 use App\UI\Http\Rest\Internal\DTO\VideoComments\CreateVideoCommentsRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,6 +61,7 @@ final class CreateVideoCommentsController extends CommandController
         $videoUuid = $request->get('video_uuid');
         $video = $entityManager->getRepository(Video::class)->findOneBy(['uuid' => $videoUuid]);
 
+        $this->denyAccessUnlessGranted(ResourceVoter::VIEW, ['repo' => VideoComment::class, 'uuid' => $videoUuid]);
         if (!$video) {
             throw new NotFoundHttpException('Video not found');
         }
