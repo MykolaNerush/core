@@ -6,38 +6,19 @@ nelmio_api_doc:
       version: 1.0.0
     components:
       securitySchemes:
-        Basic:
-          type: apiKey
-          description: 'Value: Basic {key}'
-          name: Authorization
-          in: header
         Bearer:
-          type: apiKey
-          description: 'Value: Bearer {jwt}'
-          name: Authorization
-          in: header
-        AuthIdentifier:
-          type: apiKey
-          description: 'Value: {auth_identifier}'
-          name: X-Auth-Identifier
-          in: header
-        AuthKey:
-          type: apiKey
-          description: 'Value: {auth_key}'
-          name: X-Auth-Key
-          in: header
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: "JWT token obtained from /api/v1/internal/signin endpoint"
     security:
-      - Basic: [ ]
-        Bearer: [ ]
-      - Basic: [ ]
-        AuthIdentifier: [ ]
-        AuthKey: [ ]
+      - Bearer: []
   areas:
     default:
-      path_patterns: [ ^/api ]
-      host_patterns: [ ^api\. ]
+      path_patterns: [^/api]
+      host_patterns: [^api\.]
     v1_internal:
-      path_patterns: [ ^/api/v1/internal ]
+      path_patterns: [^/api/v1/internal]
       documentation:
         info:
           title: Streaming service core internal API
