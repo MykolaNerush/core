@@ -12,7 +12,7 @@ class GetAccountByIdControllerTest extends BaseTestCase
     #[DataProvider('additionProvider')]
     public function testGetAccount($uuid, $expectedResult, $expectedCode): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
         $client->request('GET', '/accounts');
         $client->request('GET', '/api/v1/internal/accounts/' . $uuid);
         $actualAccount = json_decode($client->getResponse()->getContent(), true);
@@ -32,7 +32,7 @@ class GetAccountByIdControllerTest extends BaseTestCase
     {
         return [
             'Success get account' => [
-                '1fcd19a8-49af-01fd-abc7-000000000001',
+                '1fcd19a8-49af-4ffd-abc7-000000000001',
                 [
                     'name' => 'FOR_FIND_BY_UD',
                 ],
@@ -41,7 +41,7 @@ class GetAccountByIdControllerTest extends BaseTestCase
             'Error, account not found' => [
                 '1fcd19a8-49af-44fd-abc7-560f8b415814',
                 [
-                    'message' => 'Account not found',
+                    'messages' => ['Account not found'],
                 ],
                 500,
             ],

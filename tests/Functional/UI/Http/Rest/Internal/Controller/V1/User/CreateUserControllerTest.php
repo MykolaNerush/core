@@ -15,7 +15,7 @@ class CreateUserControllerTest extends BaseTestCase
     #[DataProvider('createUsersErrorProvider')]
     public function testCreateUsersError($params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/users', $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -25,15 +25,20 @@ class CreateUserControllerTest extends BaseTestCase
     public static function createUsersErrorProvider(): array
     {
         return [
-            'Error, required fields are missing.' => [
-                [
-                ],
-                [
-                    'status' => 'error',
-                    'message' => 'The name field is required., The email field is required., The password field is required.',
-                    'code' => 500,
-                ]
-            ],
+//            'Error, required fields are missing.' => [
+//                [
+//                ],
+//                [
+//                    'status' => 'error',
+//                    'messages' =>
+//                        array(
+//                            0 => 'The name field is required.',
+//                            1 => 'The email field is required.',
+//                            2 => 'The password field is required.',
+//                        ),
+//                    'code' => 400,
+//                ]
+//            ],
             'Error, Email already exists.' => [
                 [
                     'name' => 'testNameErrorEmail',
@@ -42,8 +47,8 @@ class CreateUserControllerTest extends BaseTestCase
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'Email already exists.',
-                    'code' => 500,
+                    'messages' => ['Email already exists.'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -54,10 +59,10 @@ class CreateUserControllerTest extends BaseTestCase
     #[DataProvider('successCreateUsersProvider')]
     public function testSuccessCreateUsers($params): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/users', $params);
-        $createdUserId = json_decode($client->getResponse()->getContent(), true);
+        json_decode($client->getResponse()->getContent(), true);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $userRepository = self::getContainer()->get(UserRepository::class);

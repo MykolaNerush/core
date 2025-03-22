@@ -12,7 +12,7 @@ class GetAccountsControllerTest extends BaseTestCase
     #[DataProvider('additionProvider')]
     public function testGetAccounts($expectedResult, $filter, $expectedCode): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('GET', '/api/v1/internal/accounts?' . $filter);
         $actual = json_decode($client->getResponse()->getContent(), true)['data'];
@@ -27,7 +27,7 @@ class GetAccountsControllerTest extends BaseTestCase
             'Wrong order' => [
                 null, // expected
                 'page=1&perPage=1&order=DESC_&sort=name', // filters
-                500,
+                400,
             ],
             'Empty data, wrong page' => [
                 [], // expected
@@ -36,60 +36,51 @@ class GetAccountsControllerTest extends BaseTestCase
             ],
             'Success, with one account' => [
                 [
-                    [
-                        'id' => '95b716fb-dc27-4d9a-a64c-e45b3143fb25',
+                    array(
+                        'id' => '1fcd19a8-49af-4ffd-abc7-e45b3143fb25',
                         'type' => 'accounts',
-                        'attributes' => [
-                            'uuid' => '95b716fb-dc27-4d9a-a64c-e45b3143fb25',
-                            'name' => 'FOR_LIST_ACCOUNTS',
-                            'status' => 'Active',
-                            'user' => [
-                                'id' => '4c6a78c7-773c-4d2b-9399-02f6b35aa09a',
-                                'uuid' => '4c6a78c7-773c-4d2b-9399-02f6b35aa09a',
-                                'name' => 'Jane Doe',
-                                'email' => 'jane@example.com',
+                        'attributes' =>
+                            array(
+                                'uuid' => '1fcd19a8-49af-4ffd-abc7-e45b3143fb25',
+                                'name' => 'FOR_LIST_ACCOUNTS',
                                 'status' => 'Active',
-                                'account' => [
-                                    [
-                                        'uuid' => '2cd95d63-73da-424f-82e4-283f2cd05cd6',
-                                        'accountName' => 'FOR_UPDATE_ACCOUNTS',
-                                        'balance' => 1500,
-                                        'createdAt' => [
-                                            'date' => '2025-01-05 16:44:16.000000',
-                                            'timezone_type' => 3,
-                                            'timezone' => 'UTC',
-                                        ],
+                                'user' =>
+                                    array(
+                                        'id' => '4c6a78c7-773c-4d2b-9399-02f6b35aa09a',
+                                        'uuid' => '4c6a78c7-773c-4d2b-9399-02f6b35aa09a',
+                                        'name' => 'Jane Doe',
+                                        'email' => 'jane@example.com',
+                                        'status' => 'Active',
+                                        'account' =>
+                                            array(
+                                                'uuid' => '1fcd19a8-49af-4ffd-abc7-e45b3143fb25',
+                                                'accountName' => 'FOR_LIST_ACCOUNTS',
+                                                'balance' => 1500,
+                                                'createdAt' =>
+                                                    array(
+                                                        'date' => '2025-01-05 16:44:16.000000',
+                                                        'timezone_type' => 3,
+                                                        'timezone' => 'UTC',
+                                                    ),
+                                                'updatedAt' => NULL,
+                                                'deletedAt' => NULL,
+                                                'status' => 'active',
+                                            ),
+                                        'timestamps' =>
+                                            array(
+                                                'createdAt' => '2025-01-05 16:44:16',
+                                                'updatedAt' => NULL,
+                                            ),
+                                    ),
+                                'timestamps' =>
+                                    array(
+                                        'createdAt' => '2025-01-05 16:44:16',
                                         'updatedAt' => NULL,
-                                        'deletedAt' => NULL,
-                                        'status' => 'active',
-                                    ],
-                                    [
-                                        'uuid' => '95b716fb-dc27-4d9a-a64c-e45b3143fb25',
-                                        'accountName' => 'FOR_LIST_ACCOUNTS',
-                                        'balance' => 1500,
-                                        'createdAt' => [
-                                            'date' => '2025-01-05 16:44:16.000000',
-                                            'timezone_type' => 3,
-                                            'timezone' => 'UTC',
-                                        ],
-                                        'updatedAt' => NULL,
-                                        'deletedAt' => NULL,
-                                        'status' => 'active',
-                                    ],
-                                ],
-                                'timestamps' => [
-                                    'createdAt' => '2025-01-05 16:44:16',
-                                    'updatedAt' => NULL,
-                                ],
-                            ],
-                            'timestamps' => [
-                                'createdAt' => '2025-01-05 16:44:16',
-                                'updatedAt' => NULL,
-                            ],
-                        ],
-                    ],
+                                    ),
+                            ),
+                    ),
                 ], // expected
-                'perPage=11&order=DESC&sort=accountName&page=1&filter[uuid]=95b716fb-dc27-4d9a-a64c-e45b3143fb25', // filters
+                'perPage=11&order=DESC&sort=accountName&page=1&filter[uuid]=1fcd19a8-49af-4ffd-abc7-e45b3143fb25', // filters
                 200,
             ],
         ];

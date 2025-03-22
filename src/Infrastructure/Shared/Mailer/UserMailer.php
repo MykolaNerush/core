@@ -31,7 +31,7 @@ final readonly class UserMailer
         $encodedEmail = urlencode($user->getEmail());
         $signature = hash_hmac('sha256', $user->getEmail(), $this->secretKey);
         $confirmationUrl = $this->urlGenerator->generate(
-            'confirm_email',
+            'v1_int_confirm_email',
             [
                 'email' => $encodedEmail,
                 'token' => $plainToken,

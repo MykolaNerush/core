@@ -28,6 +28,7 @@ class BaseTestCase extends WebTestCase
                 'core_test.users.sql',
                 'core_test.accounts.sql',
                 'core_test.videos.sql',
+                'core_test.user_roles.sql',
                 'core_test.user_roles_mapping.sql',
             ];
 
@@ -44,6 +45,7 @@ class BaseTestCase extends WebTestCase
 
     protected static function createAuthClient(string $username = 'auth@gmail.com', string $password = 'test'): KernelBrowser
     {
+        //todo add to cache
         $client = static::createClient();
         $client->request(
             'POST',

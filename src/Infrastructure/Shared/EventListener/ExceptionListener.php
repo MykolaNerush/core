@@ -18,26 +18,26 @@ readonly class ExceptionListener
 
     public function onKernelException(ExceptionEvent $event): void
     {
-//        $exception = $event->getThrowable();
-//
-//        while ($exception->getPrevious()) {
-//            $exception = $exception->getPrevious();
-//        }
-//
-//        $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
-//
-//        $response = new JsonResponse([
-//            'status' => 'error',
-//            'messages' => [$exception->getMessage()],
-//            'code' => $statusCode,
-//        ], $statusCode);
-//        $this->logger->error('Exception occurred: ' . $exception->getMessage(), [
-//            'message' => $exception->getMessage(),
-//            'code' => $statusCode,
-//            'trace' => $exception->getTraceAsString()
-//        ]);
-//
-//        $event->setResponse($response);
+        $exception = $event->getThrowable();
+
+        while ($exception->getPrevious()) {
+            $exception = $exception->getPrevious();
+        }
+
+        $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
+
+        $response = new JsonResponse([
+            'status' => 'error',
+            'messages' => [$exception->getMessage()],
+            'code' => $statusCode,
+        ], $statusCode);
+        $this->logger->error('Exception occurred: ' . $exception->getMessage(), [
+            'message' => $exception->getMessage(),
+            'code' => $statusCode,
+            'trace' => $exception->getTraceAsString()
+        ]);
+
+        $event->setResponse($response);
     }
 
 }

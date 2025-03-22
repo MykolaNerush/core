@@ -13,7 +13,7 @@ class DeleteAccountByIdControllerTest extends BaseTestCase
     #[DataProvider('deleteAccountsErrorProvider')]
     public function testDeleteAccountError($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/accounts/' . $uuid);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -30,8 +30,8 @@ class DeleteAccountByIdControllerTest extends BaseTestCase
                 'e5010159-f361-4ab4-b5a2-4557144e3f66',
                 [
                     'status' => 'error',
-                    'message' => 'Account not found',
-                    'code' => 500,
+                    'messages' => ['Account not exists'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -40,7 +40,7 @@ class DeleteAccountByIdControllerTest extends BaseTestCase
     #[DataProvider('successDeleteAccountsProvider')]
     public function testSuccessDeleteAccount($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/accounts/' . $uuid);
         $this->assertResponseStatusCodeSame(200);
@@ -56,10 +56,10 @@ class DeleteAccountByIdControllerTest extends BaseTestCase
     {
         return [
             'Success delete account' => [
-                '1fcd19a8-49af-00fd-abc7-000000000000',
+                '1fcd19a8-49af-4ffd-abc7-000000000000',
                 [
                     'status' => 'error',
-                    'message' => 'Account not found',
+                    'messages' => ['Account not found'],
                     'code' => 500,
                 ]
             ],

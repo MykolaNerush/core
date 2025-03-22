@@ -13,7 +13,7 @@ class DeleteUserByIdControllerTest extends BaseTestCase
     #[DataProvider('deleteUsersErrorProvider')]
     public function testDeleteUserError($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/users/' . $uuid);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -30,8 +30,8 @@ class DeleteUserByIdControllerTest extends BaseTestCase
                 'e5010159-f361-4ab4-b5a2-4557144e3f66',
                 [
                     'status' => 'error',
-                    'message' => 'User not found',
-                    'code' => 500,
+                    'messages' => ['User not exists'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -40,7 +40,7 @@ class DeleteUserByIdControllerTest extends BaseTestCase
     #[DataProvider('successDeleteUsersProvider')]
     public function testSuccessDeleteUser($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/users/' . $uuid);
         $this->assertResponseStatusCodeSame(200);
@@ -59,7 +59,7 @@ class DeleteUserByIdControllerTest extends BaseTestCase
                 'e5010159-f361-4ab4-b5a2-4557144e3f12',
                 [
                     'status' => 'error',
-                    'message' => 'User not found',
+                    'messages' => ['User not found'],
                     'code' => 500,
                 ]
             ],

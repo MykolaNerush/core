@@ -17,7 +17,7 @@ class CreateAccountControllerTest extends BaseTestCase
     #[DataProvider('createAccountErrorProvider')]
     public function testCreateAccountError($params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/accounts', $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -43,7 +43,7 @@ class CreateAccountControllerTest extends BaseTestCase
     #[DataProvider('successCreateAccountProvider')]
     public function testSuccessCreateAccounts($params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/accounts', $params);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);

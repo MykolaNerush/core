@@ -16,7 +16,7 @@ class UpdateAccountByIdControllerTest extends BaseTestCase
     #[DataProvider('updateAccountsErrorProvider')]
     public function testUpdateAccountError($uuid, $params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/accounts/' . $uuid, $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -27,15 +27,15 @@ class UpdateAccountByIdControllerTest extends BaseTestCase
     {
         return [
             'Error, not valid fields.' => [
-                'e5010159-f361-4ab4-b5a2-4557144e3f11',
+                '1fcd19a8-49af-4ffd-abc7-283f2cd05cd6',
                 [
-                    'name' => 'n',
+                    'accountName' => 'n',
                     'email' => 'wrongEmail',
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'The name must be at least 2 characters long.',
-                    'code' => 500,
+                    'messages' => ['The name must be at least 2 characters long.'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -44,7 +44,7 @@ class UpdateAccountByIdControllerTest extends BaseTestCase
     #[DataProvider('successUpdateAccountsProvider')]
     public function testSuccessUpdateAccount($uuid, $params): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/accounts/' . $uuid, $params);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
@@ -60,7 +60,7 @@ class UpdateAccountByIdControllerTest extends BaseTestCase
     {
         return [
             'Success update account' => [
-                '2cd95d63-73da-424f-82e4-283f2cd05cd6',
+                '1fcd19a8-49af-4ffd-abc7-283f2cd05cd6',
                 [
                     'accountName' => 'FOR_UPDATE_ACCOUNTS_1',
                 ],

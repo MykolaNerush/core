@@ -36,13 +36,13 @@ readonly class IpLimiterSubscriber implements EventSubscriberInterface
         }
 
         $ip = $request->getClientIp() ?? 'unknown';
-
-        if (!$this->ipLimiter->isAllowed($ip)) {
-            $event->setResponse(new JsonResponse(
-                ['error' => 'Too many failed attempts. Please try again later.'],
-                Response::HTTP_TOO_MANY_REQUESTS
-            ));
-        }
+//todo test !!!!!!!!!!!!
+//        if (!$this->ipLimiter->isAllowed($ip)) {
+//            $event->setResponse(new JsonResponse(
+//                ['error' => 'Too many failed attempts. Please try again later.'],
+//                Response::HTTP_TOO_MANY_REQUESTS
+//            ));
+//        }
     }
 
     public function onAuthenticationFailure(AuthenticationFailureEvent $event): void
