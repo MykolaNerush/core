@@ -25,9 +25,47 @@ final class CreateAccountController extends CommandController
         summary: 'Create account',
         security: [['Bearer' => []]],
         responses: [
-            new OA\Response(response: Response::HTTP_CREATED, description: 'Account created successfully'),
-            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: 'Bad request'),
-            new OA\Response(response: Response::HTTP_CONFLICT, description: 'Conflict'),
+            new OA\Response(
+                response: Response::HTTP_CREATED,
+                description: 'Account created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'id', type: 'string', example: 'ed22358b-2331-45cf-b370-d347d3cac532')
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: Response::HTTP_BAD_REQUEST,
+                description: 'Bad request - Account already exists or validation error',
+                content: new OA\JsonContent(
+                    oneOf: [
+                        new OA\Schema(
+                            properties: [
+                                new OA\Property(property: 'status', type: 'string', example: 'error'),
+                                new OA\Property(
+                                    property: 'messages',
+                                    type: 'array',
+                                    items: new OA\Items(type: 'string'),
+                                    example: ['Account already exists.']
+                                ),
+                                new OA\Property(property: 'code', type: 'integer', example: 400)
+                            ]
+                        ),
+                        new OA\Schema(
+                            properties: [
+                                new OA\Property(property: 'status', type: 'string', example: 'error'),
+                                new OA\Property(
+                                    property: 'messages',
+                                    type: 'array',
+                                    items: new OA\Items(type: 'string'),
+                                    example: ['The accountName field is required.']
+                                ),
+                                new OA\Property(property: 'code', type: 'integer', example: 400)
+                            ]
+                        )
+                    ]
+                )
+            ),
             new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal server error')
         ]
     )]

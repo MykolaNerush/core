@@ -3,7 +3,3 @@ v1_internal:
   resource: 'routes_v1_internal.yaml'
   prefix: /api/v1/internal
   name_prefix: 'v1_int_'
-
-confirm_email:
-  path: /confirm-email
-  controller: App\UI\Http\Rest\Internal\Controller\V1\User\ConfirmEmailController::__invoke

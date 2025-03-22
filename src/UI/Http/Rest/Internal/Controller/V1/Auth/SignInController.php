@@ -16,32 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @OA\Post(
- *   path="/api/v1/internal/auth/sign-in",
- *   summary="Sign in to get JWT token",
- *   description="Use this endpoint to get JWT token for authentication. After getting the token, click 'Authorize' button in Swagger UI and enter the token in format: Bearer your_token",
- *   tags={"Auth"},
- *   @OA\RequestBody(
- *     description="Credentials",
- *     @OA\JsonContent(
- *       @OA\Property(property="email", type="string", format="email", description="User email"),
- *       @OA\Property(property="password", type="string", format="password", description="User password")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Success",
- *     @OA\JsonContent(
- *       @OA\Property(property="token", type="string", description="JWT token to be used in Authorization header with Bearer prefix")
- *     )
- *   ),
- *   @OA\Response(response=400, description="Bad Request"),
- *   @OA\Response(response=401, description="Invalid credentials"),
- *   @OA\Response(response=500, description="Internal server Error")
- * )
- */
+#[OA\Tag(name: 'Auth')]
 final class SignInController extends CommandController
 {
     public string $dtoClass = SignInUserRequest::class;
@@ -55,6 +33,35 @@ final class SignInController extends CommandController
         parent::__construct($formatter, $router);
     }
 
+    #[OA\Post(
+        description: 'Use this endpoint to get JWT token for authentication. After getting the token, click \'Authorize\' button in Swagger UI and enter the token in format: Bearer your_token',
+        summary: 'Sign in to get JWT token',
+        requestBody: new OA\RequestBody(
+            description: 'Credentials',
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'email', description: 'User email', type: 'string', format: 'email'),
+                    new OA\Property(property: 'password', description: 'User password', type: 'string', format: 'password')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: Response::HTTP_OK,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'token', description: 'JWT token to be used in Authorization header with Bearer prefix', type: 'string'),
+                        new OA\Property(property: 'refresh_token', description: 'Refresh token for getting new access token', type: 'string'),
+                        new OA\Property(property: 'expires_in', description: 'Token expiration time in seconds', type: 'integer')
+                    ]
+                )
+            ),
+            new OA\Response(response: Response::HTTP_BAD_REQUEST, description: 'Bad Request'),
+            new OA\Response(response: Response::HTTP_UNAUTHORIZED, description: 'Invalid credentials'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal server error')
+        ]
+    )]
     public function __invoke(Request $request, MessageBusInterface $messageBus): JsonResponse
     {
         $ip = $request->getClientIp() ?? 'unknown';

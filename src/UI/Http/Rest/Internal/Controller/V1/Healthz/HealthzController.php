@@ -16,7 +16,6 @@ final class HealthzController
         tags: ['Health'],
         responses: [
             new OA\Response(response: 200, description: "Healthy"),
-            new OA\Response(response: 401, description: "Unauthorized"),
             new OA\Response(response: 500, description: "Not healthy")
         ],
         deprecated: false

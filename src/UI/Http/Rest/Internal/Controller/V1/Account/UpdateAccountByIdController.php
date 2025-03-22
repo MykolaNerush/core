@@ -23,7 +23,7 @@ final class UpdateAccountByIdController extends CommandController
     public string $dtoClass = UpdateAccountRequest::class;
 
     #[OA\Post(
-        summary: "Update account by ID",
+        summary: "Update account by UUID",
         security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             description: "Account",

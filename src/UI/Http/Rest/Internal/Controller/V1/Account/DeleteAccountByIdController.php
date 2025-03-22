@@ -21,11 +21,11 @@ final class DeleteAccountByIdController
     public string $dtoClass = DeleteAccountRequest::class;
 
     #[OA\Delete(
-        summary: "Delete account by ID",
+        summary: "Delete account by UUID",
         security: [['Bearer' => []]],
         parameters: [
             new OA\Parameter(
-                name: "id",
+                name: "uuid",
                 description: "uuid",
                 in: "path",
                 schema: new OA\Schema(type: "string")

@@ -4,6 +4,10 @@ healthz:
   methods: GET
 
 ##User
+confirm_email:
+  path: /confirm-email
+  controller: App\UI\Http\Rest\Internal\Controller\V1\User\ConfirmEmailController::__invoke
+  methods: GET
 users_list:
   path: /users
   controller: App\UI\Http\Rest\Internal\Controller\V1\User\GetUsersController::__invoke
