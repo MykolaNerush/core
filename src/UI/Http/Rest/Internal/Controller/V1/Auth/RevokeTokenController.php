@@ -6,6 +6,7 @@ namespace App\UI\Http\Rest\Internal\Controller\V1\Auth;
 
 use App\Application\Command\User\Auth\RevokeToken\RevokeTokenCommand;
 use App\UI\Http\Rest\Internal\Controller\CommandController;
+use App\UI\Http\Rest\Internal\DTO\Auth\RevokeTokenRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use OpenApi\Attributes as OA;
 #[OA\Tag(name: 'Auth')]
 final class RevokeTokenController extends CommandController
 {
+    public string $dtoClass = RevokeTokenRequest::class;
     #[OA\Post(
         summary: 'Revoke JWT token',
         security: [['Bearer' => []]],

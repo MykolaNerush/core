@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Rest\Internal\DTO\Auth;
 
-use App\Application\Shared\Validator\UniqueEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SignInUserRequest
