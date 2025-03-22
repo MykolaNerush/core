@@ -7,6 +7,7 @@ namespace App\Domain\Core\Video\Entity;
 use App\Domain\Core\UserVideo\Entity\UserVideo;
 use App\Domain\Core\VideoComment\Entity\VideoComment;
 use App\Domain\Shared\Entity\TimestampableEntity;
+use App\Domain\Shared\Security\OwnedResourceInterface;
 use Broadway\ReadModel\SerializableReadModel;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
@@ -17,7 +18,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity, ORM\Table(name: 'videos')]
-class Video extends TimestampableEntity implements SerializableReadModel
+class Video extends TimestampableEntity implements SerializableReadModel, OwnedResourceInterface
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -209,5 +210,11 @@ class Video extends TimestampableEntity implements SerializableReadModel
             $this->setStatus($status);
         }
         $this->setUpdatedAt();
+    }
+
+    public function getOwnerId(): string
+    {
+        //todo implement
+        return $this->uuid->toString();
     }
 }

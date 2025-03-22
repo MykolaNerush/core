@@ -15,7 +15,7 @@ class CreateVideoControllerTest extends BaseTestCase
     #[DataProvider('createVideosErrorProvider')]
     public function testCreateVideosError($params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/videos', $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -30,8 +30,12 @@ class CreateVideoControllerTest extends BaseTestCase
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'The title field is required.',
-                    'code' => 500,
+                    'messages' =>
+                        array(
+                            0 => 'The title field is required.',
+                            1 => 'The file field is required.',
+                        ),
+                    'code' => 400,
                 ]
             ],
         ];
@@ -42,10 +46,11 @@ class CreateVideoControllerTest extends BaseTestCase
     #[DataProvider('successCreateVideosProvider')]
     public function testSuccessCreateVideos($params): void
     {
-        $client = static::createClient();
+        //todo add field file !!!!!
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/videos', $params);
-        $createdVideoId = json_decode($client->getResponse()->getContent(), true);
+        json_decode($client->getResponse()->getContent(), true);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $videoRepository = self::getContainer()->get(VideoRepository::class);

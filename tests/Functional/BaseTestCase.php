@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional;
 
+use App\Infrastructure\Core\Auth\Cache\AuthTokenCache;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -45,20 +46,37 @@ class BaseTestCase extends WebTestCase
 
     protected static function createAuthClient(string $username = 'auth@gmail.com', string $password = 'test'): KernelBrowser
     {
-        //todo add to cache
         $client = static::createClient();
-        $client->request(
-            'POST',
-            '/api/v1/internal/signin',
-            [
-                'email' => $username,
-                'password' => $password,
-            ]
-        );
-        $data = json_decode($client->getResponse()->getContent(), true);
-        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
+        $container = static::getContainer();
+        $authTokenCache = $container->get(AuthTokenCache::class);
+
+        try {
+            $token = $authTokenCache->get($username, $password);
+        } catch (\Exception) {
+            $token = null;
+        }
+
+        if ($token === null) {
+            $client->request(
+                'POST',
+                '/api/v1/internal/signin',
+                [
+                    'email' => $username,
+                    'password' => $password,
+                ]
+            );
+            $data = json_decode($client->getResponse()->getContent(), true);
+            $token = $data['token'];
+
+            try {
+                $authTokenCache->set($username, $password, $token);
+            } catch (\Exception) {
+                // Ignore cache errors
+            }
+        }
+
+        $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $token));
 
         return $client;
     }
-
 }

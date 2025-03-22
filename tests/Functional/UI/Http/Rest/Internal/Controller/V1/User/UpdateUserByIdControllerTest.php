@@ -8,7 +8,6 @@ use App\Domain\Core\User\Entity\User;
 use App\Infrastructure\Core\User\Repository\UserRepository;
 use App\Tests\Functional\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Ramsey\Uuid\Guid\Guid;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateUserByIdControllerTest extends BaseTestCase
@@ -16,7 +15,7 @@ class UpdateUserByIdControllerTest extends BaseTestCase
     #[DataProvider('updateUsersErrorProvider')]
     public function testUpdateUserError($uuid, $params, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/users/' . $uuid, $params);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -34,8 +33,12 @@ class UpdateUserByIdControllerTest extends BaseTestCase
                 ],
                 [
                     'status' => 'error',
-                    'message' => 'The name must be at least 2 characters long., The email format is invalid.',
-                    'code' => 500,
+                    'messages' =>
+                        array(
+                            0 => 'The name must be at least 2 characters long.',
+                            1 => 'The email format is invalid.',
+                        ),
+                    'code' => 400,
                 ]
             ],
         ];
@@ -44,7 +47,7 @@ class UpdateUserByIdControllerTest extends BaseTestCase
     #[DataProvider('successUpdateUsersProvider')]
     public function testSuccessUpdateUser($uuid, $params): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('POST', '/api/v1/internal/users/' . $uuid, $params);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

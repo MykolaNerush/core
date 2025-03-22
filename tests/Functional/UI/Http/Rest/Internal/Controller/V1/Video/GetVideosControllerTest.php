@@ -12,7 +12,7 @@ class GetVideosControllerTest extends BaseTestCase
     #[DataProvider('additionProvider')]
     public function testGetVideos($expectedResult, $filter, $expectedCode): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('GET', '/api/v1/internal/videos?' . $filter);
         $actual = json_decode($client->getResponse()->getContent(), true)['data'];
@@ -27,7 +27,7 @@ class GetVideosControllerTest extends BaseTestCase
             'Wrong order' => [
                 null, // expected
                 'page=1&perPage=1&order=DESC_&sort=title', // filters
-                500,
+                400,
             ],
             'Empty data, wrong page' => [
                 [], // expected

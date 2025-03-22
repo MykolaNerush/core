@@ -87,3 +87,8 @@ services:
     arguments:
       $security: "@security.helper"
     tags: ["security.voter"]
+
+  App\Infrastructure\Core\Auth\Cache\AuthTokenCache:
+    arguments:
+      $cache: "@cache.app"
+    public: true

@@ -12,7 +12,7 @@ class GetVideosByIdControllerTest extends BaseTestCase
     #[DataProvider('additionProvider')]
     public function testGetVideo($uuid, $expectedResult, $expectedCode): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
         $client->request('GET', '/videos');
         $client->request('GET', '/api/v1/internal/videos/' . $uuid);
         $actualVideo = json_decode($client->getResponse()->getContent(), true);
@@ -42,7 +42,7 @@ class GetVideosByIdControllerTest extends BaseTestCase
             'Error, video not found' => [
                 '1fcd19a8-49af-44fd-abc7-560f8b415814',
                 [
-                    'message' => 'Video not found',
+                    'messages' => ['Video not found'],
                 ],
                 500,
             ],

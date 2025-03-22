@@ -14,7 +14,7 @@ class DeleteVideoByIdControllerTest extends BaseTestCase
     #[DataProvider('deleteVideosErrorProvider')]
     public function testDeleteVideoError($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/videos/' . $uuid);
         $actual = json_decode($client->getResponse()->getContent(), true);
@@ -31,8 +31,8 @@ class DeleteVideoByIdControllerTest extends BaseTestCase
                 'e5010159-f361-4ab4-b5a2-4557144e3f66',
                 [
                     'status' => 'error',
-                    'message' => 'Video not found',
-                    'code' => 500,
+                    'messages' => ['Video not found'],
+                    'code' => 400,
                 ]
             ],
         ];
@@ -41,7 +41,7 @@ class DeleteVideoByIdControllerTest extends BaseTestCase
     #[NoReturn] #[DataProvider('successDeleteVideosProvider')]
     public function testSuccessDeleteVideo($uuid, $expectedResult): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
 
         $client->request('DELETE', '/api/v1/internal/videos/' . $uuid);
         $this->assertResponseStatusCodeSame(200);
@@ -59,7 +59,7 @@ class DeleteVideoByIdControllerTest extends BaseTestCase
                 '8027f5f2-330f-4ea3-abcd-aeb4e1d3ea0e',
                 [
                     'status' => 'error',
-                    'message' => 'Video not found',
+                    'messages' => ['Video not found'],
                     'code' => 500,
                 ]
             ],

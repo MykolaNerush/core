@@ -12,7 +12,7 @@ class GetUsersByIdControllerTest extends BaseTestCase
     #[DataProvider('additionProvider')]
     public function testGetUser($uuid, $expectedResult, $expectedCode): void
     {
-        $client = static::createClient();
+        $client = static::createAuthClient();
         $client->request('GET', '/users');
         $client->request('GET', '/api/v1/internal/users/' . $uuid);
         $actualUser = json_decode($client->getResponse()->getContent(), true);
@@ -42,7 +42,7 @@ class GetUsersByIdControllerTest extends BaseTestCase
             'Error, user not found' => [
                 '1fcd19a8-49af-44fd-abc7-560f8b415814',
                 [
-                    'message' => 'User not found',
+                    'messages' => ['User not found'],
                 ],
                 500,
             ],
