@@ -7,6 +7,7 @@ namespace App\Domain\Core\VideoComment\Entity;
 use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\Video\Entity\Video;
 use App\Domain\Core\VideoComment\Enum\CommentStatus;
+use App\Domain\Shared\Security\OwnedResourceInterface;
 use Broadway\ReadModel\SerializableReadModel;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity, ORM\Table(name: 'video_comments')]
-class VideoComment implements SerializableReadModel
+class VideoComment implements SerializableReadModel, OwnedResourceInterface
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -176,5 +177,9 @@ class VideoComment implements SerializableReadModel
     public function getId(): string
     {
         return Uuid::fromBytes($this->uuid->getBytes())->toString();
+    }
+    public function getOwnerId(): string
+    {
+        return $this->user->getUuid()->toString();
     }
 }

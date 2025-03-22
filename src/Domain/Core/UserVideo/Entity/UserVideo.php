@@ -8,11 +8,12 @@ use App\Domain\Core\UserVideo\Enum\Role;
 use App\Domain\Core\User\Entity\User;
 use App\Domain\Core\Video\Entity\Video;
 use App\Domain\Shared\Entity\OwnableInterface;
+use App\Domain\Shared\Security\OwnedResourceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'user_videos')]
-class UserVideo implements OwnableInterface
+class UserVideo implements OwnableInterface, OwnedResourceInterface
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userVideos')]

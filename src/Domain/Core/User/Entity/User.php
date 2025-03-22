@@ -6,6 +6,7 @@ namespace App\Domain\Core\User\Entity;
 
 use App\Domain\Core\UserVideo\Entity\UserVideo;
 use App\Domain\Shared\Entity\TimestampableEntity;
+use App\Domain\Shared\Security\OwnedResourceInterface;
 use Broadway\ReadModel\SerializableReadModel;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Webmozart\Assert\Assert;
 
 #[ORM\Entity, ORM\Table(name: 'users')]
-class User extends TimestampableEntity implements UserInterface, PasswordAuthenticatedUserInterface, SerializableReadModel
+class User extends TimestampableEntity implements UserInterface, PasswordAuthenticatedUserInterface, SerializableReadModel, OwnedResourceInterface
 {
     #[ORM\Id, ORM\GeneratedValue(strategy: 'NONE'), ORM\Column(type: 'uuid_binary', length: 16)]
     private UuidInterface $uuid;
@@ -224,7 +225,6 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     public function getId(): string
     {
         return $this->uuid->toString();
-//        return Uuid::fromBytes($this->uuid->getBytes())->toString();
     }
 
     public function update(
@@ -309,5 +309,9 @@ class User extends TimestampableEntity implements UserInterface, PasswordAuthent
     public function getIsEmailConfirmed(): bool
     {
         return $this->isEmailConfirmed;
+    }
+    public function getOwnerId(): string
+    {
+        return $this->getId();
     }
 }
