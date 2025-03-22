@@ -79,7 +79,7 @@ final class CreateAccountController extends CommandController
     public function __invoke(
         Request                 $request,
         MessageBusInterface     $messageBus,
-        Security $security
+        Security $security,
     ): JsonResponse
     {
         $accountName = $request->get('accountName');

@@ -11,6 +11,7 @@ use App\Domain\Core\Video\Entity\Video;
 use App\Domain\Core\Video\Repository\VideoRepositoryInterface;
 use App\Infrastructure\Shared\Services\Video\VideoUploader;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -19,7 +20,7 @@ readonly class CreateVideoHandler
     public function __construct(
         private VideoRepositoryInterface $videoRepository,
         private VideoUploader            $videoUploader,
-        private UserRepositoryInterface  $userRepository, //todo remove after add auth user
+        private Security                 $security,
     )
     {
     }
@@ -38,11 +39,8 @@ readonly class CreateVideoHandler
         );
         $this->videoRepository->create($video);
 
-        //todo add get auth user
-        $userUuid = 'ea24298e-7832-4c93-b345-de980b6783aa';
-        $uuid = Uuid::fromString($userUuid);
         /* @var User $user */
-        $user = $this->userRepository->getByUuid($uuid);
+        $user = $this->security->getUser();
 
         $userVideo = new UserVideo(
             user: $user,

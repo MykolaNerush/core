@@ -15,6 +15,7 @@ use App\UI\Http\Rest\Internal\DTO\VideoComments\CreateVideoCommentsRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,7 @@ final class CreateVideoCommentsController extends CommandController
         Request                $request,
         MessageBusInterface    $messageBus,
         EntityManagerInterface $entityManager,
-        UserRepositoryInterface  $userRepository, //todo remove after add auth user
+        Security $security,
     ): JsonResponse
     {
         $videoUuid = $request->get('video_uuid');
@@ -66,11 +67,8 @@ final class CreateVideoCommentsController extends CommandController
             throw new NotFoundHttpException('Video not found');
         }
 
-        $userUuid = 'e6b1dc09-ebe2-4139-9b9d-77122aa7c3c9';
-        $uuid = Uuid::fromString($userUuid);
-        //todo add get auth user
         /* @var User $user*/
-        $user = $userRepository->getByUuid($uuid);
+        $user = $security->getUser();
 
         $comment = $request->get('comment');
 
